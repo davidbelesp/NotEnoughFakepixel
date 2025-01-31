@@ -46,12 +46,12 @@ public class ThreeWeirdos {
        if (e.message.getFormattedText().startsWith("§c")) return;
 
        Matcher matcher = threeWeirdosPattern.matcher(e.message.getFormattedText());
-       if(matcher.find()){
+       if (matcher.find()){
            String name = matcher.group(2);
            String message = matcher.group(4);
            for (String answer : answers) {
                if (message.contains(answer)) {
-                   Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§a[Riddle Solver] §r§c" + name + "§r§f has the blessing!"));
+                   mc.thePlayer.addChatMessage(new ChatComponentText("§a[Riddle Solver] §r§c" + name + "§r§f has the blessing!"));
                    e.setCanceled(true);
                    foundResponse = true;
                    correctName = name;
@@ -67,15 +67,15 @@ public class ThreeWeirdos {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
         if (!Configuration.dungeonsThreeWeirdos) return;
-        if (Minecraft.getMinecraft().theWorld == null) return;
+        if (mc.theWorld == null) return;
         if (!foundResponse) return;
         if (correctName.isEmpty()) return;
         highlightNpc(correctName, event.partialTicks);
     }
 
     public void highlightNpc(String correctName, float partialTicks){
-        for (Entity entity : Minecraft.getMinecraft().theWorld.loadedEntityList) {
-            if(entity.getDisplayName().getUnformattedText().contains(correctName)){
+        for (Entity entity : mc.theWorld.loadedEntityList) {
+            if (entity.getDisplayName().getUnformattedText().contains(correctName)){
                 RenderUtils.renderEntityHitbox(entity, partialTicks, new Color(90,255,90,198), MobDisplayTypes.NONE, false);
             }
         }
