@@ -80,30 +80,30 @@ public class Configuration extends Config {
 
     @Header(text = "General" , size = 2)
     public boolean _general = true;
-    @Dropdown(name = "Theme" , size = 2 , options = {"Default" , "Dark" , "Ocean"})
+    @Dropdown(name = "Theme", size = 2, options = {"Default" , "Dark" , "Ocean"})
     public static int theme = 1;
-    @Switch(name = "Debug" , description = "Enable debug mode")
+    @Switch(name = "Debug", description = "Enable debug mode")
     public static boolean debug = false;
 
     // Quality Of Life
 
-    @Header(text = "General" , category = QUALITY_OF_LIFE, size = 2)
+    @Header(text = "General", category = QUALITY_OF_LIFE, size = 2)
     public static boolean _qol = true;
-    //@Switch(name = "Custom Chat Filters" , description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
+    //@Switch(name = "Custom Chat Filters", description = "Add your own chat filters, by - /addfilter", category = QUALITY_OF_LIFE)
     //public static boolean qolCustomFilters = true;
 
-    @Switch(name = "Fairy Soul Waypoints" , category = QUALITY_OF_LIFE, subcategory = "Fairy Souls")
+    @Switch(name = "Fairy Soul Waypoints", category = QUALITY_OF_LIFE, subcategory = "Fairy Souls")
     public static boolean fairySoulWaypoints = true;
     @Color(name = "Fairy Soul Waypoints Color",  category = QUALITY_OF_LIFE, subcategory = "Fairy Souls")
     public static OneColor fairySoulWaypointsColor = new OneColor(0,0,0);
 
-    @Switch(name = "Fullbright" , category = QUALITY_OF_LIFE)
+    @Switch(name = "Fullbright", category = QUALITY_OF_LIFE)
     public static boolean qolFullbright = true;
-    @Switch(name = "1.12 Crops height" , category = QUALITY_OF_LIFE)
+    @Switch(name = "1.12 Crops height", category = QUALITY_OF_LIFE)
     public static boolean qolCropsHeight = false;
-    @Switch(name = "Disable rain", category = QUALITY_OF_LIFE, description = "Disables rain rendering")
+    @Switch(name = "Hide Rain", category = QUALITY_OF_LIFE, description = "Disables rain rendering")
     public static boolean qolDisableRain = true;
-    @Switch(name = "Disable Potion Effects in Inventory" , category = QUALITY_OF_LIFE)
+    @Switch(name = "Hide Potion Effects in Inventory" , category = QUALITY_OF_LIFE)
     public static boolean qolDisablePotionEffects = true;
     @Switch(name = "Show Enchant Level", category = QUALITY_OF_LIFE, description = "Show enchant level of an book on its icon")
     public static boolean qolShowEnchantLevel = true;
@@ -119,15 +119,15 @@ public class Configuration extends Config {
     @Switch(name = "Block placing items", category = QUALITY_OF_LIFE)
     public static boolean qolBlockPlacingItems = true;
 
-    @Switch(name = "Wardrobe Shortcut" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    @Switch(name = "Wardrobe Shortcut", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutWardrobe = true;
     @KeyBind(name = "Wardrobe Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolWardrobeKeyBind = new OneKeyBind(UKeyboard.KEY_R);
-    @Switch(name = "Pets Shortcut" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    @Switch(name = "Pets Shortcut", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutPets = true;
     @KeyBind(name = "Pets Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolPetsKeyBind = new OneKeyBind(UKeyboard.KEY_P);
-    @Switch(name = "Warps Shortcuts" , category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
+    @Switch(name = "Warps Shortcuts", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutWarps = true;
     @KeyBind(name = "Warp Island Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolShortcutWarpIs = new OneKeyBind(UKeyboard.KEY_F7);
@@ -151,7 +151,7 @@ public class Configuration extends Config {
     public static boolean qolDisableZombieRareDrops = true;
     @Switch(name = "Disable 'Selling ranks' messages", category = QUALITY_OF_LIFE, subcategory = "Chat")
     public static boolean qolDisableSellingRanks = false;
-    @Switch(name = "Scrollable tooltips" , category = QUALITY_OF_LIFE, subcategory = "Items", description = "Scroll through the item lore")
+    @Switch(name = "Scrollable tooltips", category = QUALITY_OF_LIFE, subcategory = "Items", description = "Scroll through the item lore")
     public static boolean qolScrollableTooltips = true;
 
     @Switch(name = "No Hurt Camera", category = QUALITY_OF_LIFE, subcategory = "Sounds & Animations")
@@ -166,10 +166,10 @@ public class Configuration extends Config {
     public static boolean qolDisableThunderlordBolt = true;
     @Switch(name = "Minimum Midas Staff animation and sounds", category = QUALITY_OF_LIFE, subcategory = "Sounds & Animations", description = "Low-render gold blocks and set sound only at right click.")
     public static boolean qolDisableMidaStaffAnimation = false;
-    @Switch(name = "Hide Flaming Fists" , category = QUALITY_OF_LIFE, subcategory = "Sounds & Animations")
+    @Switch(name = "Hide Flaming Fists", category = QUALITY_OF_LIFE, subcategory = "Sounds & Animations")
     public static boolean qolHideFlamingFists = false;
 
-    @Switch(name = "Hide dead mobs" , category = "Quality of Life", subcategory = "Sounds & Animations")
+    @Switch(name = "Hide dead mobs", category = "Quality of Life", subcategory = "Sounds & Animations")
     public static boolean qolHideDyingMobs = true;
 
     @Switch(name = "Damage Commas", category = QUALITY_OF_LIFE, subcategory = "Damage Formatter")
@@ -213,18 +213,18 @@ public class Configuration extends Config {
     public static boolean dungeonsMap = true;
     @Color(name = "Dungeons Map Border Color", category = DUNGEONS , subcategory = "Dungeon Map")
     public static OneColor dungeonsMapBorderColor = new OneColor(0,0,0);
-    @Slider(name = "Dungeons Map Scale" ,category = DUNGEONS, subcategory = "Dungeon Map" , min = 0.1f,max=10f)
+    @Slider(name = "Dungeons Map Scale", category = DUNGEONS, subcategory = "Dungeon Map" , min = 0.1f,max=10f)
     public static float dungeonsMapScale = 1.0f;
-    @Slider(name = "Dungeons Map Offset X" ,category = DUNGEONS, subcategory = "Dungeon Map" , min = 0.0f,max=1800f)
+    @Slider(name = "Dungeons Map Offset X", category = DUNGEONS, subcategory = "Dungeon Map" , min = 0.0f,max=1800f)
     public static float dungeonsMapOffsetX = 0.0f;
-    @Slider(name = "Dungeons Map Offset Y" ,category = DUNGEONS, subcategory = "Dungeon Map" , min = 0.0f,max=1250)
+    @Slider(name = "Dungeons Map Offset Y", category = DUNGEONS, subcategory = "Dungeon Map" , min = 0.0f,max=1250)
     public static float dungeonsMapOffsetY = 0.0f;
-    @Switch(name = "Dungeons Map Rotation" , category = DUNGEONS, subcategory = "Dungeon Map")
+    @Switch(name = "Dungeons Map Rotation", category = DUNGEONS, subcategory = "Dungeon Map")
     public static boolean dungeonsRotateMap = true;
 
-    @Switch(name = "Three Weirdos Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    @Switch(name = "Three Weirdos Solver", category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsThreeWeirdos = true;
-    @Switch(name = "Water Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    @Switch(name = "Water Solver", category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsWaterSolver = true;
 
     @Switch(name = "Fel Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs")
@@ -251,9 +251,9 @@ public class Configuration extends Config {
     public static OneColor dungeonsStormyColor = new OneColor(173, 216, 230);
 
     @Switch(name = "Custom Terminal GUI", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
-    public static boolean dungeonTerminalCustomGui = true;
+    public static boolean dungeonsTerminalCustomGui = true;
     @Slider(name = "Custom Terminal Scale", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices", min = 1.0f, max = 5.0f)
-    public static float dungeonTerminalScale = 2.0f;
+    public static float dungeonsTerminalScale = 2.0f;
     @Switch(name = "Terminal Starts With Solver", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalStartsWithSolver = true;
     @Switch(name = "Terminal Select Colors Solver", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
@@ -283,17 +283,17 @@ public class Configuration extends Config {
     @Switch(name = "Highlight Uncompleted Terminals", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalWaypoints = true;
 
-    @Switch(name = "Score Overlay" ,category = DUNGEONS, subcategory = "Score & Secrets")
+    @Switch(name = "Score Overlay", category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsScoreOverlay = true;
-    @Switch(name = "Minimal Score Overlay" ,category = DUNGEONS, subcategory = "Score & Secrets")
-    public static boolean minimalScoreOverlay = false;
+    @Switch(name = "Minimal Score Overlay", category = DUNGEONS, subcategory = "Score & Secrets")
+    public static boolean dungeonsMinimalScoreOverlay = false;
     @Switch(name = "S+ Notifier", category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen when virtually reached S+ (% secrets + X% completion).")
     public static boolean dungeonsSPlusNotifier = true;
     @Switch(name = "S+ Message on Chat", category = DUNGEONS, subcategory = "Score & Secrets", description = "Send a message chat when dungeon is about to be done.")
     public static boolean dungeonsSPlusMessage = true;
-    @Text(name = "Custom S+ Message on Chat" , category = DUNGEONS, subcategory = "Score & Secrets")
+    @Text(name = "Custom S+ Message on Chat", category = DUNGEONS, subcategory = "Score & Secrets")
     public static String dungeonsSPlusCustom = "";
-    @Switch(name = "Dungeon Cleared Notifier" , category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows a message in screen + party message chat when 100% completion.")
+    @Switch(name = "Dungeon Cleared Notifier", category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows a message in screen + party message chat when 100% completion.")
     public static boolean dungeonsClearedNotifier = true;
     @Switch(name = "Show Item Secrets and Wither Essences", category = DUNGEONS, subcategory = "Score & Secrets", description = "Show hitbox through walls of item secrets.")
     public static boolean dungeonsItemSecretsDisplay = true;
@@ -343,37 +343,37 @@ public class Configuration extends Config {
     public static boolean dianaCancelCooldownSpadeMessage = true;
 
 
-    //@Switch(name = "Disable harp sounds" , category = DIANA, subcategory = "Sounds", description = "Turn off/on harp sounds.")
+    //@Switch(name = "Disable harp sounds", category = DIANA, subcategory = "Sounds", description = "Turn off/on harp sounds.")
     //public static boolean disableDianaHarpSounds = true;
 
 
     // Slayer
     @Header(text = SLAYER , category = SLAYER , size = 2)
     public static boolean _slayer = true;
-    @Switch(name = "Slayer Minibosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
+    @Switch(name = "Slayer Minibosses Display", category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
     public static boolean slayerMinibosses = true;
 
-    @Switch(name = "Miniboss spawn title" , category = SLAYER, subcategory = "Slayer Mobs", description = "Shows a title on the screen after a Miniboss is spawned.")
+    @Switch(name = "Miniboss spawn title", category = SLAYER, subcategory = "Slayer Mobs", description = "Shows a title on the screen after a Miniboss is spawned.")
     public static boolean slayerMinibossTitle = true;
-    @Switch(name = "Miniboss sound notification" , category = SLAYER, subcategory = "Slayer Mobs", description = "Plays a sound on Miniboss spawning.")
+    @Switch(name = "Miniboss sound notification", category = SLAYER, subcategory = "Slayer Mobs", description = "Plays a sound on Miniboss spawning.")
     public static boolean slayerMinibossSound = true;
 
     @Color(name = "Slayer Minibosses Color", category = SLAYER, subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
     public static OneColor slayerColor = new OneColor(92, 154, 255);
-    @Switch(name = "Slayer Bosses Display" , category = SLAYER, subcategory = "Slayer Mobs", description = "Draws a box around slayer bosses.")
+    @Switch(name = "Slayer Bosses Display", category = SLAYER, subcategory = "Slayer Mobs", description = "Draws a box around slayer bosses.")
     public static boolean slayerBosses = true;
     @Color(name = "Slayer Bosses Color", category = SLAYER, subcategory = "Slayer Mobs", description = "Color of the slayer bosses.")
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
     @Dropdown(name = "Faster Maddox Calling", category = SLAYER, subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
     public static int slayerMaddoxCalling = 1;
-    @Switch(name = "Show Beacon Waypoint" , category = SLAYER, subcategory = "Voidgloom Seraph", description = ".")
+    @Switch(name = "Show Beacon Waypoint", category = SLAYER, subcategory = "Voidgloom Seraph", description = ".")
     public static boolean slayerShowBeaconPath = true;
     @Color(name = "Beacon Color", category = SLAYER, subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
     public static OneColor slayerBeaconColor = new OneColor(128, 0, 128);
     @Switch(name = "Display Blaze Pillar Title", category = SLAYER, subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
     public static boolean slayerFirePillarDisplay = true;
 
-    @Switch(name = "Blaze Attunements display" , category = SLAYER , subcategory = "Inferno Demonlord")
+    @Switch(name = "Blaze Attunements display", category = SLAYER , subcategory = "Inferno Demonlord")
     public static boolean slayerBlazeAttunements = true;
 
     // Enchanting
@@ -403,31 +403,31 @@ public class Configuration extends Config {
     // Crimson
     @Header(text = CRIMSON, category = CRIMSON, size = 2)
     public static boolean _crimson = true;
-    @Switch(name = "Bladesoul notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Bladesoul boss spawns.")
+    @Switch(name = "Bladesoul Notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Bladesoul boss spawns.")
     public static boolean crimsonBladesoulNotifier = true;
-    @Switch(name = "Mage Outlaw notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Mage Outlaw boss spawns.")
+    @Switch(name = "Mage Outlaw Notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Mage Outlaw boss spawns.")
     public static boolean crimsonMageOutlawNotifier = true;
-    @Switch(name = "Ashfang notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Ashfang boss spawns.")
+    @Switch(name = "Ashfang Notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Ashfang boss spawns.")
     public static boolean crimsonAshfangNotifier = true;
-    @Switch(name = "Barbarian Duke X notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Barbarian Duke X boss spawns.")
+    @Switch(name = "Barbarian Duke X Notifier", category = CRIMSON, subcategory = "Bosses notifier", description = "Notifies you when Barbarian Duke X boss spawns.")
     public static boolean crimsonBarbarianDukeXNotifier = true;
-    @Switch(name = "Ashfang waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Ashfang for launching Blazing Souls easier.")
+    @Switch(name = "Ashfang Waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Ashfang for launching Blazing Souls easier.")
     public static boolean crimsonAshfangWaypoint = true;
-    @Color(name = "Ashfang waypoint color", category = CRIMSON , subcategory = "Ashfang", description = "Color of Ashfang's waypoint.")
+    @Color(name = "Ashfang Waypoint Color", category = CRIMSON , subcategory = "Ashfang", description = "Color of Ashfang's waypoint.")
     public static OneColor crimsonAshfangWaypointColor = new OneColor(0, 255, 0);
-    @Switch(name = "Gravity Orb waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Gravity Orb to lure Ashfang Followers easier.")
+    @Switch(name = "Gravity Orb Waypoint", category = CRIMSON, subcategory = "Ashfang", description = "Show a waypoint on Gravity Orb to lure Ashfang Followers easier.")
     public static boolean crimsonGravityOrbWaypoint = true;
-    @Color(name = "Gravity orb waypoint color", category = CRIMSON , subcategory = "Ashfang", description = "Color of Gravity Orb's waypoint.")
+    @Color(name = "Gravity orb Waypoint Color", category = CRIMSON , subcategory = "Ashfang", description = "Color of Gravity Orb's waypoint.")
     public static OneColor crimsonBlazingSoulWaypointColor = new OneColor(255, 255, 0);
-    @Switch(name = "Ashfang hitboxes", category = CRIMSON, subcategory = "Ashfang", description = "Show colors on different Ashfang's minions (Follower, Acolyte, Underling) for better recognition.")
+    @Switch(name = "Ashfang Hitboxes", category = CRIMSON, subcategory = "Ashfang", description = "Show colors on different Ashfang's minions (Follower, Acolyte, Underling) for better recognition.")
     public static boolean crimsonAshfangHitboxes = true;
-    @Switch(name = "Ashfang mute chat", category = CRIMSON, subcategory = "Ashfang", description = "Mute irrelevant chat messages generated by Ashfang's minions.")
+    @Switch(name = "Ashfang Mute Chat", category = CRIMSON, subcategory = "Ashfang", description = "Mute irrelevant chat messages generated by Ashfang's minions.")
     public static boolean crimsonAshfangMuteChat = true;
-    @Switch(name = "Ashfang mute sound", category = CRIMSON, subcategory = "Ashfang", description = "Mute annoying sounds generated by Ashfang's minions.")
+    @Switch(name = "Ashfang Mute Sound", category = CRIMSON, subcategory = "Ashfang", description = "Mute annoying sounds generated by Ashfang's minions.")
     public static boolean crimsonAshfangMuteSound = true;
-    @Switch(name = "Ashfang hurt sound", category = CRIMSON, subcategory = "Ashfang", description = "Make a sound when Ashfang is hit by a Blazing Soul.")
+    @Switch(name = "Ashfang Hurt Sound", category = CRIMSON, subcategory = "Ashfang", description = "Make a sound when Ashfang is hit by a Blazing Soul.")
     public static boolean crimsonAshfangHurtSound = true;
-    @Switch(name = "Ashfang overlay", category = CRIMSON, subcategory = "Ashfang", description = "Overlay that shows the HP of Ashfang, as well as Blazing Souls alive and needed for killing the boss.")
+    @Switch(name = "Ashfang Overlay", category = CRIMSON, subcategory = "Ashfang", description = "Overlay that shows the HP of Ashfang, as well as Blazing Souls alive and needed for killing the boss.")
     public static boolean crimsonAshfangOverlay = true;
     @Page(name = "Ashfang Overlay Options", category = CRIMSON, subcategory = "Ashfang", location = PageLocation.BOTTOM)
     public static AshfangOverlayPage crimsonAshfangOverlayPage = new AshfangOverlayPage();
@@ -446,15 +446,15 @@ public class Configuration extends Config {
     @Switch(name = "Remove Ghost Invisibility", category = MINING, subcategory = "", description = "Removes the invisibility of the ghosts")
     public static boolean miningShowGhosts = true;
 
-    @Switch(name = "Drill Fuel Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
+    @Switch(name = "Drill Fuel Overlay", category = MINING, subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
     public static boolean miningDrillFuel = true;
-    @Switch(name = "Mithril Powder Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the mithril powder in overlay.")
+    @Switch(name = "Mithril Powder Overlay", category = MINING, subcategory = "Mining Overlay", description = "Shows the mithril powder in overlay.")
     public static boolean miningMithrilPowder = true;
-    @Switch(name = "Ability Cooldown Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the ability cooldown in overlay.")
+    @Switch(name = "Ability Cooldown Overlay", category = MINING, subcategory = "Mining Overlay", description = "Shows the ability cooldown in overlay.")
     public static boolean miningAbilityCooldown = true;
-    @Switch(name = "Commission overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the commission in overlay.")
+    @Switch(name = "Commission Overlay", category = MINING, subcategory = "Mining Overlay", description = "Shows the commission in overlay.")
     public static boolean miningOverlay = true;
-    @Page(name = "Mining Overlay Options" , category = MINING, subcategory = "Mining Overlay", location = PageLocation.BOTTOM)
+    @Page(name = "Mining Overlay Options", category = MINING, subcategory = "Mining Overlay", location = PageLocation.BOTTOM)
     public static MiningOverlayPage miningOverlayPage = new MiningOverlayPage();
 
     // Fishing
@@ -469,9 +469,9 @@ public class Configuration extends Config {
 
     // SKYBLOCK
 
-//    @Header(text = "Skyblock" , category = "Skyblock" , size = 2)
+//    @Header(text = "Skyblock", category = "Skyblock", size = 2)
 //    public boolean skyblock = true;
-//    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
+//    @Switch(name = "Jacob/Auction Timer", category = "Skyblock")
     public static boolean jATimer = true;
 
     //@Switch(name = "Storage GUI Overlay", category = "Skyblock", subcategory = "GUI Overlays")
