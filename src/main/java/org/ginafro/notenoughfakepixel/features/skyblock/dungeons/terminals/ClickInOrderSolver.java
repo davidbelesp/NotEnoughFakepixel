@@ -40,7 +40,7 @@ public class ClickInOrderSolver {
         Container container = ((GuiChest) event.gui).inventorySlots;
         if (!(container instanceof ContainerChest)) return;
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
-        if (Configuration.dungeonsCustomGui && title.startsWith("Click in")) {
+        if (Configuration.dungeonsTerminalCustomGui && title.startsWith("Click in")) {
             event.setCanceled(true);
         }
     }
@@ -74,9 +74,9 @@ public class ClickInOrderSolver {
         if (!title.startsWith("Click in")) return;
         ContainerChest containerChest = (ContainerChest) container;
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalScale;
             int guiWidth = (int) (REGION_COLS * SLOT_SIZE * scale);
             int guiHeight = (int) (REGION_ROWS * SLOT_SIZE * scale);
             int screenWidth = sr.getScaledWidth();
@@ -222,9 +222,9 @@ public class ClickInOrderSolver {
                 .getDisplayName().getUnformattedText();
         if (!title.startsWith("Click in")) return;
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             ScaledResolution sr = new ScaledResolution(mc);
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalScale;
             int guiWidth = (int) (REGION_COLS * SLOT_SIZE * scale);
             int guiHeight = (int) (REGION_ROWS * SLOT_SIZE * scale);
             int screenWidth = sr.getScaledWidth();
