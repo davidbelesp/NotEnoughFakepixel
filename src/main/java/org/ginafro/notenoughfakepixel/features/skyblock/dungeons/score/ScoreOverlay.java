@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score;
+    package org.ginafro.notenoughfakepixel.features.skyblock.dungeons.score;
 
 import cc.polyfrost.oneconfig.config.core.OneColor;
 import cc.polyfrost.oneconfig.hud.TextHud;
@@ -42,7 +42,7 @@ public class ScoreOverlay extends TextHud {
     protected void getLines(List<String> lines, boolean example) {
         lines.add(getRankingDisplay());
         lines.add(getVirtualRankingDisplay());
-        if (!Configuration.dungeonsMinimalScoreDisplay) {
+        if (!Configuration.dungeonsMinimalScoreOverlay) {
           lines.add("");
           lines.add(getSkillDisplay());
           lines.add(getExplorationDisplay());
