@@ -62,7 +62,7 @@ public class MazeSolver {
                 .getUnformattedText()
                 .trim();
 
-        if (Configuration.dungeonsCustomGui && displayName.contains("Complete the maze!")) {
+        if (Configuration.dungeonsTerminalCustomGui && displayName.contains("Complete the maze!")) {
             event.setCanceled(true);
         }
     }
@@ -144,10 +144,10 @@ public class MazeSolver {
             }
         }
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
             GlStateManager.pushMatrix();
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalScale;
 
             int guiWidth = (int)(COLUMNS * SLOT_SIZE * scale);
             int guiHeight = (int)(ROWS * SLOT_SIZE * scale);
@@ -230,7 +230,7 @@ public class MazeSolver {
         String title = container.getLowerChestInventory().getDisplayName().getUnformattedText();
         if (!title.contains("Complete the maze!")) return;
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             ScaledResolution sr = new ScaledResolution(mc);
             float scale = Configuration.terminalsScale;
 
