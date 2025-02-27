@@ -136,7 +136,7 @@ public class Configuration extends Config {
     @KeyBind(name = "Warp Dungeon Hub Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static OneKeyBind qolShortcutWarpDh = new OneKeyBind(UKeyboard.KEY_F9);
 
-    @Switch(name = "Show pet equipped", category = QUALITY_OF_LIFE, subcategory = "Pets")
+    @Switch(name = "Show Pet Equipped", category = QUALITY_OF_LIFE, subcategory = "Pets")
     public static boolean qolShowPetEquipped = true;
     @Color(name = "Pet Equipped Color", category = QUALITY_OF_LIFE, subcategory = "Pets")
     public static OneColor qolPetEquippedColor = new OneColor(190, 255, 190);
@@ -205,10 +205,6 @@ public class Configuration extends Config {
     @Switch(name = "Announces Leaped to Player in party chat!", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsLeapAnnounce = true;
 
-    @Switch(name = "Custom Terminal GUI", category = DUNGEONS, subcategory = "QOL")
-    public static boolean dungeonsCustomGui = true;
-    @Slider(name = "Custom Terminal Scale", category = DUNGEONS, subcategory = "QOL", min = 1.0f, max = 5.0f)
-    public static float terminalsScale = 1.0f;
 
     @Switch(name = "Announces when Blood room is done spawning", category = DUNGEONS, subcategory = "QOL")
     public static boolean dungeonsBloodReady = true;
@@ -254,6 +250,10 @@ public class Configuration extends Config {
     @Color(name = "Stormy Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsStormyColor = new OneColor(173, 216, 230);
 
+    @Switch(name = "Custom Terminal GUI", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
+    public static boolean dungeonTerminalCustomGui = true;
+    @Slider(name = "Custom Terminal Scale", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices", min = 1.0f, max = 5.0f)
+    public static float dungeonTerminalScale = 2.0f;
     @Switch(name = "Terminal Starts With Solver", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalStartsWithSolver = true;
     @Switch(name = "Terminal Select Colors Solver", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
@@ -280,12 +280,14 @@ public class Configuration extends Config {
     @Color(name = "Alternative Color", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
     public static OneColor dungeonsAlternativeColor = new OneColor(255,255,0);
 
-    @Switch(name = "Terminal waypoints", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
+    @Switch(name = "Highlight Uncompleted Terminals", category = DUNGEONS, subcategory = "Floor 7 Terminals and Devices")
     public static boolean dungeonsTerminalWaypoints = true;
 
     @Switch(name = "Score Overlay" ,category = DUNGEONS, subcategory = "Score & Secrets")
     public static boolean dungeonsScoreOverlay = true;
-    @Switch(name = "S+ Notifier" ,category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen when virtually reached S+ (% secrets + X% completion).")
+    @Switch(name = "Minimal Score Overlay" ,category = DUNGEONS, subcategory = "Score & Secrets")
+    public static boolean minimalScoreOverlay = false;
+    @Switch(name = "S+ Notifier", category = DUNGEONS, subcategory = "Score & Secrets", description = "Shows an S+ in screen when virtually reached S+ (% secrets + X% completion).")
     public static boolean dungeonsSPlusNotifier = true;
     @Switch(name = "S+ Message on Chat", category = DUNGEONS, subcategory = "Score & Secrets", description = "Send a message chat when dungeon is about to be done.")
     public static boolean dungeonsSPlusMessage = true;
@@ -351,51 +353,51 @@ public class Configuration extends Config {
     @Switch(name = "Slayer Minibosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer minibosses.")
     public static boolean slayerMinibosses = true;
 
-    @Switch(name = "Miniboss spawn title" , category = SLAYER , subcategory = "Slayer Mobs", description = "Shows a title on the screen after a Miniboss is spawned.")
+    @Switch(name = "Miniboss spawn title" , category = SLAYER, subcategory = "Slayer Mobs", description = "Shows a title on the screen after a Miniboss is spawned.")
     public static boolean slayerMinibossTitle = true;
-    @Switch(name = "Miniboss sound notification" , category = SLAYER , subcategory = "Slayer Mobs", description = "Plays a sound on Miniboss spawning.")
+    @Switch(name = "Miniboss sound notification" , category = SLAYER, subcategory = "Slayer Mobs", description = "Plays a sound on Miniboss spawning.")
     public static boolean slayerMinibossSound = true;
 
-    @Color(name = "Slayer Minibosses Color", category = SLAYER , subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
+    @Color(name = "Slayer Minibosses Color", category = SLAYER, subcategory = "Slayer Mobs", description = "Color of the slayer minibosses.")
     public static OneColor slayerColor = new OneColor(92, 154, 255);
-    @Switch(name = "Slayer Bosses Display" , category = SLAYER , subcategory = "Slayer Mobs", description = "Draws a box around slayer bosses.")
+    @Switch(name = "Slayer Bosses Display" , category = SLAYER, subcategory = "Slayer Mobs", description = "Draws a box around slayer bosses.")
     public static boolean slayerBosses = true;
-    @Color(name = "Slayer Bosses Color", category = SLAYER , subcategory = "Slayer Mobs", description = "Color of the slayer bosses.")
+    @Color(name = "Slayer Bosses Color", category = SLAYER, subcategory = "Slayer Mobs", description = "Color of the slayer bosses.")
     public static OneColor slayerBossColor = new OneColor(92, 154, 255);
-    @Dropdown(name = "Faster Maddox Calling", category = SLAYER,subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
+    @Dropdown(name = "Faster Maddox Calling", category = SLAYER, subcategory = "Quality of Life",options = {"Auto Open","Semi Auto","Disabled"})
     public static int slayerMaddoxCalling = 1;
-    @Switch(name = "Show Beacon Waypoint" , category = SLAYER , subcategory = "Voidgloom Seraph", description = ".")
+    @Switch(name = "Show Beacon Waypoint" , category = SLAYER, subcategory = "Voidgloom Seraph", description = ".")
     public static boolean slayerShowBeaconPath = true;
-    @Color(name = "Beacon Color", category = SLAYER , subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
+    @Color(name = "Beacon Color", category = SLAYER, subcategory = "Voidgloom Seraph", description = "Color of the beacon's waypoint.")
     public static OneColor slayerBeaconColor = new OneColor(128, 0, 128);
-    @Switch(name = "Display Blaze Pillar Title" , category = SLAYER , subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
+    @Switch(name = "Display Blaze Pillar Title", category = SLAYER, subcategory = "Inferno Demonlord", description = "Displays a text on the screen when a pillar is nearby.")
     public static boolean slayerFirePillarDisplay = true;
 
     @Switch(name = "Blaze Attunements display" , category = SLAYER , subcategory = "Inferno Demonlord")
     public static boolean slayerBlazeAttunements = true;
 
     // Enchanting
-    @Header(text = "Experimentation Table" , category = EXPERIMENTATION , size = 2)
+    @Header(text = "Experimentation Table", category = EXPERIMENTATION , size = 2)
     public static boolean _experimentation = true;
-    @Switch(name = "Chronomatron solver" , category = EXPERIMENTATION, description = "Enables Chronomatron solver.")
+    @Switch(name = "Chronomatron Solver", category = EXPERIMENTATION, description = "Enables Chronomatron solver.")
     public static boolean experimentationChronomatronSolver = true;
-    @Switch(name = "Ultrasequencer solver" , category = EXPERIMENTATION, description = "Enables Ultrasequencer solver.")
+    @Switch(name = "Ultrasequencer solver", category = EXPERIMENTATION, description = "Enables Ultrasequencer solver.")
     public static boolean experimentationUltraSequencerSolver = true;
-    @Switch(name = "Hide Tooltips" , category = EXPERIMENTATION, description = "Hide tooltips when doing experiments.")
+    @Switch(name = "Hide Tooltips", category = EXPERIMENTATION, description = "Hide tooltips when doing experiments.")
     public static boolean experimentationHideTooltips = true;
-    //@Switch(name = "Superpairs solver" , category = EXPERIMENTATION, description = "Enables Superpairs solver.")
+    //@Switch(name = "Superpairs Solver", category = EXPERIMENTATION, description = "Enables Superpairs solver.")
     //public static boolean experimentationSuperpairsSolver = true;
-    @Switch(name = "Prevent missclicks" , category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
+    @Switch(name = "Prevent Misclicks", category = EXPERIMENTATION, description = "IMPORTANT: this feature doesn't work properly if your connection isn't stable or server has lag. Prevents clicking wrong answers when doing experiments.")
     public static boolean experimentationPreventMissclicks = true;
 
     // Chocolate Factory
-    @Header(text = CHOCOLATEFACTORY , category = CHOCOLATEFACTORY , size = 2)
+    @Header(text = CHOCOLATEFACTORY, category = CHOCOLATEFACTORY, size = 2)
     public static boolean _chocolate = true;
-    @Switch(name = "Show Waypoints on Chocolate Eggs" , category = CHOCOLATEFACTORY, description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
+    @Switch(name = "Show Waypoints on Chocolate Eggs", category = CHOCOLATEFACTORY, description = "Show waypoints on chocolate eggs on Hoppity's Hunt event.")
     public static boolean chocolateChocolateEggWaypoints = true;
     @Color(name = "Chocolate Eggs Waypoints Color", category = CHOCOLATEFACTORY, description = "Color of chocolate eggs' waypoints.")
     public static OneColor chocolateChocolateEggWaypointsColor = new OneColor(210,105,30);
-    @Switch(name = "Show Best Upgrade" , category = CHOCOLATEFACTORY)
+    @Switch(name = "Show Best Upgrade", category = CHOCOLATEFACTORY)
     public static boolean chocolateChocolateShowBestUpgrade = true;
 
     // Crimson
@@ -431,17 +433,17 @@ public class Configuration extends Config {
     public static AshfangOverlayPage crimsonAshfangOverlayPage = new AshfangOverlayPage();
 
     // Mining
-    @Header(text = MINING , category = MINING , size = 2)
+    @Header(text = MINING, category = MINING, size = 2)
     public static boolean _mining = true;
-    @Switch(name = "Enable mining ability Notifier" , category = MINING, subcategory = "", description = "Notifies you when your mining ability is ready.")
+    @Switch(name = "Enable Mining Ability Notifier", category = MINING, subcategory = "", description = "Notifies you when your mining ability is ready.")
     public static boolean miningAbilityNotifier = true;
-    @Switch(name = "Disable Don Espresso messages" , category = MINING, subcategory = "", description = "Disables Don Espresso event messages.")
+    @Switch(name = "Disable Don Espresso messages", category = MINING, subcategory = "", description = "Disables Don Espresso event messages.")
     public static boolean miningDisableDonEspresso = true;
-    @Switch(name = "Fix Drill Animation Reset" , category = MINING, subcategory = "" , description = "Fixes drill animation resetting when the fuel updates.")
+    @Switch(name = "Fix Drill Animation Reset", category = MINING, subcategory = "", description = "Fixes drill animation resetting when the fuel updates.")
     public static boolean miningDrillFix = true;
-    @Switch(name = "Puzzler solver" , category = MINING, subcategory = "" , description = "Solves the Puzzler block.")
+    @Switch(name = "Puzzler Solver", category = MINING, subcategory = "", description = "Solves the Puzzler block.")
     public static boolean miningPuzzlerSolver = true;
-    @Switch(name = "Remove Ghosts invisibility" , category = MINING, subcategory = "" , description = "Removes the invisibility of the ghosts")
+    @Switch(name = "Remove Ghost Invisibility", category = MINING, subcategory = "", description = "Removes the invisibility of the ghosts")
     public static boolean miningShowGhosts = true;
 
     @Switch(name = "Drill Fuel Overlay" , category = MINING, subcategory = "Mining Overlay", description = "Shows the drill fuel in overlay.")
@@ -456,13 +458,13 @@ public class Configuration extends Config {
     public static MiningOverlayPage miningOverlayPage = new MiningOverlayPage();
 
     // Fishing
-    @Header(text = FISHING , category = FISHING , size = 2)
+    @Header(text = FISHING, category = FISHING, size = 2)
     public static boolean _fishing = true;
-    @Switch(name = "Notify Legendary Creatures" , category = FISHING, description = "Notifies you when a legendary creature is catched.")
+    @Switch(name = "Notify Legendary Creatures", category = FISHING, description = "Notifies you when a legendary creature is catched.")
     public static boolean fishingLegendaryCreatures = true;
-    //@Switch(name = "Notify on Great Catch (not working?)" , category = FISHING)
+    //@Switch(name = "Notify on Great Catch (not working?)", category = FISHING)
     public static boolean fishingGreatCatch = true;
-    @Switch(name = "Notify on Trophy Fish" , category = FISHING)
+    @Switch(name = "Notify on Trophy Fish", category = FISHING)
     public static boolean fishingTrophyFish = true;
 
     // SKYBLOCK
@@ -472,7 +474,7 @@ public class Configuration extends Config {
 //    @Switch(name = "Jacob/Auction Timer" , category = "Skyblock")
     public static boolean jATimer = true;
 
-    //@Switch(name = "Storage GUI Overlay" , category = "Skyblock" , subcategory = "GUI Overlays")
+    //@Switch(name = "Storage GUI Overlay", category = "Skyblock", subcategory = "GUI Overlays")
     public static boolean storageOverlay = false;
 
 }
