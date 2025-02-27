@@ -59,7 +59,7 @@ public class ClickOnColorsSolver {
 
         String targetColor = title.split("the ")[1].split(" items")[0].toLowerCase();
 
-        if (Configuration.dungeonsTerminalCustomGuii) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             List<Slot> correctSlots = new ArrayList<>();
             for (Slot slot : ((ContainerChest) container).inventorySlots) {
                 int slotId = ((ContainerChest) container).inventorySlots.indexOf(slot);
