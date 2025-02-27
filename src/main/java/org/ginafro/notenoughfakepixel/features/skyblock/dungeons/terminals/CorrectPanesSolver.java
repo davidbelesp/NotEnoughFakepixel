@@ -62,7 +62,7 @@ public class CorrectPanesSolver {
                 .getDisplayName()
                 .getUnformattedText()
                 .trim();
-        if (Configuration.dungeonsCustomGui && displayName.equals("Correct all the panes!")) {
+        if (Configuration.dungeonsTerminalCustomGui && displayName.equals("Correct all the panes!")) {
             event.setCanceled(true);
         }
     }
@@ -84,7 +84,7 @@ public class CorrectPanesSolver {
         lastCorrectSlots.clear();
         slotPositions.clear();
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             for (Slot slot : containerChest.inventorySlots) {
                 int slotId = containerChest.inventorySlots.indexOf(slot);
                 if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory || slotId == 49) continue;
@@ -114,7 +114,7 @@ public class CorrectPanesSolver {
             int screenHeight = sr.getScaledHeight();
 
             GlStateManager.pushMatrix();
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalScale;
             int guiWidth = (int) (INNER_COLUMNS * SLOT_SIZE * scale);
             int guiHeight = (int) (INNER_ROWS * SLOT_SIZE * scale);
             int guiLeft = (screenWidth - guiWidth) / 2;
@@ -158,7 +158,7 @@ public class CorrectPanesSolver {
         String name = containerChest.getLowerChestInventory().getDisplayName().getUnformattedText();
         if (!name.equals("Correct all the panes!")) return;
 
-        if (!Configuration.dungeonsCustomGui) {
+        if (!Configuration.dungeonsTerminalCustomGui) {
             for (Slot slot : containerChest.inventorySlots) {
                 if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
                 int slotId = containerChest.inventorySlots.indexOf(slot);
@@ -204,9 +204,9 @@ public class CorrectPanesSolver {
         String title = containerChest.getLowerChestInventory().getDisplayName().getUnformattedText();
         if (!title.equals("Correct all the panes!")) return;
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             ScaledResolution sr = new ScaledResolution(mc);
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalScale;
 
             int button = Mouse.getEventButton();
             if (button != 0) return; // Only process left clicks
