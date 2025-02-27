@@ -232,7 +232,7 @@ public class MazeSolver {
 
         if (Configuration.dungeonsTerminalCustomGui) {
             ScaledResolution sr = new ScaledResolution(mc);
-            float scale = Configuration.terminalsScale;
+            float scale = Configuration.dungeonsTerminalScale;
 
             int mouseX = (Mouse.getEventX() * sr.getScaledWidth()) / mc.displayWidth;
             int mouseY = sr.getScaledHeight() - (Mouse.getEventY() * sr.getScaledHeight()) / mc.displayHeight - 1;
