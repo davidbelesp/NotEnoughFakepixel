@@ -119,6 +119,13 @@ public class Configuration extends Config {
     @Switch(name = "Block placing items", category = QUALITY_OF_LIFE)
     public static boolean qolBlockPlacingItems = true;
 
+    @Switch(name = "Etherwarp Overlay", category = QUALITY_OF_LIFE, subcategory = "Etherwarp")
+    public static boolean qolEtherwarpOverlay = true;
+    @Color(name = "Etherwarp Overlay color", category = QUALITY_OF_LIFE, subcategory = "Etherwarp")
+    public static OneColor qolEtherwarpOverlayColor = new OneColor(0, 255, 0, 100);
+    @Dropdown(name = "Etherwarp Sound", category = QUALITY_OF_LIFE, subcategory = "Etherwarp", options = {"Default","mob.blaze.hit","note.pling","random.orb","mob.enderdragon.hit","mob.cat.meow"})
+    public static int qolEtherwarpSound = 0;
+
     @Switch(name = "Wardrobe Shortcut", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
     public static boolean qolShortcutWardrobe = true;
     @KeyBind(name = "Wardrobe Shortcut Key", category = QUALITY_OF_LIFE, subcategory = "Shortcuts")
@@ -226,6 +233,8 @@ public class Configuration extends Config {
     public static boolean dungeonsThreeWeirdos = true;
     @Switch(name = "Water Solver", category = DUNGEONS, subcategory = "Puzzles")
     public static boolean dungeonsWaterSolver = true;
+    //@Switch(name = "Boulder Solver" , category = DUNGEONS, subcategory = "Puzzles")
+    public static boolean dungeonsBoulderSolver = false;
 
     @Switch(name = "Fel Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs")
     public static boolean dungeonsFelMob = true;
@@ -235,8 +244,10 @@ public class Configuration extends Config {
     public static boolean dungeonsBatMobs = true;
     @Color(name = "Bat Mob Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsBatColor = new OneColor(92, 154, 255);
-    @Switch(name = "Starred Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs")
-    public static boolean dungeonsStarredMobs = true;
+
+    @Dropdown(name = "Starred Mobs Display", category = DUNGEONS, subcategory = "Starred Mobs", options = {"Box","Outline","Disabled"})
+    public static int dungeonsStarredMobs = 0;
+
     @Color(name = "Starred Mobs Color", category = DUNGEONS, subcategory = "Starred Mobs")
     public static OneColor dungeonsStarredBoxColor = new OneColor(92, 154, 255);
     @Switch(name = "Starred Mobs Esp", category = DUNGEONS, subcategory = "Starred Mobs", description = "Render starred mobs hitboxes through walls.")

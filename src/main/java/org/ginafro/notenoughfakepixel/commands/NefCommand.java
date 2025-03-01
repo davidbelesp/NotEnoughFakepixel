@@ -308,18 +308,24 @@ public class NefCommand extends CommandBase {
         Configuration.qolDisableEnderManTeleport = true;
         Configuration.qolVisualCooldowns = true;
         Configuration.qolItemRarity = true;
+        Configuration.qolHideDyingMobs = true;
+        Configuration.qolBlockPlacingItems = true;
         // Dungeons
         Configuration._dungeons = true;
         Configuration.dungeonsAutoReady = true;
         Configuration.dungeonsAutoCloseChests = true;
-        Configuration.dungeonsStarredMobs = true;
+        Configuration.dungeonsStarredMobs = 0;
         Configuration.dungeonsBatMobs = true;
         Configuration.dungeonsFelMob = true;
         Configuration.dungeonsThreeWeirdos = true;
         Configuration.dungeonsMap = true;
+        Configuration.dungeonsCustomGui = true;
         Configuration.dungeonsTerminalStartsWithSolver = true;
         Configuration.dungeonsTerminalClickInOrderSolver = true;
         Configuration.dungeonsTerminalSelectColorsSolver = true;
+        Configuration.dungeonsTerminalWaypoints = true;
+        Configuration.dungeonsSpiritLeapGUI = true;
+        Configuration.dungeonsBloodReady = true;
         Configuration.dungeonsScoreOverlay = true;
         Configuration.dungeonsSPlusNotifier = true;
         Configuration.dungeonsMuteIrrelevantMessages = true;
@@ -358,10 +364,12 @@ public class NefCommand extends CommandBase {
         // Slayer
         Configuration._slayer = true;
         Configuration.slayerMinibosses = true;
+        Configuration.slayerMinibossSound = true;
+        Configuration.slayerMinibossTitle = true;
         Configuration.slayerBosses = true;
         Configuration.slayerShowBeaconPath = true;
         Configuration.slayerFirePillarDisplay = true;
-
+        Configuration.slayerBlazeAttunements = true;
         // Experimentation Table
         Configuration._experimentation = true;
         Configuration.experimentationChronomatronSolver = true;
