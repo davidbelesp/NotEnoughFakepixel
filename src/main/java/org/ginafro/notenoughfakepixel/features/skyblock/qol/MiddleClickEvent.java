@@ -42,7 +42,7 @@ public class MiddleClickEvent {
 
         String currentChestName = container.getLowerChestInventory().getDisplayName().getUnformattedText();
 
-        if (Configuration.dungeonsCustomGui) {
+        if (Configuration.dungeonsTerminalCustomGui) {
             for (String disabledName : disabledChestNames) {
                 if (currentChestName.startsWith(disabledName)) {
                     return;
