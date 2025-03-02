@@ -319,7 +319,7 @@ public class NefCommand extends CommandBase {
         Configuration.dungeonsFelMob = true;
         Configuration.dungeonsThreeWeirdos = true;
         Configuration.dungeonsMap = true;
-        Configuration.dungeonsCustomGui = true;
+        Configuration.dungeonsTerminalCustomGui = true;
         Configuration.dungeonsTerminalStartsWithSolver = true;
         Configuration.dungeonsTerminalClickInOrderSolver = true;
         Configuration.dungeonsTerminalSelectColorsSolver = true;
@@ -327,6 +327,7 @@ public class NefCommand extends CommandBase {
         Configuration.dungeonsSpiritLeapGUI = true;
         Configuration.dungeonsBloodReady = true;
         Configuration.dungeonsScoreOverlay = true;
+        Configuration.dungeonsMinimalScoreOverlay = false;
         Configuration.dungeonsSPlusNotifier = true;
         Configuration.dungeonsMuteIrrelevantMessages = true;
         Configuration.dungeonsStarredMobsEsp = true;
