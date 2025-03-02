@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 
 import java.awt.*;
@@ -116,24 +117,28 @@ public class WaterSolver {
 
         // Draw final water lever tracer
         if (offsetY == 0 && allTrue(correctLevers.get(solutionNumber)) && waterLeverPos != null) {
-            RenderUtils.draw3DLine(
-                    new Vec3(waterLeverPos.getX(), waterLeverPos.getY(), waterLeverPos.getZ()),
-                    player.getPositionEyes(partialTicks),
-                    Color.blue,
-                    4,
-                    true,
-                    partialTicks,
-                    false,
-                    true,
-                    world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
-            );
-
+            if (world.getBlockState(waterLeverPos).getBlock() != null && world.getBlockState(waterLeverPos).getBlock() == Blocks.lever) {
+                RenderUtils.draw3DLine(
+                        new Vec3(waterLeverPos.getX(), waterLeverPos.getY(), waterLeverPos.getZ()),
+                        player.getPositionEyes(partialTicks),
+                        Color.green,
+                        4,
+                        true,
+                        partialTicks,
+                        false,
+                        true,
+                        world.getBlockState(waterLeverPos).getValue(BlockLever.FACING)
+                );
+            } else {
+                Logger.log("Crash avoided: waterLeverPos is null");
+            }
         }
 
         Color color = Color.green;
         if (offsetY != 0) color = Color.yellow;
         // Now draw all bounding boxes AFTER all 3D lines
         for (BlockPos position : boundingBoxPositions) {
+            if (world.getBlockState(position).getBlock() != Blocks.lever) continue;
             RenderUtils.drawLeverBoundingBox(
                     new BlockPos(position.getX(), position.getY()+offsetY, position.getZ()),
                     world.getBlockState(position).getValue(BlockLever.FACING).getFacing(),
