@@ -14,46 +14,83 @@ import org.lwjgl.input.Mouse;
 @RegisterEvents
 public class PreventMissclicks {
 
-    long lastTimeClicked = System.currentTimeMillis();
-    float cooldownClicks = 500;
+    // timestamp of the last *allowed* click
+    private long lastTimeClicked = System.currentTimeMillis();
+    // minimum millis between allowed clicks
+    private final long cooldownMs = 500L;
 
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
+        // only care about presses
         if (!Mouse.getEventButtonState()) return;
-        if (EnchantingSolvers.currentSolverType != EnchantingSolvers.SolverTypes.CHRONOMATRON && EnchantingSolvers.currentSolverType != EnchantingSolvers.SolverTypes.ULTRASEQUENCER)
-            return;
-        if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest))
-            return; // Check if the current screen is a chest GUI
-        GuiChest chestGui = (GuiChest) Minecraft.getMinecraft().currentScreen;
-        if (chestGui.getSlotUnderMouse() == null) return;
-        if (Config.feature.experimentation.experimentationChronomatronSolver && System.currentTimeMillis() - lastTimeClicked < cooldownClicks && EnchantingSolvers.currentSolverType == EnchantingSolvers.SolverTypes.CHRONOMATRON && EnchantingSolvers.resolving) {
+
+        // only when one of our solvers is active *and* currently resolving
+        boolean isChrono = EnchantingSolvers.currentSolverType == EnchantingSolvers.SolverTypes.CHRONOMATRON
+            && Config.feature.experimentation.experimentationChronomatronSolver 
+            && EnchantingSolvers.resolving;
+
+        boolean isUltra = EnchantingSolvers.currentSolverType == EnchantingSolvers.SolverTypes.ULTRASEQUENCER
+            && Config.feature.experimentation.experimentationUltraSequencerSolver
+            && EnchantingSolvers.resolving;
+
+        if (!isChrono && !isUltra) return;
+        if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest)) return;
+
+        long now = System.currentTimeMillis();
+        // if we're still in cooldown, block *all* clicks
+        if (now - lastTimeClicked < cooldownMs) {
             event.setCanceled(true);
             return;
         }
-        lastTimeClicked = System.currentTimeMillis();
+        // this click is outside the cooldown window → accept & advance the timer
+        lastTimeClicked = now;
+
+        GuiChest chestGui = (GuiChest) Minecraft.getMinecraft().currentScreen;
+        if (chestGui.getSlotUnderMouse() == null) return;
         int slotIndex = chestGui.getSlotUnderMouse().getSlotIndex();
-        if (Config.feature.experimentation.experimentationChronomatronSolver && EnchantingSolvers.currentSolverType == EnchantingSolvers.SolverTypes.CHRONOMATRON && EnchantingSolvers.resolving && !EnchantingSolvers.chronomatronOrder.isEmpty()) {
-            if (slotIndex == EnchantingSolvers.chronomatronOrder.get(0) ||
-                    slotIndex == EnchantingSolvers.chronomatronOrder.get(0) + 9 ||
-                    (slotIndex == EnchantingSolvers.chronomatronOrder.get(0) + 18 && !TablistParser.currentOpenChestName.contains("Transcendent") && !TablistParser.currentOpenChestName.contains("Metaphysical"))) {
-                return; // Valid case, no need to cancel the event
+
+        // --- Chronomatron logic ---
+        if (isChrono && !EnchantingSolvers.chronomatronOrder.isEmpty()) {
+            int target = EnchantingSolvers.chronomatronOrder.get(0);
+            boolean valid = slotIndex == target
+                         || slotIndex == target + 9
+                         || (slotIndex == target + 18
+                             && !TablistParser.currentOpenChestName.contains("Transcendent")
+                             && !TablistParser.currentOpenChestName.contains("Metaphysical"));
+
+            if (valid) {
+                // allowed click, let it through
+                return;
             }
-            if (Config.feature.experimentation.experimentationPreventMissclicks) event.setCanceled(true);
-        } else if (Config.feature.experimentation.experimentationUltraSequencerSolver && EnchantingSolvers.currentSolverType == EnchantingSolvers.SolverTypes.ULTRASEQUENCER && EnchantingSolvers.resolving) {
+            // clicked wrong slot → block if the user opted in
+            if (Config.feature.experimentation.experimentationPreventMissclicks) {
+                event.setCanceled(true);
+            }
+            return;
+        }
+
+        // --- Ultrasequencer logic ---
+        if (isUltra) {
             for (EnchantingSolvers.UltrasequencerSlot slot : EnchantingSolvers.ultrasequencerSlots) {
-                //System.out.println(EnchantingSolvers.slotToClickUltrasequencer + ", " + slot.quantity);
                 ItemStack itemInSlot = chestGui.inventorySlots.getInventory().get(slotIndex);
-                if (slot.slot == chestGui.getSlotUnderMouse() && EnchantingSolvers.slotToClickUltrasequencer == slot.quantity) {
-                    if (EnchantingSolvers.ultrasequencerSlots.size() == EnchantingSolvers.slotToClickUltrasequencer)
+                // correct slot + correct order
+                if (slot.slot == chestGui.getSlotUnderMouse()
+                        && EnchantingSolvers.slotToClickUltrasequencer == slot.quantity) {
+                    if (EnchantingSolvers.ultrasequencerSlots.size() == EnchantingSolvers.slotToClickUltrasequencer) {
                         EnchantingSolvers.roundUltraSequencerSolver++;
+                    }
                     EnchantingSolvers.slotToClickUltrasequencer++;
                     return;
                 }
-                if (itemInSlot == null) continue;
-                if (itemInSlot.getItem() == Items.dye) continue;
+                // skip dyes or empty
+                if (itemInSlot == null || itemInSlot.getItem() == Items.dye) {
+                    continue;
+                }
             }
-            if (Config.feature.experimentation.experimentationPreventMissclicks)
-                event.setCanceled(true); // cancel click if not found
+            // clicked a non-solver slot → block if the user opted in
+            if (Config.feature.experimentation.experimentationPreventMissclicks) {
+                event.setCanceled(true);
+            }
         }
     }
 }
