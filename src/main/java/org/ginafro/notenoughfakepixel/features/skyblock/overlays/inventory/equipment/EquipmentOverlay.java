@@ -73,8 +73,7 @@ public class EquipmentOverlay {
             }
             int yIndex = 0;
             if (data == null) return;
-            if (data.items.isEmpty()) {
-            } else {
+            if (!data.items.isEmpty()) {
                 for (Integer i : data.getItemStacks().keySet()) {
                     ItemStack stack = data.getItemStacks().get(i);
                     if (stack.getItem() instanceof ItemBlock) {
@@ -169,7 +168,6 @@ public class EquipmentOverlay {
     }
 
     public void renderHudBackground(GuiScreen inventory) {
-        float scale = Utils.getScale();
         GL11.glColor4f(1F, 1F, 1F, 1F);
         AccessorGuiContainer container = ((AccessorGuiContainer) inventory);
         final int overlayLeft = container.getGuiLeft() - ARMOR_OVERLAY_OVERHAND_WIDTH;
@@ -177,6 +175,14 @@ public class EquipmentOverlay {
         ResourceLocation equipmentTexture = new ResourceLocation("notenoughfakepixel", "equipment.png");
         Minecraft.getMinecraft().getTextureManager().bindTexture(equipmentTexture);
         Gui.drawScaledCustomSizeModalRect(overlayLeft, overlayTop, 0f, 0f, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT);
+        GlStateManager.bindTexture(0);
+    }
+    public static void renderHudBackground(int guiLeft,int guiTop) {
+        GL11.glColor4f(1F, 1F, 1F, 1F);
+        final int overlayLeft = guiLeft - ARMOR_OVERLAY_OVERHAND_WIDTH;
+        ResourceLocation equipmentTexture = new ResourceLocation("notenoughfakepixel", "equipment.png");
+        Minecraft.getMinecraft().getTextureManager().bindTexture(equipmentTexture);
+        Gui.drawScaledCustomSizeModalRect(overlayLeft, guiTop, 0f, 0f, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT);
         GlStateManager.bindTexture(0);
     }
 

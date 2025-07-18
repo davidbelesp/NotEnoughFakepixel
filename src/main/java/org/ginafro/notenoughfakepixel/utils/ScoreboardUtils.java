@@ -14,11 +14,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DragonCloseAlert;
-import org.ginafro.notenoughfakepixel.features.skyblock.overlays.HealthManaOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
 import org.ginafro.notenoughfakepixel.variables.*;
-import org.lwjgl.Sys;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -123,7 +121,7 @@ public class ScoreboardUtils {
                             if(speed.contains(".")){
                                 speed = speed.substring(0,speed.indexOf("."));
                             }
-                                HealthManaOverlay.setSpeed(Integer.parseInt(speed));
+                                StatBars.setSpeed(Integer.parseInt(speed));
                             }
                         }
                         if (name.contains("Server: ")) {

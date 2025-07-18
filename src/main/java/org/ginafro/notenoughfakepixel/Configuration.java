@@ -19,6 +19,7 @@ import org.ginafro.notenoughfakepixel.features.mlf.Info;
 import org.ginafro.notenoughfakepixel.features.mlf.Map;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.invbuttons.InventoryEditor;
+import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.CustomAliases.AliasManagementGui;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
@@ -111,7 +112,7 @@ public class Configuration {
         if ("editWarpHelperPosition".equals(runnableId)) {
             editOverlay(activeConfigCategory, 100, 30, Config.feature.diana.warpHelperPos);
         }
-        if ("nefButtons".equals(runnableId)) {
+        if("nefButtons".equals(runnableId)){
             Minecraft.getMinecraft().displayGuiScreen(new InventoryEditor());
         }
         // Debug runnables
@@ -123,6 +124,9 @@ public class Configuration {
         }
         if ("logIsInSkyblock".equals(runnableId)) {
             Logger.log("Current Gamemode: " + ScoreboardUtils.currentGamemode + " | Is in Skyblock: " + ScoreboardUtils.currentGamemode.isSkyblock());
+        }
+        if("statEditor".equals(runnableId)){
+            Minecraft.getMinecraft().displayGuiScreen(new PositionEditorScreen());
         }
     }
 
