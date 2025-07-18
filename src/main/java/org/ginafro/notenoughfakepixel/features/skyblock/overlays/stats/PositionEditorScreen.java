@@ -38,11 +38,10 @@ public class PositionEditorScreen extends GuiScreen {
 
             GlStateManager.pushMatrix();
             GlStateManager.enableBlend();
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            mc.getTextureManager().bindTexture(new ResourceLocation("notenoughfakepixel", "skyblock/stats/bars/size_1_base.png"));
+            GlStateManager.color(type.color[0],type.color[1],type.color[2]);
+            mc.getTextureManager().bindTexture(length.fill);
             drawTexturedModalRect(x, y, 0, 0, length.width, 7);
 
-            drawCenteredString(fontRendererObj, type.name(), x + length.width / 2, y - 10, 0xFFFFFF);
             GlStateManager.popMatrix();
         }
 

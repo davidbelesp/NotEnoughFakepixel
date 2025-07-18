@@ -213,7 +213,7 @@ public class StatBars {
 
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent.Post e){
-        if (e.type != RenderGameOverlayEvent.ElementType.ALL || !Config.feature.overlays.statOverlay) {
+        if (e.type != RenderGameOverlayEvent.ElementType.HOTBAR || !Config.feature.overlays.statOverlay) {
             return;
         }
         if(maxMana != 0 || maxHealth != 0){

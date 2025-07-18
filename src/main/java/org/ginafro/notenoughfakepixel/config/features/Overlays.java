@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.config.features;
 
 import com.google.gson.annotations.Expose;
+import org.ginafro.notenoughfakepixel.config.gui.core.config.Position;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Overlays {
@@ -40,27 +41,10 @@ public class Overlays {
     @ConfigAccordionId(id = 0)
     public String searchColor = "0:255:0:255:0";
 
-//    @Expose
-//    @ConfigOption(name = "Inventory Buttons", desc = "Settings related to inv buttons")
-//    @ConfigEditorAccordion(id = 1)
-    public boolean invbutton = false;
 
-//    @Expose
-//    @ConfigOption(name = "Inventory Buttons", desc = "Enable/Disable ")
-//    @ConfigEditorBoolean
-//    @ConfigAccordionId(id = 1)
-    public boolean invButtons = false;
-
-//    @Expose
-//    @ConfigOption(name = "Snap to Grid", desc = "Whether or not inv buttons will be snapped to a grid")
-//    @ConfigEditorBoolean
-//    @ConfigAccordionId(id = 1)
-    public boolean snapGrid = false;
-
-//    @Expose
-//    @ConfigOption(name = "Button Editor", desc = "Change Position or edit/add any inventory button")
-//    @ConfigEditorButton(buttonText = "EDIT", runnableId = "nefButtons")
-//    @ConfigAccordionId(id = 1)
+    @Expose
+    @ConfigOption(name = "Button Editor", desc = "Change Position or edit/add any inventory button")
+    @ConfigEditorButton(buttonText = "EDIT", runnableId = "nefButtons")
     public String editor = "";
 
     @Expose
@@ -169,7 +153,7 @@ public class Overlays {
 
     @Expose
     @ConfigOption(name = "Bar Length", desc = "How long the speed bar is")
-    @ConfigEditorDropdown(values = {"Tiny","Small","Medium"},initialIndex = 2)
+    @ConfigEditorDropdown(values = {"Tiny","Small","Medium","Large"},initialIndex = 2)
     @ConfigAccordionId(id = 5)
     public int barLengthS = 2;
 
@@ -188,7 +172,7 @@ public class Overlays {
 
     @Expose
     @ConfigOption(name = "Bar Length", desc = "How long the defence bar is")
-    @ConfigEditorDropdown(values = {"Tiny","Small","Medium"},initialIndex = 2)
+    @ConfigEditorDropdown(values = {"Tiny","Small","Medium","Large"},initialIndex = 2)
     @ConfigAccordionId(id = 5)
     public int barLengthD = 2;
 
