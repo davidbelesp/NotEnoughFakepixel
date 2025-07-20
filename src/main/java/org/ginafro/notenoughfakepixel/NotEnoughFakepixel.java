@@ -47,7 +47,7 @@ public class NotEnoughFakepixel {
     public void init(FMLInitializationEvent event) {
        try {
            if (System.getProperty("java.runtime.name", "").toLowerCase().contains("android")) { 
-               throw new RuntimeException("No Pojav L")
+               throw new RuntimeException("No Pojav L");
            }
        } catch (Exception e) {
            // garbage code yay!
