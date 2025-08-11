@@ -32,9 +32,9 @@ public class FishingCountdown {
     private long countdownEndTime = 0;
     private final List<ParticleData> particleHistory = new ArrayList<>();
     private static final int MIN_PARTICLES_FOR_PATH = 3;
-    private static final double MAX_DISTANCE = 6.0;
     private static final long MAX_PARTICLE_AGE = 1000;
     private static final double MAX_INTER_PARTICLE_DISTANCE = 1.0;
+    private boolean biteTriggered = false;
 
     private static class ParticleData {
         Vec3 position;
@@ -70,13 +70,27 @@ public class FishingCountdown {
         if (playerBobber == null) {
             countdownText = null;
             particleHistory.clear();
+            biteTriggered = false;
             return;
         }
 
-        if (System.currentTimeMillis() >= fishBiteTime && countdownText != null) {
+        if (!biteTriggered && System.currentTimeMillis() >= fishBiteTime && countdownText != null) {
             countdownText = "§c§l!!!";
-            SoundUtils.playSound(mc.thePlayer.getPosition().getX(),mc.thePlayer.getPosition().getY(),mc.thePlayer.getPosition().getZ(), "note.pling", 1.0f, 1.0f);
-            countdownEndTime = System.currentTimeMillis() + 1000;
+            SoundUtils.playSound(
+                    mc.thePlayer.getPosition().getX(),
+                    mc.thePlayer.getPosition().getY(),
+                    mc.thePlayer.getPosition().getZ(),
+                    "note.pling",
+                    1.0f,
+                    1.0f
+            );
+            countdownEndTime = System.currentTimeMillis() + 2000;
+            biteTriggered = true; // prevent spam
+        }
+
+        if (biteTriggered && System.currentTimeMillis() > countdownEndTime) {
+            countdownText = null;
+            biteTriggered = false;
         }
     }
 
@@ -104,22 +118,26 @@ public class FishingCountdown {
     }
 
     private void processFishingParticle(Vec3 particlePos) {
-        Vec3 bobberPos = new Vec3(playerBobber.posX, 0, playerBobber.posZ);
-        Vec3 adjustedParticlePos = new Vec3(particlePos.xCoord, 0, particlePos.zCoord);
-        double distance = adjustedParticlePos.distanceTo(bobberPos);
+        if (playerBobber == null) return;
 
-        if (distance > MAX_DISTANCE) return;
+        double dx = particlePos.xCoord - playerBobber.posX;
+        double dz = particlePos.zCoord - playerBobber.posZ;
+        double horizontalDist = Math.sqrt(dx * dx + dz * dz);
+
+        if (horizontalDist > 3) return;
 
         long currentTime = System.currentTimeMillis();
         particleHistory.add(new ParticleData(particlePos, currentTime));
 
         if (particleHistory.size() >= MIN_PARTICLES_FOR_PATH) {
-            if (isValidParticlePath(bobberPos)) {
+            if (isValidParticlePath(new Vec3(playerBobber.posX, 0, playerBobber.posZ))) {
                 ParticleData firstParticle = particleHistory.get(0);
                 ParticleData lastParticle = particleHistory.get(particleHistory.size() - 1);
 
-                double firstDistance = new Vec3(firstParticle.position.xCoord, 0, firstParticle.position.zCoord).distanceTo(bobberPos);
-                double lastDistance = new Vec3(lastParticle.position.xCoord, 0, lastParticle.position.zCoord).distanceTo(bobberPos);
+                double firstDistance = new Vec3(firstParticle.position.xCoord, 0, firstParticle.position.zCoord)
+                        .distanceTo(new Vec3(playerBobber.posX, 0, playerBobber.posZ));
+                double lastDistance = new Vec3(lastParticle.position.xCoord, 0, lastParticle.position.zCoord)
+                        .distanceTo(new Vec3(playerBobber.posX, 0, playerBobber.posZ));
                 long totalTimeDiff = lastParticle.timestamp - firstParticle.timestamp;
 
                 if (totalTimeDiff > 0 && firstDistance > lastDistance) {
