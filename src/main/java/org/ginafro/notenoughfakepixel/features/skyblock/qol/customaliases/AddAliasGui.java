@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.qol.CustomAliases;
+package org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

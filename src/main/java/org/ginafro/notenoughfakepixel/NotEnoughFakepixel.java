@@ -18,9 +18,9 @@ import org.ginafro.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import org.ginafro.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.equipment.EquipmentOverlay;
-import org.ginafro.notenoughfakepixel.features.skyblock.qol.Aliases;
-import org.ginafro.notenoughfakepixel.features.skyblock.qol.CustomAliases.CustomAliases;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.CustomAliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import org.ginafro.notenoughfakepixel.nefrepo.NefRepo;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
 
@@ -76,7 +76,8 @@ public class NotEnoughFakepixel {
         SlotLocking.getInstance().saveConfig();
 
         // REPO
-        RepoHandler.warmupAsync();
+        NefRepo.init();
+        Runtime.getRuntime().addShutdownHook(new Thread(RepoHandler::shutdown, "RepoHandler-Shutdown"));
     }
 
     private void createDirectoryIfNotExists(File directory) {

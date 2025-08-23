@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.qol.CustomAliases;
+package org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

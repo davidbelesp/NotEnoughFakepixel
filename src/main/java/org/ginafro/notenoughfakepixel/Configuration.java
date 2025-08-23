@@ -19,9 +19,8 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.mlf.Info;
 import org.ginafro.notenoughfakepixel.features.mlf.Map;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
-import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.invbuttons.InventoryEditor;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
-import org.ginafro.notenoughfakepixel.features.skyblock.qol.CustomAliases.AliasManagementGui;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
@@ -133,13 +132,12 @@ public class Configuration {
             Minecraft.getMinecraft().displayGuiScreen(new PositionEditorScreen());
         }
         if ("showAPI".equals(runnableId)) {
-            RepoHandler.getCachedJson();
-            if (RepoHandler.getCachedJson() != null) {
+            String data = RepoHandler.getJson("fairysouls");
+            if (data != null) {
                 // copy to clipboard
-                String api = RepoHandler.getCachedJson();
                 Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clip.setContents(new java.awt.datatransfer.StringSelection(api), null);
-                Logger.log("Copied API to clipboard! Length: " + api.length());
+                clip.setContents(new java.awt.datatransfer.StringSelection(data), null);
+                Logger.log("Copied API to clipboard! Length: " + data.length());
             }
         }
     }

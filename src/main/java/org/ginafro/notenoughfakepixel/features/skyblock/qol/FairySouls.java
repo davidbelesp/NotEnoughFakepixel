@@ -1,5 +1,7 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -11,16 +13,21 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.utils.ColorUtils;
-import org.ginafro.notenoughfakepixel.utils.FileUtils;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RegisterEvents
 public class FairySouls {
@@ -34,43 +41,43 @@ public class FairySouls {
         Location currentIsland = ScoreboardUtils.currentLocation;
         List<String> souls = new ArrayList<>();
         if (currentIsland == Location.HUB) {
-            souls = FileUtils.getAllSouls().locations.get("hub");
+            souls = getAllSouls().locations.get("hub");
             island = "hub";
         }
         if (currentIsland == Location.SPIDERS_DEN) {
-            souls = FileUtils.getAllSouls().locations.get("spider");
+            souls = getAllSouls().locations.get("spider");
             island = "spider";
         }
         if (currentIsland == Location.CRIMSON_ISLE) {
-            souls = FileUtils.getAllSouls().locations.get("crimson");
+            souls = getAllSouls().locations.get("crimson");
             island = "crimson";
         }
         if (currentIsland == Location.THE_END) {
-            souls = FileUtils.getAllSouls().locations.get("end");
+            souls = getAllSouls().locations.get("end");
             island = "end";
         }
         if (currentIsland == Location.PARK) {
-            souls = FileUtils.getAllSouls().locations.get("park");
+            souls = getAllSouls().locations.get("park");
             island = "park";
         }
         if (currentIsland == Location.BARN) {
-            souls = FileUtils.getAllSouls().locations.get("farming");
+            souls = getAllSouls().locations.get("farming");
             island = "farming";
         }
         if (currentIsland == Location.GOLD_MINE) {
-            souls = FileUtils.getAllSouls().locations.get("gold");
+            souls = getAllSouls().locations.get("gold");
             island = "gold";
         }
         if (currentIsland == Location.DUNGEON_HUB) {
-            souls = FileUtils.getAllSouls().locations.get("dungeon_hub");
+            souls = getAllSouls().locations.get("dungeon_hub");
             island = "dungeon_hub";
         }
         if (currentIsland == Location.JERRY) {
-            souls = FileUtils.getAllSouls().locations.get("winter");
+            souls = getAllSouls().locations.get("winter");
             island = "winter";
         }
         if (currentIsland == Location.DWARVEN) {
-            souls = FileUtils.getAllSouls().locations.get("dwarven");
+            souls = getAllSouls().locations.get("dwarven");
             island = "dwarven";
         }
         List<String> renderedSouls = checkSouls(souls);
@@ -114,8 +121,8 @@ public class FairySouls {
             System.out.println("Chat Recieved");
             String soul = null;
             double closestDistSq = 5 * 5;
-            FairySoulData soulData = FileUtils.getAllSouls();
-            FairySoulData soulData1 = FileUtils.getSoulData();
+            FairySoulData soulData = getAllSouls();
+            FairySoulData soulData1 = getSoulData();
             if (island == null || soulData1.locations == null) {
                 System.out.println("Island or soulData.locations is null");
                 return;
@@ -136,14 +143,14 @@ public class FairySouls {
                 gainedSouls.add(soul);
                 soulData1.locations.put(island, gainedSouls);
                 soulData1.soulCount++;
-                FileUtils.saveSoulData(soulData1);
+                saveSoulData(soulData1);
             }
         }
     }
 
     private List<String> checkSouls(List<String> shownSouls) {
         List<String> souls = new ArrayList<>();
-        FairySoulData data = FileUtils.getSoulData();
+        FairySoulData data = getSoulData();
         if (data != null) {
             if (data.locations != null) {
                 if (data.locations.get(island) != null) {
@@ -159,6 +166,94 @@ public class FairySouls {
             return shownSouls;
         }
         return souls;
+    }
+
+    // FAIRY SOUL DATA HANDLING
+
+    public static class FairySoulData {
+
+        String description;
+        int soulCount;
+        Map<String, List<String>> locations;
+
+        public FairySoulData(String desc, int souls, Map<String, List<String>> locs) {
+            description = desc;
+            soulCount = souls;
+            locations = locs;
+        }
+
+    }
+
+    private static final FairySoulData STUB_LOAD_FAIL =
+            new FairySoulData("Could not load repository", 247, java.util.Collections.emptyMap());
+    private static volatile FairySoulData CACHED_SOULS = null;
+    private static volatile String LAST_JSON_REF = null;
+
+    public static File SOULS_FILE = new File(Config.configDirectory, "gainedsouls.json");
+    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static Map<String, List<String>> templateMap = new HashMap<>();
+
+    public static FairySoulData getSoulData() {
+        try {
+            if (!Files.exists(SOULS_FILE.toPath())) {
+                templateMap.put("hub", new ArrayList<>());
+                templateMap.put("spider", new ArrayList<>());
+                templateMap.put("crimson", new ArrayList<>());
+                templateMap.put("end", new ArrayList<>());
+                templateMap.put("park", new ArrayList<>());
+                templateMap.put("farming", new ArrayList<>());
+                templateMap.put("gold", new ArrayList<>());
+                templateMap.put("dungeon_hub", new ArrayList<>());
+                templateMap.put("winter", new ArrayList<>());
+                FairySoulData data = new FairySoulData(
+                        "Do Not Manually Change This File, It will lead to errors",
+                        0,
+                        templateMap
+                );
+                saveSoulData(data);
+                return data;
+            }
+            FileReader reader = new FileReader(SOULS_FILE);
+            return gson.fromJson(reader, FairySoulData.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new FairySoulData("Could not load file", 247, new HashMap<>());
+        }
+    }
+
+    public static void saveSoulData(FairySoulData soulData) {
+        try (FileWriter writer = new FileWriter(SOULS_FILE)) {
+            gson.toJson(soulData, writer);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static FairySoulData getAllSouls() {
+        final String KEY = "fairysouls";
+        if (!RepoHandler.isLoaded(KEY)) {
+            RepoHandler.ensureLoadedAsync(KEY);
+            return CACHED_SOULS != null ? CACHED_SOULS : STUB_LOAD_FAIL;
+        }
+
+        final String json = RepoHandler.getJson(KEY);
+        if (json == null) {
+            return CACHED_SOULS != null ? CACHED_SOULS : STUB_LOAD_FAIL;
+        }
+
+        if (json != LAST_JSON_REF) {
+            try {
+                FairySoulData parsed = gson.fromJson(json, FairySoulData.class);
+                if (parsed != null) {
+                    CACHED_SOULS = parsed;
+                    LAST_JSON_REF = json;
+                }
+            } catch (Exception e) {
+                Logger.logErrorConsole("FairySouls parse error: " + e.getMessage());
+            }
+        }
+
+        return CACHED_SOULS != null ? CACHED_SOULS : STUB_LOAD_FAIL;
     }
 
 }
