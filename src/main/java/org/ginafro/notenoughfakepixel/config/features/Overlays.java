@@ -48,6 +48,23 @@ public class Overlays {
     public String editor = "";
 
     @Expose
+    @ConfigOption(name = "Inventory Buttons" , desc = "Settings for Inventory Buttons")
+    @ConfigEditorAccordion(id = 7)
+    public boolean invButtonsAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Enable Inventory Buttons", desc = "Show Inventory Buttons in the inventory")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 7)
+    public boolean invButtons = true;
+
+    @Expose
+    @ConfigOption(name = "Snap to Grid", desc = "Snap items to grid when moving them in storage")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 0)
+    public boolean snapToGrid = true;
+
+    @Expose
     @ConfigOption(name = "Equipment Overlay", desc = "Shows what equipment u are wearing")
     @ConfigEditorBoolean
     public boolean equipment = true;

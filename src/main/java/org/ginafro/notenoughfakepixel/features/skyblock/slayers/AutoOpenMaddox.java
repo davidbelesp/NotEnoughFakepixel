@@ -22,9 +22,9 @@ import java.util.List;
 @RegisterEvents
 public class AutoOpenMaddox {
 
-    static String maddoxCommand = "/openmaddox";
-    static long lastMaddoxTime = 0;
-    static boolean opened = false;
+    private static String maddoxCommand = "/openmaddox";
+    private static long lastMaddoxTime = 0;
+    private static boolean opened = false;
 
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent e) {
@@ -56,13 +56,12 @@ public class AutoOpenMaddox {
 
     @SubscribeEvent
     public void onMouseInputPost(GuiScreenEvent.MouseInputEvent.Post event) {
-        if (opened) return;
-        if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
-        if (Mouse.getEventButton() == 0 && event.gui instanceof GuiChat) {
-            if (Config.feature.slayer.slayerMaddoxCalling == 1 && System.currentTimeMillis() / 1000 - lastMaddoxTime < 10) {
-                Minecraft.getMinecraft().thePlayer.sendChatMessage(maddoxCommand);
-                opened = true;
-            }
+        if (opened || ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if (Mouse.getEventButton() == 0 && event.gui instanceof GuiChat
+                && Config.feature.slayer.slayerMaddoxCalling == 1
+                && System.currentTimeMillis() / 1000 - lastMaddoxTime < 10) {
+            Minecraft.getMinecraft().thePlayer.sendChatMessage(maddoxCommand);
+            opened = true;
         }
     }
 

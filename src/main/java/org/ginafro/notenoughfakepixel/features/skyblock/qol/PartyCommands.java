@@ -7,6 +7,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
+import org.ginafro.notenoughfakepixel.utils.RandomUtils;
 
 import java.util.Random;
 import java.util.concurrent.Executors;
@@ -29,7 +30,7 @@ public class PartyCommands {
     };
 
     private final Minecraft mc = Minecraft.getMinecraft();
-    private final Random random = new Random();
+    private final Random random = RandomUtils.getInstance();
     private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
     private long prevTime = 0L;

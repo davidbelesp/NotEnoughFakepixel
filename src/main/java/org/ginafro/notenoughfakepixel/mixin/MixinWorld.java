@@ -3,6 +3,7 @@ package org.ginafro.notenoughfakepixel.mixin;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.DisableHyperionExplosions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,8 +16,10 @@ public class MixinWorld {
             int particleID, boolean p_175720_2_, double xCood, double yCoord, double zCoord,
             double xOffset, double yOffset, double zOffset, int[] p_175720_15_, CallbackInfo ci
     ) {
-        if (Config.feature.qol.qolDisableHyperionExplosions && particleID == 1) {
-            ci.cancel();
+        if (Config.feature.qol.qolDisableHyperionExplosions &&
+            System.currentTimeMillis() - DisableHyperionExplosions.lastClickedHyperion < 500) {
+
+            if ( particleID == 1 ) ci.cancel();
         }
     }
 

@@ -14,10 +14,11 @@ public class MapUtils {
 
     @SafeVarargs
     public static <K, V> Map<K, V> mapOf(Pair<K, V>... entries) {
-        return Collections.unmodifiableMap(
-                Arrays.stream(entries)
-                        .collect(Collectors.toMap(entry -> entry.key, entry -> entry.value))
-        );
+        return Arrays.stream(entries)
+                .collect(Collectors.collectingAndThen(
+                        Collectors.toMap(entry -> entry.key, entry -> entry.value),
+                        Collections::unmodifiableMap
+                ));
     }
 
     public static <K, V> K getKeyFromValue(Map<K, V> map, V value) {
@@ -33,11 +34,6 @@ public class MapUtils {
     public static class Pair<K, V> {
         final K key;
         final V value;
-
-        public Pair(K key, V value) {
-            this.key = key;
-            this.value = value;
-        }
 
         public static <K, V> Pair<K, V> of(K key, V value) {
             return new Pair<>(key, value);

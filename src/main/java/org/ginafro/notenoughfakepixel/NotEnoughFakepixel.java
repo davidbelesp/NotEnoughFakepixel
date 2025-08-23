@@ -13,6 +13,7 @@ import org.ginafro.notenoughfakepixel.alerts.Alerts;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.config.gui.commands.Commands;
 import org.ginafro.notenoughfakepixel.envcheck.registers.ModEventRegistrar;
+import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 import org.ginafro.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import org.ginafro.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
@@ -62,8 +63,6 @@ public class NotEnoughFakepixel {
 
         EquipmentOverlay.loadData();
 
-        new Aliases();
-
         Commands.init();
         Alerts.load();
         CustomAliases.load();
@@ -75,6 +74,9 @@ public class NotEnoughFakepixel {
         //InvManager.load();
 
         SlotLocking.getInstance().saveConfig();
+
+        // REPO
+        RepoHandler.warmupAsync();
     }
 
     private void createDirectoryIfNotExists(File directory) {

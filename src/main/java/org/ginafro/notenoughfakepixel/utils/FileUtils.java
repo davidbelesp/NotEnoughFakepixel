@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
+import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.FairySoulData;
 
 import java.io.*;
@@ -17,7 +18,6 @@ import java.util.Map;
 public class FileUtils {
 
     public static File SOULS_FILE = new File(Config.configDirectory, "gainedsouls.json");
-    public static ResourceLocation ALL_SOULS = new ResourceLocation("notenoughfakepixel", "fairysouls.json");
     public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static Map<String, List<String>> templateMap = new HashMap<>();
 
@@ -58,13 +58,12 @@ public class FileUtils {
     }
 
     public static FairySoulData getAllSouls() {
-        try {
-            InputStream is = Minecraft.getMinecraft().getResourceManager().getResource(ALL_SOULS).getInputStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            return gson.fromJson(reader, FairySoulData.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return new FairySoulData("Could not load file", 247, new HashMap<>());
+        String fairyData = RepoHandler.getCachedJson();
+        if (fairyData != null) {
+            return gson.fromJson(fairyData, FairySoulData.class);
+        } else {
+            return new FairySoulData("Could not load repository", 247, new HashMap<>());
         }
     }
+
 }

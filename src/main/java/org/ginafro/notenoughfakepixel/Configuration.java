@@ -12,6 +12,7 @@ import org.ginafro.notenoughfakepixel.config.gui.core.GuiScreenElementWrapper;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.Position;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.Category;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.gui.GuiPositionEditor;
+import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 import org.ginafro.notenoughfakepixel.features.capes.gui.CapeGui;
 import org.ginafro.notenoughfakepixel.features.duels.Duels;
 import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
@@ -23,6 +24,9 @@ import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionE
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.CustomAliases.AliasManagementGui;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
 
 public class Configuration {
 
@@ -113,7 +117,7 @@ public class Configuration {
             editOverlay(activeConfigCategory, 100, 30, Config.feature.diana.warpHelperPos);
         }
         if("nefButtons".equals(runnableId)){
-            Minecraft.getMinecraft().displayGuiScreen(new InventoryEditor());
+            //Minecraft.getMinecraft().displayGuiScreen(new InventoryEditor());
         }
         // Debug runnables
         if ("logLocation".equals(runnableId)) {
@@ -127,6 +131,16 @@ public class Configuration {
         }
         if("statEditor".equals(runnableId)){
             Minecraft.getMinecraft().displayGuiScreen(new PositionEditorScreen());
+        }
+        if ("showAPI".equals(runnableId)) {
+            RepoHandler.getCachedJson();
+            if (RepoHandler.getCachedJson() != null) {
+                // copy to clipboard
+                String api = RepoHandler.getCachedJson();
+                Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+                clip.setContents(new java.awt.datatransfer.StringSelection(api), null);
+                Logger.log("Copied API to clipboard! Length: " + api.length());
+            }
         }
     }
 

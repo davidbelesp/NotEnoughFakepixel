@@ -48,4 +48,10 @@ public class Debug {
     @ConfigEditorButton(buttonText = "Log", runnableId = "logScoreboard")
     @ConfigAccordionId(id = 0)
     public String logScoreboardButton = "";
+
+    @Expose
+    @ConfigOption(name = "Show data loaded", desc = "Shows data loaded on API calls.")
+    @ConfigEditorButton(runnableId = "showAPI", buttonText = "Show API")
+    @ConfigAccordionId(id = 0)
+    public String showAPIButton = "";
 }

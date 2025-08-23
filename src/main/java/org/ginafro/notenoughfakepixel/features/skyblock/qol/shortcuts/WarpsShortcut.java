@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.qol;
+package org.ginafro.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -8,7 +8,6 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.lwjgl.input.Keyboard;
 
 import java.util.HashSet;
 import java.util.Set;

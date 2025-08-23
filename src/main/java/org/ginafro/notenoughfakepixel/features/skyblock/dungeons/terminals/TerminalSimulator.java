@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ChatComponentText;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.utils.ColorUtils;
+import org.ginafro.notenoughfakepixel.utils.RandomUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class TerminalSimulator extends GuiScreen {
     private String currentMode = "selector";
     private String currentPuzzle = "";
     private long startTime = 0;
-    private final Random random = new Random();
+    private final Random random = RandomUtils.getInstance();
     private static final int SLOT_SIZE = 16;
     private static final int INNER_COLUMNS = 7;
     private static final int INNER_ROWS = 4;

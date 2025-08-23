@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.qol;
+package org.ginafro.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

@@ -241,7 +241,7 @@ public class InventoryEditor extends GuiScreen {
 
             int snappedX = Math.round(unscaledX / (float) GRID_SIZE) * GRID_SIZE;
             int snappedY = Math.round(unscaledY / (float) GRID_SIZE) * GRID_SIZE;
-            if (Config.feature.overlays.snapGrid) {
+            if (Config.feature.overlays.snapToGrid) {
                 draggedButton.x = snappedX;
                 draggedButton.y = snappedY;
             }

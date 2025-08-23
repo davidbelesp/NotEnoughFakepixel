@@ -45,24 +45,6 @@ public class InventoryUtils {
         return -1;
     }
 
-    public static void autoEquipItem(String name, int delay) {
-        if (getHeldItem() == null) return;
-        if (!getHeldItem().getDisplayName().contains(name)) {
-            int slot = getSlot(name);
-            if (slot == -1) return; // return if not found in hotbar
-            int currentSlot = getCurrentSlot();
-            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-            exec.schedule(new Runnable() {
-                public void run() {
-                    goToSlot(currentSlot);
-                }
-            }, delay, TimeUnit.MILLISECONDS);
-            goToSlot(slot);
-        }
-    }
-
-
-
     public static void highlightSlot(Slot slot, GuiContainer container, Color color) {
         RenderUtils.drawOnSlot(container.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, color.getRGB());
     }

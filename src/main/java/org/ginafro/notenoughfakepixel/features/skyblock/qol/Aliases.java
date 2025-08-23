@@ -3,16 +3,11 @@ package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
-import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.common.MinecraftForge;
+import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 
+@RegisterEvents
 public class Aliases {
-
-    public Aliases() {
-        MinecraftForge.EVENT_BUS.register(this);
-
-        ClientCommandHandler.instance.registerCommand(new VpCommand());
-    }
 
     public static class AliasCommand extends CommandBase {
         private final String shortCommand;
@@ -50,6 +45,7 @@ public class Aliases {
         }
     }
 
+    @RegisterCommand
     private static class VpCommand extends CommandBase {
         @Override
         public String getCommandName() {

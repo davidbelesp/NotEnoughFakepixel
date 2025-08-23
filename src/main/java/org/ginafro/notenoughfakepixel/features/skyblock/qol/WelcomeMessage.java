@@ -7,6 +7,8 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ChatUtils;
+import org.ginafro.notenoughfakepixel.utils.ListUtils;
+import org.ginafro.notenoughfakepixel.utils.RandomUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
 
 import java.util.ArrayList;
@@ -20,10 +22,10 @@ import java.util.concurrent.TimeUnit;
 public class WelcomeMessage {
 
     private boolean notified = false;
-    private final Random random = new Random();
+    private final Random random = RandomUtils.getInstance();
     private final String initialString = "[NEF] ";
 
-    List<String> arrayWelcomeMessages = new ArrayList<>(Arrays.asList(
+    private static final List<String> arrayWelcomeMessages = ListUtils.of(
             "Did you know that, 9 out of 10 experts recommend NEF? Number 10 plays hypixel (shame)",
             "Did you know that, 9 out of 10 bugs reported are related to pojav?",
             "Fun Fact: 9 out of 10 Fakepixel players recommend NEF. The 10th player fell into the void",
@@ -52,11 +54,10 @@ public class WelcomeMessage {
             "It took @MG 3-days to figure out how to cancel chest gui rendering",
             "Who is that behind you?",
             "If you want to be beta-tester, remember that first NEF beta versions wiped some necron armors... scary!"
-    ));
+    );
 
     String epicString = "You discovered an epic message that gives you 200% extra penetration for the rest of your day!";
     String legendaryString = "You discovered a legendary message that will make you not bald for the rest of your life!";
-
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {

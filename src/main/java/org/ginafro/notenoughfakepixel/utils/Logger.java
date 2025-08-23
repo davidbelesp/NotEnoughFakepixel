@@ -24,11 +24,8 @@ public class Logger {
      * @param message The String message to log.
      */
     public static void log(String message) {
-        if (!Config.feature.debug.debug) return;
-        if (Minecraft.getMinecraft().thePlayer != null) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(
-                    new ChatComponentText(Constants.PREFIX + message)
-            );
+        if (Config.feature.debug.debug && Minecraft.getMinecraft().thePlayer != null) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Constants.PREFIX + message));
         }
     }
 
@@ -55,11 +52,8 @@ public class Logger {
      * @param message The String message to log.
      */
     public static void logError(String message) {
-        if (!Config.feature.debug.debug) return;
-        if (Minecraft.getMinecraft().thePlayer != null) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(
-                    new ChatComponentText(Constants.ERROR_PREFIX + message)
-            );
+        if (Config.feature.debug.debug && Minecraft.getMinecraft().thePlayer != null) {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Constants.ERROR_PREFIX + message));
         }
     }
 
