@@ -21,56 +21,55 @@ import org.ginafro.notenoughfakepixel.variables.Slayer;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RegisterEvents
 public class VoidgloomSeraph {
     public static final Minecraft mc = Minecraft.getMinecraft();
-    public static final Map<Waypoint, Long> waypoints = new HashMap<>();
+    public static final Map<Waypoint, Long> waypoints = new ConcurrentHashMap<>();
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.side == net.minecraftforge.fml.relauncher.Side.CLIENT && !ScoreboardUtils.isSlayerActive){
-            reset();
+            clearWaypointsSafe();
         }
-    }
-
-    private void reset() {
-        waypoints.clear();
     }
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (checkEssentials() || !Config.feature.slayer.slayerShowBeaconPath || ScoreboardUtils.currentSlayer != Slayer.VOIDGLOOM) {
+        if (checkEssentials()
+                || !Config.feature.slayer.slayerShowBeaconPath
+                || ScoreboardUtils.currentSlayer != Slayer.VOIDGLOOM) {
             return;
         }
 
-        if (ScoreboardUtils.isSlayerActive) {
-            mc.addScheduledTask(() -> {
-                waypoints.entrySet().removeIf(entry -> {
-                    long elapsedTime = System.currentTimeMillis() - entry.getValue();
-                    if (elapsedTime > 20000) return true;
+        if (!ScoreboardUtils.isSlayerActive) return;
+        final long now = System.currentTimeMillis();
 
-                    BlockPos waypoint = entry.getKey().getBlockPos();
-                    if (Config.feature.slayer.showTracerToBeacon) {
-                        RenderUtils.draw3DLine(
-                            new Vec3(waypoint.getX() + .5, waypoint.getY() + .5, waypoint.getZ() + .5),
-                            mc.thePlayer.getPositionEyes(event.partialTicks),
-                            ColorUtils.getColor(Config.feature.slayer.slayerBeaconColor),
-                            8,
-                            true,
-                            event.partialTicks
-                        );
-                    }
-                    RenderUtils.renderBeaconBeam(
-                        waypoint,
-                        ColorUtils.getColor(Config.feature.slayer.slayerBeaconColor).getRGB(),
-                        1.0f,
+        removeExpiredWaypoints(now, 20_000L);
+
+        for (Map.Entry<Waypoint, Long> entry : waypoints.entrySet()) {
+            BlockPos waypoint = entry.getKey().getBlockPos();
+
+            if (Config.feature.slayer.showTracerToBeacon) {
+                RenderUtils.draw3DLine(
+                        new Vec3(waypoint.getX() + .5, waypoint.getY() + .5, waypoint.getZ() + .5),
+                        mc.thePlayer.getPositionEyes(event.partialTicks),
+                        ColorUtils.getColor(Config.feature.slayer.slayerBeaconColor),
+                        8,
+                        true,
                         event.partialTicks
-                    );
-                    return false;
-                });
-            });
+                );
+            }
+
+            RenderUtils.renderBeaconBeam(
+                    waypoint,
+                    ColorUtils.getColor(Config.feature.slayer.slayerBeaconColor).getRGB(),
+                    1.0f,
+                    event.partialTicks
+            );
         }
+
     }
 
     private static void notifyPlayer() {
@@ -84,6 +83,41 @@ public class VoidgloomSeraph {
         }
     }
 
+    public static void addWaypointSafe(final Waypoint wp) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        final Runnable r = () -> waypoints.put(wp, System.currentTimeMillis());
+        if (mc.isCallingFromMinecraftThread()) r.run();
+        else mc.addScheduledTask(r);
+    }
+
+    public static void removeExpiredWaypoints(long now, long maxAgeMs) {
+        Minecraft mc = Minecraft.getMinecraft();
+        Runnable r = () -> waypoints.entrySet().removeIf(e -> (now - e.getValue()) > maxAgeMs);
+
+        if (mc.isCallingFromMinecraftThread()) r.run();
+        else mc.addScheduledTask(r);
+    }
+
+    public static void removeWaypointSafe(final BlockPos position) {
+        final Minecraft mc = Minecraft.getMinecraft();
+        final Runnable r = () -> waypoints.entrySet().removeIf(e ->
+                sameBlockPos(e.getKey().getBlockPos(), position)
+        );
+        if (mc.isCallingFromMinecraftThread()) r.run();
+        else mc.addScheduledTask(r);
+    }
+
+    private static boolean sameBlockPos(BlockPos a, BlockPos b) {
+        return a.getX() == b.getX() && a.getY() == b.getY() && a.getZ() == b.getZ();
+    }
+
+    public static void clearWaypointsSafe() {
+        Minecraft mc = Minecraft.getMinecraft();
+        Runnable r = waypoints::clear;
+
+        if (mc.isCallingFromMinecraftThread()) r.run();
+        else mc.addScheduledTask(r);
+    }
 
     public static void processBlockChange(NefPacketBlockChange packetIn) {
         if (!Config.feature.slayer.slayerShowBeaconPath) return;
@@ -96,24 +130,19 @@ public class VoidgloomSeraph {
             if (player == null || player.getPosition() == null) return;
 
             double distance = new Vec3(player.getPosition()).distanceTo(new Vec3(position));
-            if (distance > 20) return;
+            if (distance > 32) return;
 
             notifyPlayer();
-            waypoints.put(new Waypoint("BEACON", new int[]{position.getX(), position.getY(), position.getZ()}), System.currentTimeMillis());
+            addWaypointSafe(new Waypoint("BEACON", new int[]{position.getX(), position.getY(), position.getZ()}));
         } else if (block instanceof BlockAir) {
             // If the block is air, it means the beacon was removed
-            waypoints.entrySet().removeIf(entry -> {
-                if (entry.getKey().getBlockPos().equals(position)) {
-                    return true;
-                }
-                return false;
-            });
+            removeWaypointSafe(position);
         }
     }
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        reset();
+        clearWaypointsSafe();
     }
 
     private static boolean checkEssentials() {
@@ -128,7 +157,7 @@ public class VoidgloomSeraph {
             String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
             if (message.contains("SLAYER QUEST COMPLETE!") || message.contains("SLAYER QUEST FAILED!")) {
                 ScoreboardUtils.isSlayerActive = false;
-                reset();
+                clearWaypointsSafe();
             }
         }
     }
