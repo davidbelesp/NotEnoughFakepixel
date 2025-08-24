@@ -31,7 +31,9 @@ public class MiningOverlay {
 
     private boolean shouldShow() {
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return false;
-        if (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN)) return false;
+        if (!TablistParser.currentLocation.equals(Location.DWARVEN)) return false;
+        if (Minecraft.getMinecraft().gameSettings.keyBindPlayerList.isKeyDown()) return false;
+        if (Minecraft.getMinecraft().gameSettings.showDebugInfo) return false;
         return Config.feature.mining.miningOverlay;
     }
 
@@ -77,7 +79,7 @@ public class MiningOverlay {
             lines.add("\u00a77Mithril: \u00a7e50%");
         } else {
             if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-            if (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN)) return;
+            if (!TablistParser.currentLocation.equals(Location.DWARVEN)) return;
 
             if (Config.feature.mining.miningAbilityCooldown)
                 lines.add("\u00a77Ability Cooldown: \u00a7r" + AbilityNotifier.cdSecondsRemaining());

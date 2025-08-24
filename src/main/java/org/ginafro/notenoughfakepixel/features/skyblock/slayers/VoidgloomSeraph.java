@@ -148,12 +148,12 @@ public class VoidgloomSeraph {
     private static boolean checkEssentials() {
         return (mc.thePlayer == null) ||
                 (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                (!ScoreboardUtils.currentLocation.isEnd());
+                (!TablistParser.currentLocation.isEnd());
     }
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-        if (Config.feature.slayer.slayerShowBeaconPath && ScoreboardUtils.currentGamemode.isSkyblock() && ScoreboardUtils.currentLocation.isEnd()) {
+        if (Config.feature.slayer.slayerShowBeaconPath && ScoreboardUtils.currentGamemode.isSkyblock() && TablistParser.currentLocation.isEnd()) {
             String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
             if (message.contains("SLAYER QUEST COMPLETE!") || message.contains("SLAYER QUEST FAILED!")) {
                 ScoreboardUtils.isSlayerActive = false;

@@ -124,6 +124,12 @@ public class QualityOfLife {
     public boolean qolShortcutWardrobe = false;
 
     @Expose
+    @ConfigOption(name = "Wardrobe Slots Shortcut", desc = "Enable wardrobe slots {1 - 9} shortcuts.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 4)
+    public boolean qolShortcutSlotsWardrobe = false;
+
+    @Expose
     @ConfigOption(name = "Wardrobe Shortcut Key", desc = "Keybind for wardrobe shortcut.")
     @ConfigEditorKeybind(defaultKey = Keyboard.KEY_R)
     @ConfigAccordionId(id = 4)

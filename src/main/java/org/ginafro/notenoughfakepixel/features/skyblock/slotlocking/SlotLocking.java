@@ -38,10 +38,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.ReplaceItemEvent;
 import org.ginafro.notenoughfakepixel.events.SlotClickEvent;
 import org.ginafro.notenoughfakepixel.mixin.Accesors.AccessorGuiContainer;
-import org.ginafro.notenoughfakepixel.utils.CustomConfigFiles;
-import org.ginafro.notenoughfakepixel.utils.CustomConfigHandler;
-import org.ginafro.notenoughfakepixel.utils.ItemUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -213,7 +210,12 @@ public class SlotLocking {
         final int scaledHeight = scaledresolution.getScaledHeight();
         int mouseX = Mouse.getX() * scaledWidth / Minecraft.getMinecraft().displayWidth;
         int mouseY = scaledHeight - Mouse.getY() * scaledHeight / Minecraft.getMinecraft().displayHeight - 1;
-        return ((AccessorGuiContainer) container).doGetSlotAtPosition(mouseX, mouseY);
+        try {
+            return ((AccessorGuiContainer) container).doGetSlotAtPosition(mouseX, mouseY);
+        } catch (Exception ignored) {
+            Logger.log("Error loading focused slot in SlotLocking.java:getFocusedSlot:216");
+            return null;
+        }
     }
 
     @SubscribeEvent(priority = EventPriority.LOW)

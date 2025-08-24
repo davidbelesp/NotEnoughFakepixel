@@ -1,5 +1,7 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -162,6 +164,8 @@ public class StatBars {
     }
 
 
+    @Setter
+    @Getter
     private static int expLevel, health,maxHealth,mana,maxMana,overflowMana,overflowHealth,defence,speed = 100;
     private static float exp;
     @SubscribeEvent
@@ -174,10 +178,6 @@ public class StatBars {
         }
     }
 
-
-    public static void setSpeed(int sp){
-        speed = sp;
-    }
 
     private void updateStats(IChatComponent message) {
         String text1 = message.getUnformattedText();

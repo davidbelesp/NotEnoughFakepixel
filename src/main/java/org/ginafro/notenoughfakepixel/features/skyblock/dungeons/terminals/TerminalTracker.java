@@ -14,6 +14,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.HashMap;
@@ -78,7 +79,7 @@ public class TerminalTracker {
             }
         }
 
-        if (player == null || ScoreboardUtils.currentLocation != Location.DUNGEON) {
+        if (player == null || TablistParser.currentLocation != Location.DUNGEON) {
             return;
         }
 
@@ -128,7 +129,7 @@ public class TerminalTracker {
 
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;
-        if (player == null || ScoreboardUtils.currentLocation != Location.DUNGEON) {
+        if (player == null || TablistParser.currentLocation != Location.DUNGEON) {
             return;
         }
 

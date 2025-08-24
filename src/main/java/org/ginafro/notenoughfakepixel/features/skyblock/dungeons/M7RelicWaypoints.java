@@ -34,7 +34,7 @@ public class M7RelicWaypoints {
     private static final Map<RelicColor, BlockPos> cauldronPositions = new HashMap<>();
 
     public static boolean isFinalPhase = false;
-    private Set<RelicColor> pickedRelics = new HashSet<>();
+    private final Set<RelicColor> pickedRelics = new HashSet<>();
 
     static {
         relicPositions.put(RelicColor.PURPLE, new BlockPos(64, 8, 140));

@@ -94,11 +94,10 @@ public class WardrobeShortcut {
 
     private void handleWardrobeInput(GuiChest chestGui) {
         if (!ScoreboardUtils.currentGamemode.isSkyblock() ||
-                !Config.feature.qol.qolShortcutWardrobe) {
+                !Config.feature.qol.qolShortcutSlotsWardrobe) {
             return;
         }
 
-        Minecraft mc = Minecraft.getMinecraft();
         long now = System.currentTimeMillis();
 
         for (int slot = 0; slot < 9; slot++) {

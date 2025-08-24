@@ -17,10 +17,12 @@ import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 import org.ginafro.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import org.ginafro.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.equipment.EquipmentOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.CustomAliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
 import org.ginafro.notenoughfakepixel.nefrepo.NefRepo;
+import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
 
@@ -115,7 +117,6 @@ public class NotEnoughFakepixel {
             lastOpenedGui = System.currentTimeMillis();
         }
 
-        ScoreboardUtils.parseScoreboard();
     }
 
 

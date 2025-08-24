@@ -2,6 +2,7 @@ package org.ginafro.notenoughfakepixel.features.skyblock.crimson;
 
 import net.minecraft.client.Minecraft;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 
 public class Crimson {
 
@@ -10,7 +11,7 @@ public class Crimson {
     public static boolean checkEssentials() {
         return (Minecraft.getMinecraft().thePlayer == null) ||
                 (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                (!ScoreboardUtils.currentLocation.isCrimson());
+                (!TablistParser.currentLocation.isCrimson());
     }
 
     public static boolean checkAshfangArea(int[] coords) {

@@ -21,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -125,7 +125,7 @@ public class SpiritLeapHandler {
                         .getUnformattedText()
                         .trim();
 
-                if (Config.feature.dungeons.dungeonsSpiritLeapGUI && ScoreboardUtils.currentLocation.isDungeon() && "Spirit Leap".equals(displayName)) {
+                if (Config.feature.dungeons.dungeonsSpiritLeapGUI && TablistParser.currentLocation.isDungeon() && "Spirit Leap".equals(displayName)) {
                     playerDataList.clear();
                 }
             }
@@ -142,7 +142,7 @@ public class SpiritLeapHandler {
                         .getUnformattedText()
                         .trim();
 
-                if (Config.feature.dungeons.dungeonsSpiritLeapGUI && ScoreboardUtils.currentLocation.isDungeon() && "Spirit Leap".equals(displayName)) {
+                if (Config.feature.dungeons.dungeonsSpiritLeapGUI && TablistParser.currentLocation.isDungeon() && "Spirit Leap".equals(displayName)) {
                     event.setCanceled(true);
 
                     if (playerDataList.isEmpty()) {
@@ -299,7 +299,7 @@ public class SpiritLeapHandler {
                         .getUnformattedText()
                         .trim();
 
-                if (Config.feature.dungeons.dungeonsSpiritLeapGUI && ScoreboardUtils.currentLocation.isDungeon() && "Spirit Leap".equals(displayName)) {
+                if (Config.feature.dungeons.dungeonsSpiritLeapGUI && TablistParser.currentLocation.isDungeon() && "Spirit Leap".equals(displayName)) {
                     int button = Mouse.getEventButton();
                     boolean pressed = Mouse.getEventButtonState();
 

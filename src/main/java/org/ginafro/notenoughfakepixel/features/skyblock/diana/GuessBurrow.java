@@ -21,6 +21,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
@@ -58,7 +59,7 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onPacketRead(PacketReadEvent event) {
-        if (!ScoreboardUtils.currentLocation.isHub()) return;
+        if (!TablistParser.currentLocation.isHub()) return;
 
         if (event.packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundPacket = (S29PacketSoundEffect) event.packet;
@@ -131,7 +132,7 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START || !ScoreboardUtils.currentLocation.isHub()) return;
+        if (event.phase != TickEvent.Phase.START || !TablistParser.currentLocation.isHub()) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null || mc.thePlayer == null || lastSoundPoint == null) return;
@@ -203,7 +204,7 @@ public class GuessBurrow {
         }
 
         if (guessPoint != null && Config.feature.diana.dianaWarpHelper
-                && ScoreboardUtils.currentLocation.isHub()
+                && TablistParser.currentLocation.isHub()
                 && mc.theWorld != null
                 && mc.thePlayer != null) {
             Vec3 playerPos = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);

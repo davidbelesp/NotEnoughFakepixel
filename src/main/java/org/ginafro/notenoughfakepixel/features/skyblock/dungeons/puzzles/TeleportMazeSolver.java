@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -33,7 +34,7 @@ public class TeleportMazeSolver {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.START) return;
-        if (!Config.feature.dungeons.dungeonsTeleportMaze || !ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!Config.feature.dungeons.dungeonsTeleportMaze || !TablistParser.currentLocation.isDungeon()) return;
         if (mc.thePlayer == null || mc.theWorld == null) return;
         BlockPos groundBlock = new BlockPos(mc.thePlayer.posX, 69, mc.thePlayer.posZ);
         IBlockState state = mc.theWorld.getBlockState(groundBlock);

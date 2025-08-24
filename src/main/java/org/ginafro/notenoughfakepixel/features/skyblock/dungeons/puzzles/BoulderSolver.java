@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -170,7 +171,7 @@ public class BoulderSolver {
         if (!Config.feature.dungeons.dungeonsBoulderSolver) return;
         EntityPlayerSP player = mc.thePlayer;
         World world = mc.theWorld;
-        if (ScoreboardUtils.currentLocation.isDungeon() && world != null && player != null) {
+        if (TablistParser.currentLocation.isDungeon() && world != null && player != null) {
             new Thread(() -> {
                 int quartzBlocksFound = 0;
                 int barriersFound = 0;

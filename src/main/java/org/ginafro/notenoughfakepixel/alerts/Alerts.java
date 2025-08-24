@@ -15,6 +15,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -52,7 +53,7 @@ public class Alerts {
                     location = ScoreboardUtils.currentGamemode.isSkyblock();
                     break;
                 case "Dungeons":
-                    location = ScoreboardUtils.currentLocation.isDungeon();
+                    location = TablistParser.currentLocation.isDungeon();
                     break;
                 default:
                     location = true;

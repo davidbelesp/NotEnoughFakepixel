@@ -10,6 +10,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 @RegisterEvents
@@ -34,7 +35,7 @@ public class DwarvenWaypoints {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
+        if (TablistParser.currentLocation != Location.DWARVEN) return;
         if (!Config.feature.mining.miningDwarvenWaypoints) return;
         boolean renderBeacon = Config.feature.mining.miningDwarvenBeacons;
         for (DwarvenWaypoint waypoint : WAYPOINTS) {

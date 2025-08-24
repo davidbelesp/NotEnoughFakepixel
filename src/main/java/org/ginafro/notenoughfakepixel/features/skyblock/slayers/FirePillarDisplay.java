@@ -13,6 +13,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.SoundUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.utils.TitleUtils;
 
 @RegisterEvents
@@ -20,14 +21,14 @@ public class FirePillarDisplay {
     private static final Minecraft mc = Minecraft.getMinecraft();
     private EntityArmorStand trackedPillar;
     private long lastSoundTime;
-    private static String displayText = "";
-    private static long endTime = 0;
+    private static final String displayText = "";
+    private static final long endTime = 0;
 
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
         if (!Config.feature.slayer.slayerFirePillarDisplay || mc.theWorld == null) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!ScoreboardUtils.currentLocation.isCrimson()) return;
+        if (!TablistParser.currentLocation.isCrimson()) return;
 
         if (mc.theWorld.getTotalWorldTime() % 5 != 0) return;
 

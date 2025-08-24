@@ -8,6 +8,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Colors;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
@@ -33,7 +34,7 @@ public class DrillFuelParsing {
             return;
         }
         if (Minecraft.getMinecraft().thePlayer == null) return;
-        if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
+        if (TablistParser.currentLocation != Location.DWARVEN) return;
 
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
 

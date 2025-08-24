@@ -43,7 +43,7 @@ public class SlayerMobsDisplay {
     }
 
     private void onRender(RenderWorldLastEvent event, boolean isBoss) {
-        switch (ScoreboardUtils.currentLocation) {
+        switch (TablistParser.currentLocation) {
             case HUB:
             case PRIVATE_HUB:
                 showHitboxHub(event.partialTicks);

@@ -162,9 +162,7 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> {
         // Dungeon Withers
         if (Config.feature.dungeons.dungeonsWithersBox && entity instanceof EntityWither) {
             String name = net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(entity.getName());
-            if (name != null && (name.equals("Maxor") || name.equals("Storm") || name.equals("Goldor") || name.equals("Necron"))) {
-                return true;
-            }
+            return name != null && (name.equals("Maxor") || name.equals("Storm") || name.equals("Goldor") || name.equals("Necron"));
         }
 
         return false;
@@ -199,7 +197,7 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> {
             );
             for (Entity armorStand : armorStands) {
                 if (armorStand instanceof EntityArmorStand) {
-                    String displayName = ((EntityArmorStand) armorStand).getDisplayName().getUnformattedText();
+                    String displayName = armorStand.getDisplayName().getUnformattedText();
                     Matcher matcher = BlazeAttunements.COLOR_PATTERN.matcher(displayName);
                     if (matcher.find()) {
                         String attunement = matcher.group().toUpperCase();

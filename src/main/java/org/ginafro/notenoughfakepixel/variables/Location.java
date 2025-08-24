@@ -27,8 +27,9 @@ public enum Location {
     private final String alpha;
 
     public static Location getLocation(String s) {
+        String unformatted = StringUtils.stripControlCodes(s);
         return java.util.Arrays.stream(Location.values())
-                .filter(l -> l.getMain().equals(s) || l.getSandbox().equals(s) || l.getAlpha().equals(s))
+                .filter(l -> l.getMain().equals(unformatted) || l.getSandbox().equals(unformatted) || l.getAlpha().equals(unformatted))
                 .findFirst()
                 .orElse(NONE);
     }

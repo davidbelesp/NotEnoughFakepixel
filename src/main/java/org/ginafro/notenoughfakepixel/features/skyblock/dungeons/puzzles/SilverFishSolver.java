@@ -24,6 +24,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -48,7 +49,7 @@ public class SilverFishSolver {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START || !ScoreboardUtils.currentLocation.isDungeon() || mc.thePlayer == null || mc.theWorld == null)
+        if (event.phase != TickEvent.Phase.START || !TablistParser.currentLocation.isDungeon() || mc.thePlayer == null || mc.theWorld == null)
             return;
 
         if (!Config.feature.dungeons.dungeonsSilverfishSolver) return;

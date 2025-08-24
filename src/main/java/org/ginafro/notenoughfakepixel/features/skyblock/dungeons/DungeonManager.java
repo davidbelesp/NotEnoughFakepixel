@@ -5,6 +5,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 
 @RegisterEvents
 public class DungeonManager {
@@ -30,7 +31,7 @@ public class DungeonManager {
     }
 
     public static boolean checkEssentials() {
-        return ScoreboardUtils.currentGamemode.isSkyblock() && ScoreboardUtils.currentLocation.isDungeon();
+        return ScoreboardUtils.currentGamemode.isSkyblock() && TablistParser.currentLocation.isDungeon();
     }
 
     public static boolean checkEssentialsF7() {

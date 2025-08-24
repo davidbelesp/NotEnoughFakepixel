@@ -3,33 +3,36 @@ package org.ginafro.notenoughfakepixel.utils;
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.world.WorldSettings;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.mixin.Accesors.AccessorGuiPlayerTabOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
+import org.ginafro.notenoughfakepixel.variables.Area;
+import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
+import org.ginafro.notenoughfakepixel.variables.Gamemode;
+import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @RegisterEvents
 public class TablistParser {
 
     private static final Ordering<NetworkPlayerInfo> playerOrdering = Ordering.from(new PlayerComparator());
-    private static long lastTime = 0;
 
     public static int mithrilPowder = 0;
-    public static List<String> commissions = new ArrayList<>();
 
     public static int secretPercentage = 0;
     public static int deaths = 0;
@@ -39,6 +42,12 @@ public class TablistParser {
 
     public static String currentOpenChestName = "";
     public static String lastOpenChestName = "";
+
+    private final List<String> accountInfo = new ArrayList<>();
+    private final List<String> serverInfo  = new ArrayList<>();
+    public static List<String> commissions = new ArrayList<>();
+
+    public static Location currentLocation = Location.NONE;
 
     @SideOnly(Side.CLIENT)
     static class PlayerComparator implements Comparator<NetworkPlayerInfo> {
@@ -76,126 +85,148 @@ public class TablistParser {
         }
     }
 
+    // Parsing data from tablist
+    private static final int TICK_INTERVAL = 20; // ~1s
+    private int tickCounter = 0;
+
+    private enum Section { NONE, SERVER, ACCOUNT, PLAYER }
+
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent e) {
-        if (lastTime < 20) {
-            lastTime++;
-            return;
-        }
         if (e.phase != TickEvent.Phase.END) return;
-        if (Minecraft.getMinecraft().thePlayer == null) return;
+        if ((tickCounter = (tickCounter + 1) % TICK_INTERVAL) != 0) return;
+
+        final Minecraft mc = Minecraft.getMinecraft();
+        if (mc == null || mc.thePlayer == null) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
 
-        List<NetworkPlayerInfo> players =
-                playerOrdering.sortedCopy(Minecraft.getMinecraft().thePlayer.sendQueue.getPlayerInfoMap());
+        accountInfo.clear();
+        serverInfo.clear();
+        commissions.clear();
 
-        List<String> result = new ArrayList<>();
+        final GuiPlayerTabOverlay tab = mc.ingameGUI.getTabList();
 
-        for (NetworkPlayerInfo info : players) {
-            String name = Minecraft.getMinecraft().ingameGUI.getTabList()
-                    .getPlayerName(info);
-            result.add(name);
-        }
+        final List<NetworkPlayerInfo> infos =
+                playerOrdering.sortedCopy(mc.thePlayer.sendQueue.getPlayerInfoMap());
 
-        // Lists to store data
-        List<String> serverInfo = new ArrayList<>();
-        List<String> accountInfo = new ArrayList<>();
+        Section section = Section.NONE;
+        boolean readingCommissions = false;
 
-        // Flags to track sections
-        boolean isPlayerStats = false;
-        boolean isServerInfo = false;
-        boolean isAccountInfo = false;
-        boolean foundCommisions = false;
-        commissions = new ArrayList<>();
+        for (NetworkPlayerInfo info : infos) {
+            final String raw = tab.getPlayerName(info);
+            if (raw == null || raw.isEmpty()) continue;
 
-        // Regex to remove Minecraft formatting codes
-        Pattern formatPattern = Pattern.compile("§[0-9a-fklmnor]");
-
-        // Parse the data
-        for (String line : result) {
-            // Check for section headers
-            if (line.contains("§3§l Server Info§r")) {
-                isServerInfo = true;
-                isAccountInfo = false;
-                isPlayerStats = false;
+            // Headers detection
+            if (raw.contains("§3§l Server Info§r")) {
+                section = Section.SERVER;
+                readingCommissions = false;
                 continue;
-            } else if (line.contains("§6§lAccount Info§r")) {
-                isServerInfo = false;
-                isAccountInfo = true;
-                isPlayerStats = false;
+            } else if (raw.contains("§6§lAccount Info§r")) {
+                section = Section.ACCOUNT;
+                readingCommissions = false;
                 continue;
-            } else if (line.contains("§2§lPlayer Stats§r")) {
-                isServerInfo = false;
-                isAccountInfo = false;
-                isPlayerStats = true;
+            } else if (raw.contains("§2§lPlayer Stats§r")) {
+                section = Section.PLAYER;
+                readingCommissions = false;
                 continue;
             }
 
-            String cleanLine = formatPattern.matcher(line).replaceAll("").trim();
-
-            // SERVER INFO SECTION
-            if (isServerInfo) {
-                // Extract Server Time
-                if (cleanLine.startsWith("Time: ")) {
-                    time = cleanLine.substring(6); // Extract after "Time: "
+            final String line = net.minecraft.util.StringUtils.stripControlCodes(raw).trim();
+            if (line.isEmpty()) {
+                if (section == Section.SERVER && readingCommissions) {
+                    readingCommissions = false;
                 }
+                continue;
+            }
 
-                // Parsing mithril powder
-                if (cleanLine.contains("Mithril Powder: ")) {
-                    mithrilPowder = Integer.parseInt(cleanLine.split(" ")[2].replace(",", ""));
-                }
+            switch (section) {
+                case SERVER: {
 
-                // Parsing secrets percentage
-                if (cleanLine.contains("Secrets Found: ")) {
-                    secretPercentage = Integer.parseInt(cleanLine.split(" ")[2].replace("%", ""));
-                }
-
-                // Parsing commissions
-                if (foundCommisions) {
-                    if (cleanLine.isEmpty()) {
-                        foundCommisions = false;
-                    } else {
-                        commissions.add(cleanLine);
+                    if (StringUtils.startsWithFast(line, "Time: ")) {
+                        time = line.substring(6);
                     }
-                }
 
-                if (cleanLine.contains("Commissions")) {
-                    foundCommisions = true;
-                }
-
-                serverInfo.add(cleanLine);
-
-                // PLAYER STATS SECTION
-            } else if (isPlayerStats) {
-                // Extract Deaths count (in brackets)
-                if (cleanLine.startsWith("Deaths: ")) {
-                    String[] parts = cleanLine.split("\\(");
-                    if (parts.length > 1) {
-                        deaths = Integer.parseInt(parts[1].replace(")", "").trim());
+                    // Server: skyblock-1
+                    if (StringUtils.startsWithFast(line, "Server:")) {
+                        String s = line.substring(line.indexOf("Server: ") + 8).trim();
+                        final int dashDigits = StringUtils.indexOfDashDigits(s);
+                        if (dashDigits >= 0) s = s.substring(0, dashDigits + 1);
+                        currentLocation = Location.getLocation(s);
                     }
-                }
-                // Extract Crypts count
-                if (cleanLine.startsWith("Crypts: ")) {
-                    if (cleanLine.substring(8).trim().contains("/")) {
-                        crypts = 0;
-                    } else {
-                        crypts = Integer.parseInt(cleanLine.substring(8).trim());
+
+                    // Mithril Powder: 12,345
+                    if (StringUtils.startsWithFast(line, "Mithril Powder: ")) {
+                        final String num = StringUtils.sliceAfter(line, "Mithril Powder: ");
+                        mithrilPowder = NumberUtils.parseIntSafe(StringUtils.removeChars(num, ","));
                     }
+
+                    // Secrets Found: 97%
+                    if (StringUtils.startsWithFast(line, "Secrets Found: ")) {
+                        final String num = StringUtils.sliceAfter(line, "Secrets Found: ");
+                        secretPercentage = NumberUtils.parseIntSafe(StringUtils.removeChars(num, "%"));
+                    }
+
+                    // Commissions
+                    if (readingCommissions) {
+                        commissions.add(line);
+                    } else if (line.contains("Commissions")) {
+                        readingCommissions = true;
+                    }
+
+                    if (StringUtils.startsWithFast(line, "Dungeon: ")) {
+                        ScoreboardUtils.currentGamemode = Gamemode.SKYBLOCK;
+                        currentLocation = Location.DUNGEON;
+                    }
+
+                    if (StringUtils.startsWithFast(line, "Area: ")) {
+                        ScoreboardUtils.currentGamemode = Gamemode.SKYBLOCK;
+                        final String areaName = line.replace("Area: ", "");
+                        ScoreboardUtils.currentArea = Area.getArea(areaName);
+                    }
+
+                    serverInfo.add(line);
+                    break;
                 }
-                // ACCOUNT INFO SECTION
-            } else if (isAccountInfo) {
-                accountInfo.add(cleanLine);
+                case PLAYER: {
+                    // Deaths: X (Y)
+                    if (StringUtils.startsWithFast(line, "Deaths: ")) {
+                        final int open = line.indexOf('(');
+                        final int close = line.indexOf(')', open + 1);
+                        if (open > 0 && close > open) {
+                            deaths = NumberUtils.parseIntSafe(line.substring(open + 1, close).trim());
+                        }
+                    }
+
+                    // Crypts: N or "A/B" => 0
+                    if (StringUtils.startsWithFast(line, "Crypts: ")) {
+                        final String rest = line.substring(8).trim();
+                        crypts = (rest.indexOf('/') >= 0) ? 0 : NumberUtils.parseIntSafe(rest);
+                    }
+                    break;
+                }
+                case ACCOUNT: {
+                    // Speed: ✦400
+                    if (StringUtils.startsWithFast(line, "Speed: ")){
+                        String speedString = line.substring(7).replace("✦", "").trim();
+                        int speed = NumberUtils.parseIntSafe(speedString);
+                        StatBars.setSpeed(speed);
+                    }
+
+                    accountInfo.add(line);
+                    break;
+                }
+                case NONE:
+                default:
+                    // Ignore lines outside sections
+                    break;
             }
         }
-
-        // FOOTER (COOKIE & BOOSTER)
-        try {
-            String[] footer = ((AccessorGuiPlayerTabOverlay) Minecraft.getMinecraft().ingameGUI.getTabList())
-                    .getFooter().getFormattedText()
-                    .split("\n");
-        } catch (Exception ignored) {
-        }
-
-        lastTime = 0;
     }
+
+    @SubscribeEvent
+    public void onWorldUnload(WorldEvent.Unload event) {
+        currentLocation = Location.NONE;
+    }
+
+
 }

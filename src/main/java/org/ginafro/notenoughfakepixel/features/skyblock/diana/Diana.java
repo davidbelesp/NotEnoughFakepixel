@@ -41,8 +41,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.ginafro.notenoughfakepixel.utils.ScoreboardUtils.getHubNumber;
-
 @RegisterEvents
 public class Diana {
     ParticleProcessor processor = new ParticleProcessor();
@@ -58,7 +56,7 @@ public class Diana {
     @SubscribeEvent
     public void onParticlePacketReceive(PacketReadEvent event) {
         if (!Config.feature.diana.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
-        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
         //if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
 
         Packet packet = event.packet;
@@ -99,7 +97,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
         if (Config.feature.diana.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
         if (Config.feature.diana.dianaShowTracersWaypoints) drawTracers(event.partialTicks);
         if (Config.feature.diana.dianaShowLabelsWaypoints) drawLabels(event.partialTicks);
@@ -113,7 +111,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
-        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
         if (!Config.feature.diana.dianaMinosInquisitorAlert) return;
         initializeLocations();
     }
@@ -122,7 +120,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
-        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
         if (!Config.feature.diana.dianaMinosInquisitorAlert) return;
         String entityName = event.entity.getDisplayName().getUnformattedText();
         if (entityName.contains("Minos Inquisitor")) {
@@ -134,9 +132,9 @@ public class Diana {
                 double z = Math.floor(event.entity.posZ);
                 String locationName = findNearestLocation((int) x, (int) y, (int) z);
                 if (locationName != null) {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:" + event.entity.getPosition().getX() + ", y:" + (event.entity.getPosition().getY() - 2) + ", z:" + event.entity.getPosition().getZ() + " in HUB-" + getHubNumber());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:" + event.entity.getPosition().getX() + ", y:" + (event.entity.getPosition().getY() - 2) + ", z:" + event.entity.getPosition().getZ() + " in HUB-" + ScoreboardUtils.getHubNumber());
                 } else {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:" + event.entity.getPosition().getX() + ", y:" + (event.entity.getPosition().getY() - 2) + ", z:" + event.entity.getPosition().getZ() + " in HUB-" + getHubNumber());
+                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:" + event.entity.getPosition().getX() + ", y:" + (event.entity.getPosition().getY() - 2) + ", z:" + event.entity.getPosition().getZ() + " in HUB-" + ScoreboardUtils.getHubNumber());
                 }
                 lastCaptureTime = now;
             }
@@ -479,7 +477,7 @@ public class Diana {
     }*/
     @SubscribeEvent
     public void onSoundPacketReceive(PacketReadEvent event) {
-        if (!ScoreboardUtils.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
@@ -587,7 +585,7 @@ public class Diana {
     public void onChatRecieve(ClientChatReceivedEvent event) {
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
-        if (!ScoreboardUtils.currentLocation.isHub()) return;
+        if (!TablistParser.currentLocation.isHub()) return;
         if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
         //System.out.println(event.message.getFormattedText());
         if (Config.feature.diana.dianaCancelCooldownSpadeMessage && InventoryUtils.getSlot("Ancestral Spade") == InventoryUtils.getCurrentSlot()) {
@@ -607,7 +605,7 @@ public class Diana {
                         Minecraft.getMinecraft().thePlayer.getPosition().getZ()};
                 SoundUtils.playSound(coords, inquisitorSound, 3.0f, 0.8f);
 
-                if (getHubNumber() == hubNumber) {
+                if (ScoreboardUtils.getHubNumber() == hubNumber) {
                     Waypoint wp = new Waypoint("MINOS", new int[]{x, y, z});
                     processor.deleteWaypoint(processor.getClosestWaypoint(new int[]{x, y, z}));
                     processor.addWaypoint(wp);

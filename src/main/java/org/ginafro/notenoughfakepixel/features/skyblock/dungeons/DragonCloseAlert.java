@@ -88,7 +88,7 @@ public class DragonCloseAlert {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent e) {
-        if (ScoreboardUtils.currentLocation != Location.DUNGEON ||
+        if (TablistParser.currentLocation != Location.DUNGEON ||
                 ScoreboardUtils.currentFloor != DungeonFloor.M7 || !M7RelicWaypoints.isFinalPhase) return;
 
         DRAGON_COLOR_MAP.keySet().removeIf(this::isDying);

@@ -38,7 +38,7 @@ public class FairySouls {
     public void onRender(RenderWorldLastEvent e) {
         if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if (!Config.feature.qol.fairySoulWaypoints) return;
-        Location currentIsland = ScoreboardUtils.currentLocation;
+        Location currentIsland = TablistParser.currentLocation;
         List<String> souls = new ArrayList<>();
         if (currentIsland == Location.HUB) {
             souls = getAllSouls().locations.get("hub");

@@ -10,6 +10,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 
 import java.awt.*;
@@ -22,7 +23,7 @@ public class BatMobDisplay {
         if (!Config.feature.dungeons.dungeonsBatMobs) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         WorldClient world = Minecraft.getMinecraft().theWorld;
 

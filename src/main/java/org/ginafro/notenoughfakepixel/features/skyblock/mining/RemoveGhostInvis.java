@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class RemoveGhostInvis {
         if (event.phase != TickEvent.Phase.START) return;
         if (!Config.feature.mining.miningShowGhosts) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
+        if (TablistParser.currentLocation != Location.DWARVEN) return;
 
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;

@@ -58,7 +58,7 @@ public abstract class HightlightSlot {
         String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
         if (!title.startsWith(getContainerName())) return;
 
-        for (Slot slot : ((ContainerChest) container).inventorySlots) {
+        for (Slot slot : container.inventorySlots) {
             if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
 
             ItemStack item = slot.getStack();

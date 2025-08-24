@@ -12,6 +12,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
@@ -55,7 +56,7 @@ public class RelicWaypoints {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (!Config.feature.qol.qolRelicWaypoints || ScoreboardUtils.currentLocation != Location.SPIDERS_DEN) {
+        if (!Config.feature.qol.qolRelicWaypoints || TablistParser.currentLocation != Location.SPIDERS_DEN) {
             return;
         }
 
@@ -82,7 +83,7 @@ public class RelicWaypoints {
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
-        if (!Config.feature.qol.qolRelicWaypoints || ScoreboardUtils.currentLocation != Location.SPIDERS_DEN) {
+        if (!Config.feature.qol.qolRelicWaypoints || TablistParser.currentLocation != Location.SPIDERS_DEN) {
             return;
         }
 

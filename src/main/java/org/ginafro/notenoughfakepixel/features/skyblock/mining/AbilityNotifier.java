@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -63,7 +64,7 @@ public class AbilityNotifier {
     private static boolean checkEssentials() {
         return (Minecraft.getMinecraft().thePlayer == null) ||
                 (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                (!ScoreboardUtils.currentLocation.equals(Location.DWARVEN));
+                (!TablistParser.currentLocation.equals(Location.DWARVEN));
     }
 
 

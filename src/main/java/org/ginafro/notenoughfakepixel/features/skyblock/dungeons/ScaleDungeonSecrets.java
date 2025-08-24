@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
@@ -16,7 +17,7 @@ import java.util.UUID;
 public class ScaleDungeonSecrets {
     public static void scaleItemDrop(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo ci) {
         if (!Config.feature.dungeons.dungeonsItemSecretsBig) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         ItemStack stack = entity.getEntityItem();
         if (stack == null) return;

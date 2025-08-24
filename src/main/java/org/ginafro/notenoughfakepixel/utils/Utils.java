@@ -1,5 +1,7 @@
 package org.ginafro.notenoughfakepixel.utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import org.jetbrains.annotations.NotNull;
 
@@ -52,10 +54,8 @@ public class Utils {
         return String.format("%,d", (long) n);
     }
 
-    public static String removeFormatting(String input) {
-        return input.replaceAll("[§|&][0-9a-fk-or]", "");
-    }
-
+    @Setter
+    @Getter
     private String lockedEnchantment = "";
 
     public static String getKeyDesc(int keycode) {
@@ -229,14 +229,6 @@ public class Utils {
             default:
                 return "NONE";
         }
-    }
-
-    public String getLockedEnchantment() {
-        return lockedEnchantment;
-    }
-
-    public void setLockedEnchantment(String lockedEnchantment) {
-        this.lockedEnchantment = lockedEnchantment;
     }
 
     private final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + '\u00A7' + "[0-9A-FK-OR]");

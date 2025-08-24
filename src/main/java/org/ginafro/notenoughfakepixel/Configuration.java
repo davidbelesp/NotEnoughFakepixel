@@ -23,6 +23,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionE
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -120,7 +121,7 @@ public class Configuration {
         }
         // Debug runnables
         if ("logLocation".equals(runnableId)) {
-            Logger.log(ScoreboardUtils.currentLocation);
+            Logger.log(TablistParser.currentLocation);
         }
         if ("logScoreboard".equals(runnableId)) {
             ScoreboardUtils.getScoreboardLines().forEach(Logger::log);

@@ -20,6 +20,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -58,7 +59,7 @@ public class CreeperSolver {
         EntityPlayerSP player = mc.thePlayer;
         ticks++;
         if (ticks % 20 == 0) {
-            if (Config.feature.dungeons.dungeonsCreeper && ScoreboardUtils.currentLocation.isDungeon() && world != null && player != null) {
+            if (Config.feature.dungeons.dungeonsCreeper && TablistParser.currentLocation.isDungeon() && world != null && player != null) {
                 double x = player.posX;
                 double y = player.posY;
                 double z = player.posZ;

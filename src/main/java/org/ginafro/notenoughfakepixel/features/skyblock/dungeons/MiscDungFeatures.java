@@ -34,7 +34,7 @@ public class MiscDungFeatures {
     public void onChat(ClientChatReceivedEvent event) {
         String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         if (message.startsWith("[BOSS] The Watcher: That will be enough for now.")) {
             if (Config.feature.dungeons.dungeonsBloodReady) {
@@ -56,7 +56,7 @@ public class MiscDungFeatures {
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         WorldClient world = Minecraft.getMinecraft().theWorld;
 
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         for (Entity entity : world.loadedEntityList) {
             if (entity instanceof EntityArmorStand) {

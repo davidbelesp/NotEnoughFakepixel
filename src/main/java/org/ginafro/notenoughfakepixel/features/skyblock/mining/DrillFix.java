@@ -11,6 +11,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 @RegisterEvents
@@ -25,7 +26,7 @@ public class DrillFix {
     public void onPacketRead(PacketReadEvent event) {
         if (!Config.feature.mining.miningDrillFix) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
+        if (TablistParser.currentLocation != Location.DWARVEN) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;

@@ -24,10 +24,7 @@ import org.ginafro.notenoughfakepixel.Configuration;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.RenderEntityModelEvent;
-import org.ginafro.notenoughfakepixel.utils.EntityHighlightUtils;
-import org.ginafro.notenoughfakepixel.utils.OutlineUtils;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -76,7 +73,7 @@ public class LividDisplay {
         if (Minecraft.getMinecraft().theWorld == null || Minecraft.getMinecraft().theWorld.getTotalWorldTime() % 20 != 0)
             return;
 
-        if (ScoreboardUtils.currentLocation.isDungeon()) {
+        if (TablistParser.currentLocation.isDungeon()) {
             Minecraft mc = Minecraft.getMinecraft();
             World world = mc.theWorld;
             if (world == null) return;

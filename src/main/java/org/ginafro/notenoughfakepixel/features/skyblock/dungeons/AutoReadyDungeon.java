@@ -13,7 +13,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
@@ -32,7 +31,7 @@ public class AutoReadyDungeon {
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
         if (clicked) return;
         if (!Config.feature.dungeons.dungeonsAutoReady) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
         if (event.gui == null) return;
         if (!(event.gui instanceof GuiChest)) return;
 
@@ -96,7 +95,7 @@ public class AutoReadyDungeon {
     public void onChatRecieve(ClientChatReceivedEvent e) {
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
-        if (ScoreboardUtils.currentLocation != Location.NONE) return;
+        if (TablistParser.currentLocation != Location.NONE) return;
 
         Matcher matcher = nickedNamePattern.matcher(e.message.getFormattedText());
         if (matcher.matches()) {

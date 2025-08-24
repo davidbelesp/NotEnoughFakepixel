@@ -43,7 +43,7 @@ public class BlazeAttunements {
         }
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null || mc.thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock() || !ScoreboardUtils.currentLocation.isCrimson()) return;
+        if (!ScoreboardUtils.currentGamemode.isSkyblock() || !TablistParser.currentLocation.isCrimson()) return;
 
         EntityLivingBase entity = event.entity;
         if (entity.isInvisible() || entity == mc.thePlayer) return;
@@ -55,7 +55,7 @@ public class BlazeAttunements {
 
         for (Entity armorStand : armorStands) {
             if (armorStand instanceof EntityArmorStand) {
-                String displayName = ((EntityArmorStand) armorStand).getDisplayName().getUnformattedText();
+                String displayName = armorStand.getDisplayName().getUnformattedText();
                 Matcher matcher = COLOR_PATTERN.matcher(displayName);
                 if (matcher.find()) {
                     String attunement = matcher.group().toUpperCase();
@@ -87,7 +87,7 @@ public class BlazeAttunements {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onRenderEntityModel(RenderEntityModelEvent event) {
         if (!Config.feature.slayer.slayerBlazeAttunements) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock() || !ScoreboardUtils.currentLocation.isCrimson()) return;
+        if (!ScoreboardUtils.currentGamemode.isSkyblock() || !TablistParser.currentLocation.isCrimson()) return;
 
         EntityLivingBase entity = event.getEntity();
         if (entity == null || !blazeEntity.contains(entity)) return;
@@ -99,7 +99,7 @@ public class BlazeAttunements {
 
         for (Entity armorStand : armorStands) {
             if (armorStand instanceof EntityArmorStand) {
-                String displayName = ((EntityArmorStand) armorStand).getDisplayName().getUnformattedText();
+                String displayName = armorStand.getDisplayName().getUnformattedText();
                 Matcher matcher = COLOR_PATTERN.matcher(displayName);
                 if (matcher.find()) {
                     String attunement = matcher.group().toUpperCase();

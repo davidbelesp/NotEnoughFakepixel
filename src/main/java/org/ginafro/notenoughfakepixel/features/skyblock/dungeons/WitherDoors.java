@@ -22,6 +22,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -62,7 +63,7 @@ public class WitherDoors {
     private int left = 0, right = 0, north = 0, south = 0;
     private int width = 0, height = 0;
     private String currentRoomId = "";
-    private List<BlockPos> foundCoalBlocks = new ArrayList<>();
+    private final List<BlockPos> foundCoalBlocks = new ArrayList<>();
     private List<BlockPos> currentDoors = new ArrayList<>();
     private ROOMSIZE size = ROOMSIZE.NONE;
     private boolean doorOpenedInEmptyRoom = false;
@@ -201,7 +202,7 @@ public class WitherDoors {
     private List<BlockPos> findWitherDoors() {
         Set<BlockPos> doorBases = new HashSet<>();
         foundCoalBlocks.clear();
-        if (yLvl == -1 || !ScoreboardUtils.currentLocation.isDungeon()) return new ArrayList<>();
+        if (yLvl == -1 || !TablistParser.currentLocation.isDungeon()) return new ArrayList<>();
 
         World w = mc.theWorld;
         if (w == null) return new ArrayList<>();
@@ -259,7 +260,7 @@ public class WitherDoors {
         if (event.phase != TickEvent.Phase.END) return;
 
         if (System.currentTimeMillis() - lastUpdateTime > UPDATE_INTERVAL) {
-            if (ScoreboardUtils.currentLocation.isDungeon()) {
+            if (TablistParser.currentLocation.isDungeon()) {
                 checkYLVL();
                 detectRoomBoundaries();
                 currentDoors = findWitherDoors();
@@ -291,7 +292,7 @@ public class WitherDoors {
     @SubscribeEvent
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         if (!Config.feature.dungeons.dungeonsWitherDoors) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         String msg = event.message.getUnformattedText();
         if (msg.startsWith("RIGHT CLICK on the WITHER DOOR to open it") ||
@@ -313,7 +314,7 @@ public class WitherDoors {
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (!Config.feature.dungeons.dungeonsWitherDoors) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         if (persistentDoors.isEmpty()) return;
 

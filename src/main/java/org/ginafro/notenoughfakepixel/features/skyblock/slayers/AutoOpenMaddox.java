@@ -22,7 +22,7 @@ import java.util.List;
 @RegisterEvents
 public class AutoOpenMaddox {
 
-    private static String maddoxCommand = "/openmaddox";
+    private static final String maddoxCommand = "/openmaddox";
     private static long lastMaddoxTime = 0;
     private static boolean opened = false;
 

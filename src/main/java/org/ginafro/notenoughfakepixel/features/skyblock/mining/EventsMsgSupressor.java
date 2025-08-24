@@ -6,6 +6,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.util.regex.Pattern;
@@ -38,7 +39,7 @@ public class EventsMsgSupressor {
     private void checkDonEspressoMessage(ClientChatReceivedEvent e) {
         if (!Config.feature.mining.miningDisableDonEspresso) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (ScoreboardUtils.currentLocation != Location.DWARVEN) return;
+        if (TablistParser.currentLocation != Location.DWARVEN) return;
         if (donEspressoPattern.matcher(e.message.getFormattedText()).find()) {
             e.setCanceled(true);
         }

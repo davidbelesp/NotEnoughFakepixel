@@ -33,7 +33,7 @@ public class SalvageItemsSaver {
 
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (ScoreboardUtils.currentLocation != Location.DUNGEON_HUB) return;
+        if (TablistParser.currentLocation != Location.DUNGEON_HUB) return;
         if (!Config.feature.dungeons.dungeonsSalvageItemsPrevention) return;
         if (event.gui instanceof GuiChest) {
             GuiChest chest = (GuiChest) event.gui;
@@ -53,7 +53,7 @@ public class SalvageItemsSaver {
 
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
-        if (ScoreboardUtils.currentLocation != Location.DUNGEON_HUB) return;
+        if (TablistParser.currentLocation != Location.DUNGEON_HUB) return;
         if (!Config.feature.dungeons.dungeonsSalvageItemsPrevention) return;
         if (!Mouse.getEventButtonState()) return;
         if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest))

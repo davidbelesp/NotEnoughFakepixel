@@ -8,10 +8,7 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.utils.ColorUtils;
-import org.ginafro.notenoughfakepixel.utils.ItemUtils;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.ginafro.notenoughfakepixel.variables.Skins;
 
@@ -25,7 +22,7 @@ public class FelMobDisplay {
         if (!Config.feature.dungeons.dungeonsFelMob) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return;
+        if (!TablistParser.currentLocation.isDungeon()) return;
 
         WorldClient world = Minecraft.getMinecraft().theWorld;
 

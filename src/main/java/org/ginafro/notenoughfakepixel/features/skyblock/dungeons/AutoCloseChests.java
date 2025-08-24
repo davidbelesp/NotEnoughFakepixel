@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
 
 @RegisterEvents
 public class AutoCloseChests {
@@ -17,7 +18,7 @@ public class AutoCloseChests {
     @SubscribeEvent
     public void onGuiBackgroundRender(GuiScreenEvent.BackgroundDrawnEvent event) {
         if (!Config.feature.dungeons.dungeonsAutoCloseChests) return; // Check if the feature is enabled
-        if (!ScoreboardUtils.currentLocation.isDungeon()) return; // Check if the player is in a dungeon
+        if (!TablistParser.currentLocation.isDungeon()) return; // Check if the player is in a dungeon
         if (event.gui == null) return;
 
         // Check if the GUI is a chest
