@@ -69,6 +69,12 @@ public class QualityOfLife {
     @ConfigAccordionId(id = 1)
     public boolean qolHidePlayerArmor = false;
 
+    @Expose
+    @ConfigOption(name = "Hide Players near NPCS", desc = "Hide players near NPCS.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 1)
+    public boolean qolHidePlayerNearNpcs = false;
+
     // Fairy Soul Subcategory
     @Expose
     @ConfigOption(name = "Fairy Soul Waypoints", desc = "Settings for fairy soul waypoints.")

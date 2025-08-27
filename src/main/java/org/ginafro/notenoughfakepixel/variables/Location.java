@@ -10,6 +10,7 @@ public enum Location {
     DWARVEN("sbm-", "sbm_sandbox-", "sbm_test-"),
     HUB("skyblock-", "skyblock_sandbox-", "skyblocktest-"),
     PRIVATE_HUB("skyblock_private-", "none", "none"),
+    ADMIN_HUB("skyblock_admin-", "skyblock_admin_sandbox-", "skyblock_admin_test-"),
     DUNGEON_HUB("sbdh-", "sbdh_sandbox-", "sbdh_test-"),
     BARN("sbfarms-", "sbfarms_sandbox-", "sbfarms_test"),
     PARK("sbpark-", "sbpark_sandbox-", "sbpark_test-"),
