@@ -4,9 +4,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.client.event.MouseEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.StringUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
@@ -86,6 +90,26 @@ public class HidePlayersNearNpcs {
 
         if (cached.booleanValue()) {
             e.setCanceled(true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onMouseEvent(MouseEvent e) {
+        if (mc.theWorld == null || mc.thePlayer == null) return;
+        if (!Config.feature.qol.qolHidePlayerNearNpcs) return;
+
+        if (e.button == 1 && e.buttonstate) {
+            MovingObjectPosition mop = mc.objectMouseOver;
+            if (mop != null && mop.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
+                Entity target = mop.entityHit;
+                if (target instanceof EntityOtherPlayerMP && !isNpc(target)) {
+                    Boolean hidden = hideDecisionCache.get(target.getUniqueID());
+                    if (hidden != null && hidden) {
+                        mc.objectMouseOver = null;
+                        e.setCanceled(true);
+                    }
+                }
+            }
         }
     }
 
