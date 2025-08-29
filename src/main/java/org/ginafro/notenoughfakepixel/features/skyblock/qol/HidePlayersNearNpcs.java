@@ -93,24 +93,15 @@ public class HidePlayersNearNpcs {
         }
     }
 
-    @SubscribeEvent
-    public void onMouseEvent(MouseEvent e) {
-        if (mc.theWorld == null || mc.thePlayer == null) return;
-        if (!Config.feature.qol.qolHidePlayerNearNpcs) return;
+    public static boolean isCurrentlyHidden(UUID id) {
+        final Boolean b = hideDecisionCache.get(id);
+        return b != null && b.booleanValue();
+    }
 
-        if (e.button == 1 && e.buttonstate) {
-            MovingObjectPosition mop = mc.objectMouseOver;
-            if (mop != null && mop.typeOfHit == MovingObjectPosition.MovingObjectType.ENTITY) {
-                Entity target = mop.entityHit;
-                if (target instanceof EntityOtherPlayerMP && !isNpc(target)) {
-                    Boolean hidden = hideDecisionCache.get(target.getUniqueID());
-                    if (hidden != null && hidden) {
-                        mc.objectMouseOver = null;
-                        e.setCanceled(true);
-                    }
-                }
-            }
-        }
+    public static boolean checkForMixin(Entity entity) {
+        return entity instanceof EntityOtherPlayerMP
+                && !HidePlayersNearNpcs.isNpc(entity)
+                && HidePlayersNearNpcs.isCurrentlyHidden(entity.getUniqueID());
     }
 
     // ---------- Distance + hysteresis + stability logic ----------

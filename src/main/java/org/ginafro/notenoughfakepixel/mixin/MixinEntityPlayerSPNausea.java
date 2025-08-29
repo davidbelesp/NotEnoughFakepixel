@@ -7,9 +7,9 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(EntityPlayerSP.class)
-public class EntityPlayerSPMixinNausea extends AbstractClientPlayer {
+public class MixinEntityPlayerSPNausea extends AbstractClientPlayer {
 
-    public EntityPlayerSPMixinNausea(World worldIn, GameProfile playerProfile) {
+    public MixinEntityPlayerSPNausea(World worldIn, GameProfile playerProfile) {
         super(worldIn, playerProfile);
     }
 }

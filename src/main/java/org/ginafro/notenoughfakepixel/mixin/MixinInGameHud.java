@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GuiIngame.class)
-public class InGameHudMixin {
+public class MixinInGameHud {
 
     @Inject(method = "renderScoreboard", at = @At("HEAD"), cancellable = true)
     public void renderScoreboard(ScoreObjective objective, ScaledResolution scaledRes, CallbackInfo ci) {

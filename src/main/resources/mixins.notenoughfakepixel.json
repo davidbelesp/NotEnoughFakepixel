@@ -1,6 +1,6 @@
 {
   "package": "org.ginafro.notenoughfakepixel.mixin",
-  "plugin": "org.ginafro.notenoughfakepixel.init.AutoDiscoveryMixinPlugin",
+  "plugin": "org.ginafro.notenoughfakepixel.mixin.AutoDiscoveryMixinPlugin",
   "refmap": "mixins.${modid}.refmap.json",
   "minVersion": "0.7",
   "compatibilityLevel": "JAVA_8"

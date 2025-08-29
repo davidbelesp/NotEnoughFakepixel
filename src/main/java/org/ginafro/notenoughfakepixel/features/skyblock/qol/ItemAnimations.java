@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.mixin.Accesors.EntityPlayerAccessor;
+import org.ginafro.notenoughfakepixel.mixin.accesors.EntityPlayerAccessor;
 
 /**
  * Module to change the appearance of held items.

@@ -11,13 +11,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
-import org.ginafro.notenoughfakepixel.mixin.Accesors.BlockAccessor;
+import org.ginafro.notenoughfakepixel.mixin.accesors.BlockAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockCrops.class)
-public abstract class BlockCropsMixinHeight extends BlockMixinHitbox {
+public abstract class MixinBlockCropsHeight extends MixinBlockHitbox {
 
     @Unique
     private static final AxisAlignedBB[] CARROT_POTATO_BOX = {

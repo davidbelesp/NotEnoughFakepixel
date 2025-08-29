@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.mixin.Accesors;
+package org.ginafro.notenoughfakepixel.mixin.accesors;
 
 import net.minecraft.entity.player.EntityPlayer;
 import org.spongepowered.asm.mixin.Mixin;

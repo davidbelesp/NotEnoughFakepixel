@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.mixin.Accesors;
+package org.ginafro.notenoughfakepixel.mixin.accesors;
 
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.util.IChatComponent;

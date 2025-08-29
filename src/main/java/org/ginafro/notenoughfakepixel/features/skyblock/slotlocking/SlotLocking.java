@@ -37,7 +37,7 @@ import org.ginafro.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.ReplaceItemEvent;
 import org.ginafro.notenoughfakepixel.events.SlotClickEvent;
-import org.ginafro.notenoughfakepixel.mixin.Accesors.AccessorGuiContainer;
+import org.ginafro.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
 import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
 import org.lwjgl.input.Keyboard;
@@ -45,7 +45,6 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;

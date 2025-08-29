@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.init;
+package org.ginafro.notenoughfakepixel.mixin;
 
 import lombok.Getter;
 import org.spongepowered.asm.lib.tree.ClassNode;
@@ -93,6 +93,7 @@ public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
                 .replace("/", ".");
 
         if (norm.startsWith(getMixinPackage() + ".") && !norm.endsWith(".")) {
+            System.out.println("Adding mixin class " + norm);
             mixins.add(norm.substring(getMixinPackage().length() + 1));
         }
     }

@@ -3,6 +3,7 @@ package org.ginafro.notenoughfakepixel.utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
@@ -47,5 +48,20 @@ public class InventoryUtils {
 
     public static void highlightSlot(Slot slot, GuiContainer container, Color color) {
         RenderUtils.drawOnSlot(container.inventorySlots.inventorySlots.size(), slot.xDisplayPosition, slot.yDisplayPosition, color.getRGB());
+    }
+
+    public static boolean searchForItemInInventory(String skyblockID) {
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+        if (player == null) return false;
+        InventoryPlayer inventory = player.inventory;
+        if (inventory == null) return false;
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+            ItemStack stack = inventory.getStackInSlot(i);
+            if (stack == null) continue;
+            if (ItemUtils.getInternalName(stack).equals(skyblockID)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

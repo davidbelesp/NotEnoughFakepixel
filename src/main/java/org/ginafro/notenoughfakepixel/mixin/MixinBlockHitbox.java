@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Block.class)
-public class BlockMixinHitbox {
+public class MixinBlockHitbox {
 
     @Inject(method = "getSelectedBoundingBox", at = @At("HEAD"))
     public void getSelectedBoundingBox(World worldin, BlockPos pos, CallbackInfoReturnable<AxisAlignedBB> cir) {

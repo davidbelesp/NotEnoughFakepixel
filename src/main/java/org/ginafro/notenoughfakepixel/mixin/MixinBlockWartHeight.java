@@ -8,13 +8,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
-import org.ginafro.notenoughfakepixel.mixin.Accesors.BlockAccessor;
+import org.ginafro.notenoughfakepixel.mixin.accesors.BlockAccessor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockNetherWart.class)
-public class BlockWartMixinHeight extends BlockMixinHitbox {
+public class MixinBlockWartHeight extends MixinBlockHitbox {
 
     @Unique
     private static final AxisAlignedBB[] NETHER_WART_BOX = {

@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.mixin.Accesors;
+package org.ginafro.notenoughfakepixel.mixin.accesors;
 
 import net.minecraft.block.Block;
 import org.spongepowered.asm.mixin.Mixin;
