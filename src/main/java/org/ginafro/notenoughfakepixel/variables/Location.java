@@ -2,6 +2,7 @@ package org.ginafro.notenoughfakepixel.variables;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import net.minecraft.util.StringUtils;
 
 @Getter
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public enum Location {
     THE_END("sbend-", "sbend_sandbox-", "sbend_test-"),
     CRIMSON_ISLE("sbcris-", "sbcris_sandbox-", "sbcris_test-"),
     DUNGEON("sbdungeon-", "sbdungeon_sandbox-", "sbdungeon_test-"),
+    CRYSTAL_HOLLOWS("sbch-", "sbch_sandbox-", "sbtest_alpha-"),
     NONE("", "", "");
 
     private final String main;

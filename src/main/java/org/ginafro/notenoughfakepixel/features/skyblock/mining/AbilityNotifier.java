@@ -64,7 +64,7 @@ public class AbilityNotifier {
     private static boolean checkEssentials() {
         return (Minecraft.getMinecraft().thePlayer == null) ||
                 (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                (!TablistParser.currentLocation.equals(Location.DWARVEN));
+                ((!TablistParser.currentLocation.equals(Location.DWARVEN) && (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS))));
     }
 
 

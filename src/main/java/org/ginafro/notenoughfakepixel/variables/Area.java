@@ -59,7 +59,21 @@ public enum Area {
     SCARELTON("Scarleton"),
     VOLCANO("Blazing Volcano"),
     SPIDER("Spider's Den"),
-    BIRCH_PARK("Birch Park");
+    BIRCH_PARK("Birch Park"),
+
+    CH_JUNGLE("Jungle"),
+    CH_NUCLEUS("Crystal Nucleus"),
+    CH_GOBLIN("Goblin Holdout"),
+    CH_MITHRIL("Mithril Deposits"),
+    CH_PRECURSOR("Precursor Remnants"),
+    CH_MAGMA("Magma Fields"),
+
+    CH_MINES_OF_DIVAN("Mines of Divan"),
+    CH_JUNGLE_TEMPLE("Jungle Temple"),
+    CH_GOBLIN_QUEEN("Goblin Queen's Den"),
+    CH_LOST_PRECURSOR("Lost Precursor City"),
+
+    ;
 
     private final String s;
 

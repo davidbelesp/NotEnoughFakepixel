@@ -33,6 +33,7 @@ public class TablistParser {
     private static final Ordering<NetworkPlayerInfo> playerOrdering = Ordering.from(new PlayerComparator());
 
     public static int mithrilPowder = 0;
+    public static int gemstonePowder = 0;
 
     public static int secretPercentage = 0;
     public static int deaths = 0;
@@ -160,6 +161,12 @@ public class TablistParser {
                         mithrilPowder = NumberUtils.parseIntSafe(StringUtils.removeChars(num, ","));
                     }
 
+                    // Gemstone Powder: 12,345
+                    if (StringUtils.startsWithFast(line, "Gemstone Powder: ")) {
+                        final String num = StringUtils.sliceAfter(line, "Gemstone Powder: ");
+                        gemstonePowder = NumberUtils.parseIntSafe(StringUtils.removeChars(num, ","));
+                    }
+
                     // Secrets Found: 97%
                     if (StringUtils.startsWithFast(line, "Secrets Found: ")) {
                         final String num = StringUtils.sliceAfter(line, "Secrets Found: ");
@@ -168,8 +175,9 @@ public class TablistParser {
 
                     // Commissions
                     if (readingCommissions) {
-                        commissions.add(line);
-                    } else if (line.contains("Commissions")) {
+                        if (raw.contains("§9§l")) readingCommissions = false;
+                        else commissions.add(line);
+                    } else if (raw.contains("Commissions")) {
                         readingCommissions = true;
                     }
 

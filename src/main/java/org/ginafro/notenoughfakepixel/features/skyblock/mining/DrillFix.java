@@ -26,7 +26,7 @@ public class DrillFix {
     public void onPacketRead(PacketReadEvent event) {
         if (!Config.feature.mining.miningDrillFix) return;
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (TablistParser.currentLocation != Location.DWARVEN) return;
+        if (!TablistParser.currentLocation.equals(Location.DWARVEN) && !TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;

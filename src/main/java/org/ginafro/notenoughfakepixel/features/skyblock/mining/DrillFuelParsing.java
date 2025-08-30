@@ -29,19 +29,18 @@ public class DrillFuelParsing {
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent e) {
         if (!Config.feature.mining.miningDrillFuel) return;
-        if (lastRead < 20) {
+        if (lastRead < 120) {
             lastRead++;
             return;
         }
         if (Minecraft.getMinecraft().thePlayer == null) return;
-        if (TablistParser.currentLocation != Location.DWARVEN) return;
-
         if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!TablistParser.currentLocation.equals(Location.DWARVEN) && !TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) return;
 
         ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getHeldItem();
         if (heldItem == null) return;
 
-        if (!ItemUtils.getInternalName(heldItem).contains("_DRILL_")) return;
+        if (!ItemUtils.getInternalName(heldItem).contains("_DRILL_") && !ItemUtils.getInternalName(heldItem).equals("DIVAN_DRILL")) return;
 
         int fuelTemp = ItemUtils.getExtraAttributesIntTag(heldItem, "fuel");
         if (fuelTemp != -1) fuel = fuelTemp;

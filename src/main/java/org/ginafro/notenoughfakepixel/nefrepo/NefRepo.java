@@ -9,7 +9,7 @@ public class NefRepo {
 
     private static final String BASE = "https://raw.githubusercontent.com/davidbelesp/NotEnoughFakepixel-REPO/refs/heads/main/data/";
 
-    private static final List<String> KEYS = ListUtils.of("fairysouls", "config");
+    private static final List<String> KEYS = ListUtils.of("fairysouls", "update");
 
     public static void init() {
         registerSources();

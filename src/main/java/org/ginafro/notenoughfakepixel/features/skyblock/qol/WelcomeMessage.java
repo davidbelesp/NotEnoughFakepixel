@@ -61,28 +61,28 @@ public class WelcomeMessage {
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
-        if (!notified && event.message.getUnformattedText().equals("+10 Magic Find Bonus!")) {
-            notified = true;
-            EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-            String welcomeMessage = "Welcome " + player.getName() + "! ";
-            String randomMessage = arrayWelcomeMessages.get(random.nextInt(arrayWelcomeMessages.size()));
-            int numberSpecial = random.nextInt(1001);
-            if (numberSpecial == 1000) {
-                randomMessage = EnumChatFormatting.GOLD + "(LEGENDARY) " + EnumChatFormatting.BLUE + legendaryString;
-            } else if (numberSpecial > 900) {
-                randomMessage = EnumChatFormatting.DARK_PURPLE + "(EPIC) " + EnumChatFormatting.BLUE + epicString;
-            }
-            if (randomMessage.startsWith("Welcome")) welcomeMessage = "";
-            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-            String finalRandomMessage = randomMessage;
-            String finalWelcomeMessage = welcomeMessage;
-            exec.schedule(() -> {
-                ChatUtils.notifyChat(EnumChatFormatting.BOLD.toString() + EnumChatFormatting.BLUE + initialString + finalWelcomeMessage + finalRandomMessage);
-                SoundUtils.playSound(new int[]{player.getPosition().getX(),
-                        player.getPosition().getY(),
-                        player.getPosition().getZ()}, "note.pling", 2.0f, 1.0f);
-            }, 1000, TimeUnit.MILLISECONDS);
-            exec.schedule(() -> SoundUtils.playSound(player.getPosition(), "note.pling", 2.0f, 1.6f), 1300, TimeUnit.MILLISECONDS);
-        }
+//        if (!notified && event.message.getUnformattedText().equals("+10 Magic Find Bonus!")) {
+//            notified = true;
+//            EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+//            String welcomeMessage = "Welcome " + player.getName() + "! ";
+//            String randomMessage = arrayWelcomeMessages.get(random.nextInt(arrayWelcomeMessages.size()));
+//            int numberSpecial = random.nextInt(1001);
+//            if (numberSpecial == 1000) {
+//                randomMessage = EnumChatFormatting.GOLD + "(LEGENDARY) " + EnumChatFormatting.BLUE + legendaryString;
+//            } else if (numberSpecial > 900) {
+//                randomMessage = EnumChatFormatting.DARK_PURPLE + "(EPIC) " + EnumChatFormatting.BLUE + epicString;
+//            }
+//            if (randomMessage.startsWith("Welcome")) welcomeMessage = "";
+//            ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+//            String finalRandomMessage = randomMessage;
+//            String finalWelcomeMessage = welcomeMessage;
+//            exec.schedule(() -> {
+//                ChatUtils.notifyChat(EnumChatFormatting.BOLD.toString() + EnumChatFormatting.BLUE + initialString + finalWelcomeMessage + finalRandomMessage);
+//                SoundUtils.playSound(new int[]{player.getPosition().getX(),
+//                        player.getPosition().getY(),
+//                        player.getPosition().getZ()}, "note.pling", 2.0f, 1.0f);
+//            }, 1000, TimeUnit.MILLISECONDS);
+//            exec.schedule(() -> SoundUtils.playSound(player.getPosition(), "note.pling", 2.0f, 1.6f), 1300, TimeUnit.MILLISECONDS);
+//        }
     }
 }

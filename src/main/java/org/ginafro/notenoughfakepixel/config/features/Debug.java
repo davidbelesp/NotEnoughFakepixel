@@ -50,8 +50,14 @@ public class Debug {
     public String logScoreboardButton = "";
 
     @Expose
-    @ConfigOption(name = "Show data loaded", desc = "Shows data loaded on API calls.")
-    @ConfigEditorButton(runnableId = "showAPI", buttonText = "Show API")
+    @ConfigOption(name = "Copy API data", desc = "Copy API data to clipboard.")
+    @ConfigEditorButton(runnableId = "showAPI", buttonText = "Copy")
     @ConfigAccordionId(id = 0)
     public String showAPIButton = "";
+
+    @Expose
+    @ConfigOption(name = "Show held item SBID", desc = "Shows Skyblock ID of the item held.")
+    @ConfigEditorButton(runnableId = "showSBID", buttonText = "Show")
+    @ConfigAccordionId(id = 0)
+    public String showSBIDButton = "";
 }

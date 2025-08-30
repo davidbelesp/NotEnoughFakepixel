@@ -2,7 +2,9 @@ package org.ginafro.notenoughfakepixel;
 
 import com.google.gson.annotations.Expose;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.item.ItemStack;
 import org.ginafro.notenoughfakepixel.alerts.AlertManagementGui;
 import org.ginafro.notenoughfakepixel.config.features.*;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
@@ -21,6 +23,7 @@ import org.ginafro.notenoughfakepixel.features.mlf.Map;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
+import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
@@ -139,6 +142,19 @@ public class Configuration {
                 Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
                 clip.setContents(new java.awt.datatransfer.StringSelection(data), null);
                 Logger.log("Copied API to clipboard! Length: " + data.length());
+            }
+        }
+        if ("showSBID".equals(runnableId)) {
+            EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+            if (player != null) {
+                ItemStack item = player.getHeldItem();
+                if (item != null) {
+                    Logger.log(ItemUtils.getInternalName(item));
+                } else {
+                    Logger.logError("No Held Item");
+                }
+            } else {
+                Logger.logError("No Player");
             }
         }
     }
