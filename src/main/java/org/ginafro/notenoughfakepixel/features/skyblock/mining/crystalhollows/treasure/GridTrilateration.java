@@ -1,4 +1,4 @@
-package org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows;
+package org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure;
 
 import lombok.var;
 import net.minecraft.util.BlockPos;
@@ -122,16 +122,14 @@ public final class GridTrilateration {
             for (Sample smp : samples) {
                 double dx = c.x - smp.ox, dy = c.y - smp.oy, dz = c.z - smp.oz;
                 double resid = abs(sqrt(dx*dx + dy*dy + dz*dz) - smp.d);
-                // soft-robust: inside epsilon counts ~0, outside grows quadratically
                 double n = resid / epsilon;
                 s += n*n;
+                if (s >= secondScore) {
+                    break;
+                }
             }
-            if (s < bestScore) {
-                secondScore = bestScore; second = best;
-                bestScore = s; best = c;
-            } else if (s < secondScore) {
-                secondScore = s; second = c;
-            }
+            if (s < bestScore) { secondScore = bestScore; second = best; bestScore = s; best = c; }
+            else if (s < secondScore) { secondScore = s; second = c; }
         }
 
         double gap = (second == null) ? Double.POSITIVE_INFINITY : (secondScore - bestScore);
@@ -139,7 +137,6 @@ public final class GridTrilateration {
     }
 
     // ---------- Internals ----------
-
     private static double[] lsqGuess(List<Sample> samples) {
         // Use sample 0 as reference, derive linear system A p = b
         var r = samples.get(0);

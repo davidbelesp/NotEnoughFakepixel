@@ -2,6 +2,7 @@ package org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -32,7 +33,6 @@ public class ScavengedToolsOverlay extends Overlay {
         if (Minecraft.getMinecraft().gameSettings.showDebugInfo) return false;
         if (Minecraft.getMinecraft().gameSettings.keyBindPlayerList.isKeyDown()) return false;
         if (Config.feature.mining.miningOverlayHideOnChat && mc.currentScreen instanceof GuiChat) return false;
-        if ( mc.gameSettings.showDebugInfo ) return false;
         return Config.feature.mining.scavengedOverlay;
     }
 
@@ -76,9 +76,15 @@ public class ScavengedToolsOverlay extends Overlay {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
         if (!shouldShow()) return;
 
+        ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
+        int width = (int) getWidth(Config.feature.mining.scavengedOverlayScale, getLines());
+        int height = (int) getHeight(Config.feature.mining.scavengedOverlayScale, getLines());
+        int x = Config.feature.mining.scavengedOverlayPos.getAbsX(sr, width);
+        int y = Config.feature.mining.scavengedOverlayPos.getAbsY(sr, height);
+
         draw(
-                Config.feature.mining.scavengerOverlayX,
-                Config.feature.mining.scavengerOverlayY,
+                x - ((float) width /2),
+                y - ((float) height /2),
                 Config.feature.mining.scavengedOverlayScale,
                 Config.feature.mining.miningOverlayBackgroundColor
         );

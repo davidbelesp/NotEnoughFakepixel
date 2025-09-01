@@ -68,6 +68,8 @@ public class SlayerMobsDisplay {
         Color minibossColor = ColorUtils.getColor(Config.feature.slayer.slayerColor);
 
         WorldClient world = Minecraft.getMinecraft().theWorld;
+        if (world == null) return;
+
         world.loadedEntityList.forEach(entity -> {
             if (entity == null || entity.getName() == null) return;
             if (!(entity instanceof EntityArmorStand)) return;

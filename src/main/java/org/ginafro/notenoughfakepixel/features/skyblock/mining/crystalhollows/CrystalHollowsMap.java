@@ -1,7 +1,9 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -18,7 +20,7 @@ import java.util.Objects;
 @RegisterEvents
 public class CrystalHollowsMap extends Gui {
 
-    private static final int MARGIN_PX = 6;
+    @Getter private static final int MARGIN_PX = 6;
     private static final ResourceLocation MAP_ZONES_TEX = new ResourceLocation("notenoughfakepixel:crystalhollows/map.png");
     private static final ResourceLocation MAP_GEMS_TEX = new ResourceLocation("notenoughfakepixel:crystalhollows/map_gems.png");
 
@@ -45,8 +47,10 @@ public class CrystalHollowsMap extends Gui {
         if (Config.feature.mining.miningOverlayHideOnChat && mc.currentScreen instanceof GuiChat) return;
         if (mc.thePlayer == null || mc.gameSettings.keyBindPlayerList.isKeyDown() || mc.gameSettings.showDebugInfo) return;
 
-        final int x = MARGIN_PX + Config.feature.mining.miningCrystalMapX;
-        final int y = MARGIN_PX + Config.feature.mining.miningCrystalMapY;
+        ScaledResolution sr = new ScaledResolution(mc);
+
+        final int x = (Config.feature.mining.crystalMapPos.getAbsX(sr, Config.feature.mining.miningCrystalMapWidth)) - (Config.feature.mining.miningCrystalMapWidth/2);
+        final int y = (Config.feature.mining.crystalMapPos.getAbsY(sr, Config.feature.mining.miningCrystalMapWidth)) - (Config.feature.mining.miningCrystalMapWidth/2);
 
         final int w = Config.feature.mining.miningCrystalMapWidth;
 

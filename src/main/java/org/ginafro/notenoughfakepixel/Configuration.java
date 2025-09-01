@@ -21,6 +21,10 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.mlf.Info;
 import org.ginafro.notenoughfakepixel.features.mlf.Map;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.AutomatonShow;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.PrecursorItemsOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.ScavengedToolsOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
@@ -121,6 +125,20 @@ public class Configuration {
         }
         if("nefButtons".equals(runnableId)){
             //Minecraft.getMinecraft().displayGuiScreen(new InventoryEditor());
+        }
+        if ("editCrystalHollowsMapPos".equals(runnableId)) {
+            int width = Config.feature.mining.miningCrystalMapWidth + ((CrystalHollowsMap.getMARGIN_PX()*2));
+            editOverlay(activeConfigCategory, width, width , Config.feature.mining.crystalMapPos);
+        }
+        if ("editScavengedOverlayPos".equals(runnableId)) {
+            int width = (int)Math.abs((ScavengedToolsOverlay.MINIMUM_WIDTH + (25*6)) * Config.feature.mining.scavengedOverlayScale);
+            int height = (int)Math.abs((ScavengedToolsOverlay.LINE_HEIGHT * 4) * Config.feature.mining.scavengedOverlayScale);
+            editOverlay(activeConfigCategory, width, height, Config.feature.mining.scavengedOverlayPos);
+        }
+        if ("editAutomatonOverlayPos".equals(runnableId)) {
+            int width = (int)Math.abs((PrecursorItemsOverlay.MINIMUM_WIDTH + (25*6)) * Config.feature.mining.automatonOverlayScale);
+            int height = (int)Math.abs((PrecursorItemsOverlay.LINE_HEIGHT * 6) * Config.feature.mining.automatonOverlayScale);
+            editOverlay(activeConfigCategory, width, height, Config.feature.mining.automatonOverlayPos);
         }
         // Debug runnables
         if ("logLocation".equals(runnableId)) {

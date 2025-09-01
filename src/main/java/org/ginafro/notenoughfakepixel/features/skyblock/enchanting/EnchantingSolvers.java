@@ -153,7 +153,13 @@ public class EnchantingSolvers {
                 int round = itemInSlot.stackSize;
                 if (chronomatronOrder.size() >= round) return;
 
-                Item lastItem = containerChest.inventorySlots.get(previousIndex).getStack().getItem();
+                List<Slot> slots = containerChest.inventorySlots;
+                if (slots == null) return;
+                Slot tempSlot = slots.get(previousIndex);
+                if (tempSlot == null) return;
+                ItemStack slotStack = tempSlot.getStack();
+                if (slotStack == null) return;
+                Item lastItem = slotStack.getItem();
                 if (Block.getBlockFromItem(lastItem) == Blocks.stained_glass) {
                     noteFinished = true;
                 }

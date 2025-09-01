@@ -17,13 +17,13 @@ import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 import org.ginafro.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import org.ginafro.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure.CrystalHollowsTreasureModule;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure.TreasureTriangulator;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.CrystalWaypoints;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.equipment.EquipmentOverlay;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.CustomAliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
 import org.ginafro.notenoughfakepixel.nefrepo.NefRepo;
-import org.ginafro.notenoughfakepixel.utils.Logger;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
 
 import java.io.File;
@@ -79,7 +79,11 @@ public class NotEnoughFakepixel {
 
         // REPO
         NefRepo.init();
-        Runtime.getRuntime().addShutdownHook(new Thread(RepoHandler::shutdown, "RepoHandler-Shutdown"));
+        Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHook, "Shutdown Hook"));
+
+        // Ch waypoints
+        CrystalWaypoints.getInstance().load();
+
     }
 
     private void createDirectoryIfNotExists(File directory) {
@@ -88,6 +92,17 @@ public class NotEnoughFakepixel {
         }
     }
 
+    private void shutdownHook() {
+        RepoHandler.shutdown();
+
+        TreasureTriangulator.getInstance().shutdown();
+
+        try {
+            CrystalWaypoints.getInstance().saveIfDirty();
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
 
     public static void resetLockedSlots() {
         SlotLocking.getInstance().resetSlotLocking();

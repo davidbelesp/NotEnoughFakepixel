@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.config.features;
 
 import com.google.gson.annotations.Expose;
+import org.ginafro.notenoughfakepixel.config.gui.core.config.Position;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Mining {
@@ -161,6 +162,36 @@ public class Mining {
     public boolean crysalMetalDetector = true;
 
     @Expose
+    @ConfigOption(name = "Full block Crystal Panes", desc = "Modifies the crystal pane hitbox to be a full block instead of a thin pane.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean crystalFullBlockPane = true;
+
+    @Expose
+    @ConfigOption(name = "Enables CH Waypoints", desc = "Enables render of saved Crystal Hollows waypoints.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean crystalWaypoints = true;
+
+    @Expose
+    @ConfigOption(name = "Automaton Display", desc = "Shows Automatons close to you.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean crystalShowAutomaton = true;
+
+    @Expose
+    @ConfigOption(name = "Powder Mining Notifier", desc = "Notifies in your screen when you found a powder chest.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean crystalPowderNotifier = true;
+
+    @Expose
+    @ConfigOption(name = "Worm Notifier", desc = "Notifies in your screen when a worm spawned.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean crystalWormNotifier = true;
+
+    @Expose
     @ConfigOption(name = "Crystal Hollows Map Settings", desc = "Settings for the Crystal Hollows map.")
     @ConfigAccordionId(id = 2)
     @ConfigEditorAccordion(id = 2_1)
@@ -175,22 +206,19 @@ public class Mining {
     public String miningCrystalMapType = "Gemstones";
 
     @Expose
+    @ConfigOption(name = "Edit Crystal Hollows Map Pos", desc = "Adjust the CH map position visually")
+    @ConfigEditorButton(runnableId = "editCrystalHollowsMapPos", buttonText = "Edit")
+    @ConfigAccordionId(id = 2_1)
+    public String editCrystalHollowsMapPosition = "";
+
+    @Expose
+    public Position crystalMapPos = new Position(10, 10, false, false);
+
+    @Expose
     @ConfigOption(name = "Crystal Hollows Map Width", desc = "Width of the Crystal Hollows map in pixels.")
     @ConfigEditorSlider(minValue = 32.0f, maxValue = 160.0f, minStep = 1.0f)
     @ConfigAccordionId(id = 2_1)
     public int miningCrystalMapWidth = 64;
-
-    @Expose
-    @ConfigOption(name = "Crystal Hollows Map x", desc = "Adjust the Crystal Hollows map position horizontally.")
-    @ConfigEditorSlider(minValue = 0.0f, maxValue = 500f, minStep = 1.0f)
-    @ConfigAccordionId(id = 2_1)
-    public int miningCrystalMapX = 10;
-
-    @Expose
-    @ConfigOption(name = "Crystal Hollows Map y", desc = "Adjust the Crystal Hollows map position vertically.")
-    @ConfigEditorSlider(minValue = 0.0f, maxValue = 500f, minStep = 1.0f)
-    @ConfigAccordionId(id = 2_1)
-    public int miningCrystalMapY = 10;
 
     @Expose
     @ConfigOption(name = "Scavenged Overlay Settings", desc = "Settings for Scavenged Overlay.")
@@ -199,16 +227,13 @@ public class Mining {
     public boolean scavengerOverlayAccordion = false;
 
     @Expose
-    @ConfigOption(name = "Scavenged Overlay x", desc = "Adjust the Scavenged Overlay position horizontally.")
-    @ConfigEditorSlider(minValue = 0.0f, maxValue = 1800.0f, minStep = 1.0f)
+    @ConfigOption(name = "Edit Scavenged Overlay Pos", desc = "Adjust the Scavenged overlay position visually")
+    @ConfigEditorButton(runnableId = "editScavengedOverlayPos", buttonText = "Edit")
     @ConfigAccordionId(id = 2_2)
-    public int scavengerOverlayX = 10;
+    public String editScavengedPosition = "";
 
     @Expose
-    @ConfigOption(name = "Scavenged Overlay y", desc = "Adjust the Scavenged Overlay position vertically.")
-    @ConfigEditorSlider(minValue = 0.0f, maxValue = 1250.0f, minStep = 1.0f)
-    @ConfigAccordionId(id = 2_2)
-    public int scavengerOverlayY = 10;
+    public Position scavengedOverlayPos = new Position(0, 0, true, true);
 
     @Expose
     @ConfigOption(name = "Scavenged Overlay Scale", desc = "Scale of the Scavenged Overlay text.")
@@ -227,5 +252,56 @@ public class Mining {
     @ConfigEditorColour
     @ConfigAccordionId(id = 2_3)
     public String crystalDivanWaypointColor = "0:190:0:255:0";
+
+    @Expose
+    @ConfigOption(name = "Waypoint Settings", desc = "Settings for the custom waypoints.")
+    @ConfigAccordionId(id = 2)
+    @ConfigEditorAccordion(id = 2_4)
+    public boolean crystalWaypointAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Waypoint color", desc = "Default waypoint color.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 2_4)
+    public String crystalWaypointColor = "0:255:0:0:0";
+
+    @Expose
+    @ConfigOption(name = "Show Beacons", desc = "Enables beacons in the waypoints.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2_4)
+    public boolean crystalWaypointsBeacons = false;
+
+    @Expose
+    @ConfigOption(name = "Show Names", desc = "Enables names in the waypoints.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2_4)
+    public boolean crystalWaypointsNames = true;
+
+    @Expose
+    @ConfigOption(name = "Automaton Overlay", desc = "Settings for Automaton Overlay.")
+    @ConfigAccordionId(id = 2)
+    @ConfigEditorAccordion(id = 2_5)
+    public boolean automatonOverlayAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Edit Automaton Overlay Pos", desc = "Adjust the Automaton overlay position visually")
+    @ConfigEditorButton(runnableId = "editAutomatonOverlayPos", buttonText = "Edit")
+    @ConfigAccordionId(id = 2_5)
+    public String editAutomatonPosition = "";
+
+    @Expose
+    public Position automatonOverlayPos = new Position(0, 0, true, true);
+
+    @Expose
+    @ConfigOption(name = "Automaton Overlay Scale", desc = "Scale of the Automaton Overlay text.")
+    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
+    @ConfigAccordionId(id = 2_5)
+    public float automatonOverlayScale = 1.0f;
+
+    @Expose
+    @ConfigOption(name = "Automaton Box Color", desc = "Color of the Automaton box.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 2_5)
+    public String automatonColor = "0:190:0:255:0";
 
 }

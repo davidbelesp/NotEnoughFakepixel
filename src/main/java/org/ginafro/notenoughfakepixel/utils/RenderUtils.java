@@ -318,7 +318,8 @@ public class RenderUtils {
                 type == MobDisplayTypes.ENDERMAN_BOSS ||
                 type == MobDisplayTypes.WOLF_BOSS ||
                 type == MobDisplayTypes.SPIDER_BOSS ||
-                type == MobDisplayTypes.M7ORBS
+                type == MobDisplayTypes.M7ORBS ||
+                type == MobDisplayTypes.AUTOMATON
         ) {
             GlStateManager.disableDepth();
         }

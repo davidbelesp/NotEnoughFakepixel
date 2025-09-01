@@ -11,6 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import org.ginafro.notenoughfakepixel.utils.ItemUtils;
+import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.util.HashSet;
@@ -27,16 +29,18 @@ public class HideFlamingFists {
     @SubscribeEvent
     public void onEntitySpawn(EntityJoinWorldEvent event) {
         if (!Config.feature.qol.qolHideFlamingFists || !ScoreboardUtils.currentGamemode.isSkyblock()) return;
-
-        if (event.entity instanceof EntityArmorStand) {
-            trackedStands.add((EntityArmorStand) event.entity);
-        }
+        try {
+            if (event.entity instanceof EntityArmorStand) {
+                EntityArmorStand stand = (EntityArmorStand) event.entity;
+                if (stand.getCurrentArmor(4) == null) return;
+                trackedStands.add((EntityArmorStand) event.entity);
+            }
+        } catch (Exception ignored) {}
     }
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (!Config.feature.qol.qolHideFlamingFists || event.phase != TickEvent.Phase.END) return;
-
         if (++checkTimer >= 5) {
             checkTimer = 0;
             checkArmorStands();
@@ -44,16 +48,20 @@ public class HideFlamingFists {
     }
 
     private void checkArmorStands() {
-        Minecraft.getMinecraft().addScheduledTask(() -> {
-            trackedStands.removeIf(stand -> stand.isDead || !stand.isEntityAlive());
+        trackedStands.removeIf(stand -> stand.isDead || !stand.isEntityAlive());
+        for (EntityArmorStand stand : trackedStands) {
+            ItemStack head = stand.getCurrentArmor(3);
+            if (head == null) continue;
 
-            for (EntityArmorStand stand : trackedStands) {
-                ItemStack head = stand.getEquipmentInSlot(4);
-                if (isTargetSkull(head)) {
-                    stand.setInvisible(true);
+            if (isTargetSkull(head)) {
+                String texture = ItemUtils.getSkullTexture(head);
+                if (texture != null) {
+                    Logger.log(texture);
                 }
+                stand.setInvisible(true);
             }
-        });
+        }
+
     }
 
     // Unified skull detection method

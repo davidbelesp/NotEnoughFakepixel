@@ -1,5 +1,7 @@
 package org.ginafro.notenoughfakepixel.utils;
 
+import net.minecraft.command.NumberInvalidException;
+
 public class NumberUtils {
 
     public static int parseIntSafe(String s) {
@@ -20,6 +22,10 @@ public class NumberUtils {
             if (digits > 6) break;
         }
         return digits == 0 ? -1 : val;
+    }
+
+    public static double parseDoubleFlexible(String s) {
+        return Double.parseDouble(s.replace(',', '.'));
     }
 
 }
