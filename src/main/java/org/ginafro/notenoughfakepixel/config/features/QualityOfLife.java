@@ -1,6 +1,7 @@
 package org.ginafro.notenoughfakepixel.config.features;
 
 import com.google.gson.annotations.Expose;
+import org.ginafro.notenoughfakepixel.config.gui.core.config.Position;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.*;
 import org.lwjgl.input.Keyboard;
 
@@ -496,15 +497,30 @@ public class QualityOfLife {
     @ConfigEditorBoolean
     public boolean qolReforgeHelper = true;
 
-//    @Expose
-//    @ConfigOption(name = "Damage Commas", desc = "Add commas to damage numbers.")
-//    @ConfigEditorBoolean
-    public boolean qolDmgCommas = false;
+    @Expose
+    @ConfigOption(name = "Dark Auction Timer", desc = "Shows timer to the next Dark Auction.")
+    @ConfigEditorBoolean
+    public boolean qolDAtimer = true;
 
-//    @Expose
-//    @ConfigOption(name = "Damage Formatter", desc = "Format damage numbers (e.g., 167k instead of 167000).")
-//    @ConfigEditorBoolean
-    public boolean qolDmgFormatter = false;
+    @Expose
+    @ConfigOption(name = "Dark AH Timer Settings", desc = "Dark Auction timer settings.")
+    @ConfigEditorAccordion(id = 9)
+    public boolean darkAuctionAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Scale", desc = "Scale of the Dark AH Timer.")
+    @ConfigAccordionId(id = 9)
+    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
+    public float darkAHTimerScale = 1.0f;
+
+    @Expose
+    @ConfigOption(name = "Position", desc = "Position of the Dark AH Timer.")
+    @ConfigEditorButton(runnableId = "editDarkAHTimerPos", buttonText = "Edit")
+    @ConfigAccordionId(id = 9)
+    public String editDarkAHTimerPos = "";
+
+    @Expose
+    public Position darkAhTimerPos = new Position(0, 0, true, true);
 
     // Method to handle the reset button functionality
     public void resetItemValues() {

@@ -35,7 +35,7 @@ public class VersionChecker {
             Logger.log(currentVersion);
             Logger.log(latestVersion);
             Logger.log(isNewerVersion(currentVersion, latestVersion));
-            if (isNewerVersion(latestVersion, currentVersion)) return;
+            if (!isNewerVersion(latestVersion, currentVersion)) return;
 
             String message = getCachedUpdateData().getUpdate_msg().replace("${currentVersion}", currentVersion);
             ChatUtils.notifyChat(message);

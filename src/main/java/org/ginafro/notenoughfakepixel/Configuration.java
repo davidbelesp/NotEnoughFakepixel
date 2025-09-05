@@ -21,10 +21,7 @@ import org.ginafro.notenoughfakepixel.features.duels.KDCounter;
 import org.ginafro.notenoughfakepixel.features.mlf.Info;
 import org.ginafro.notenoughfakepixel.features.mlf.Map;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.AutomatonShow;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.PrecursorItemsOverlay;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.ScavengedToolsOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
@@ -140,6 +137,12 @@ public class Configuration {
             int height = (int)Math.abs((PrecursorItemsOverlay.LINE_HEIGHT * 6) * Config.feature.mining.automatonOverlayScale);
             editOverlay(activeConfigCategory, width, height, Config.feature.mining.automatonOverlayPos);
         }
+        if ("editWormTimerPos".equals(runnableId)) {
+            editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.mining.wormTimerScale), (int) Math.abs(9 * Config.feature.mining.wormTimerScale), Config.feature.mining.wormTimerPos);
+        }
+        if ("editDarkAHTimerPos".equals(runnableId)) {
+            editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.qol.darkAHTimerScale), (int) Math.abs(9 * Config.feature.qol.darkAHTimerScale), Config.feature.qol.darkAhTimerPos);
+        }
         // Debug runnables
         if ("logLocation".equals(runnableId)) {
             Logger.log(TablistParser.currentLocation);
@@ -174,6 +177,10 @@ public class Configuration {
             } else {
                 Logger.logError("No Player");
             }
+        }
+        if ("triggerTimers".equals(runnableId)) {
+            WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
+            Logger.log("Set worm spawn to 30 seconds from now");
         }
     }
 

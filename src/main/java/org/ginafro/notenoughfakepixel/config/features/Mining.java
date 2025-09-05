@@ -192,6 +192,31 @@ public class Mining {
     public boolean crystalWormNotifier = true;
 
     @Expose
+    @ConfigOption(name = "Treasure Chest Helper", desc = "Shows a square where to aim when a treasure chest spawns.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean lockedTreasureChest = true;
+
+    @Expose
+    @ConfigOption(name = "Worm Timer", desc = "Shows a timer for the worm cooldown.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean wormTimerCooldown = true;
+
+    @Expose
+    @ConfigOption(name = "Heat Notifier", desc = "Notifies you when you are over given heat.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 2)
+    public boolean crystalHeatNotifier = true;
+
+    // slider to get heat level 50 to 100
+    @Expose
+    @ConfigOption(name = "Heat Notifier Level", desc = "Set the heat level to get notified.")
+    @ConfigEditorSlider(minValue = 50.0f, maxValue = 100.0f, minStep = 1.0f)
+    @ConfigAccordionId(id = 2)
+    public int crystalHeatLevel = 80;
+
+    @Expose
     @ConfigOption(name = "Crystal Hollows Map Settings", desc = "Settings for the Crystal Hollows map.")
     @ConfigAccordionId(id = 2)
     @ConfigEditorAccordion(id = 2_1)
@@ -303,5 +328,26 @@ public class Mining {
     @ConfigEditorColour
     @ConfigAccordionId(id = 2_5)
     public String automatonColor = "0:190:0:255:0";
+
+    @Expose
+    @ConfigOption(name = "Worm Timer", desc = "Settings for Worm Timer.")
+    @ConfigAccordionId(id = 2)
+    @ConfigEditorAccordion(id = 2_6)
+    public boolean wormTimerAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Scale", desc = "Scale of the Worm Timer.")
+    @ConfigAccordionId(id = 2_6)
+    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
+    public float wormTimerScale = 1.0f;
+
+    @Expose
+    @ConfigOption(name = "Position", desc = "Position of the Worm Timer.")
+    @ConfigEditorButton(runnableId = "editWormTimerPos", buttonText = "Edit")
+    @ConfigAccordionId(id = 2_6)
+    public String editWormTimerPos = "";
+
+    @Expose
+    public Position wormTimerPos = new Position(0, 0, true, true);
 
 }
