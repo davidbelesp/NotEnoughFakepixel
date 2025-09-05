@@ -55,12 +55,14 @@ public class ChWaypointEvents {
         if (Config.feature.mining.crystalWaypointsBeacons) {
             Color color = ColorUtils.getColor(Config.feature.mining.crystalWaypointColor);
             for (ChWaypoint waypoint : CrystalWaypoints.getInstance().getAll()) {
+                if (Boolean.FALSE.equals(waypoint.toggled)) continue;
                 RenderUtils.renderBeaconBeam(new BlockPos(waypoint.x, waypoint.y, waypoint.z), color.getRGB(), 1, event.partialTicks);
             }
         }
 
         if (Config.feature.mining.crystalWaypointsNames) {
             for (ChWaypoint waypoint : CrystalWaypoints.getInstance().getAll()) {
+                if (Boolean.FALSE.equals(waypoint.toggled)) continue;
                 RenderUtils.renderWaypointText(waypoint.getName() ,new BlockPos(waypoint.x, waypoint.y + 3, waypoint.z), event.partialTicks);
             }
         }

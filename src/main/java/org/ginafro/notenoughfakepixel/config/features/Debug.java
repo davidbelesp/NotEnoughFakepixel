@@ -60,4 +60,10 @@ public class Debug {
     @ConfigEditorButton(runnableId = "showSBID", buttonText = "Show")
     @ConfigAccordionId(id = 0)
     public String showSBIDButton = "";
+
+    @Expose
+    @ConfigOption(name = "Trigger all timers", desc = "trigger all timers event.")
+    @ConfigEditorButton(runnableId = "triggerTimers", buttonText = "Show")
+    @ConfigAccordionId(id = 0)
+    public String triggerTimers = "";
 }

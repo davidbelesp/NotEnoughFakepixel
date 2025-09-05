@@ -13,6 +13,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -21,13 +22,12 @@ import java.util.Objects;
 public class CrystalHollowsMap extends Gui {
 
     @Getter private static final int MARGIN_PX = 6;
-    private static final ResourceLocation MAP_ZONES_TEX = new ResourceLocation("notenoughfakepixel:crystalhollows/map.png");
-    private static final ResourceLocation MAP_GEMS_TEX = new ResourceLocation("notenoughfakepixel:crystalhollows/map_gems.png");
+    private static final ResourceLocation MAP_ZONES_TEX = Resources.CRYSTAL_MAP_ZONES.getResource();
+    private static final ResourceLocation MAP_GEMS_TEX = Resources.CRYSTAL_MAP_GEMS.getResource();
 
-    private static final ResourceLocation PLAYER_ARROW_TEX =
-            new ResourceLocation("notenoughfakepixel:crystalhollows/map_arrow.png");
-    private static final ResourceLocation PLAYER_ARROW_OUT_TEX =
-            new ResourceLocation("notenoughfakepixel:crystalhollows/map_point.png");
+    private static final ResourceLocation PLAYER_ARROW_TEX = Resources.CRYSTAL_MAP_ARROW.getResource();
+    private static final ResourceLocation PLAYER_ARROW_OUT_TEX = Resources.CRYSTAL_MAP_POINT.getResource();
+
 
     private static final int ARROW_SRC_W = 16;
     private static final int ARROW_SRC_H = 16;

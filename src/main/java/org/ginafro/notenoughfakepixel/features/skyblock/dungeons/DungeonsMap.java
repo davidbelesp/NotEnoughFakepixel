@@ -18,6 +18,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -29,8 +30,7 @@ public class DungeonsMap {
     private static final float playerMarkerScale = 1.4F;
     private static final float othersMarkerScale = 1.25F;
     private double playerPositionX, playerPositionY = 0;
-    private static final Color[] colors = {Color.YELLOW, Color.BLUE, Color.RED, Color.ORANGE};
-    private static final ResourceLocation mapIconsTexture = new ResourceLocation("textures/map/map_icons.png");
+    private static final ResourceLocation mapIconsTexture = Resources.MAP_ICONS.getResource();
     private final Minecraft mc = Minecraft.getMinecraft();
     private boolean finalScreen = false;
     private final Tessellator tessellator = Tessellator.getInstance();

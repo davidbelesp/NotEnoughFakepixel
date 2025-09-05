@@ -67,11 +67,7 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> {
     @Redirect(method = "renderName*", at = @At(value = "INVOKE", target =
             "Lnet/minecraft/entity/EntityLivingBase;getDisplayName()Lnet/minecraft/util/IChatComponent;"))
     public IChatComponent renderName_getDisplayName(EntityLivingBase entity) {
-        if (entity instanceof EntityArmorStand) {
-            return DamageCommas.replaceName(entity);
-        } else {
-            return entity.getDisplayName();
-        }
+        return entity.getDisplayName();
     }
 
     @Inject(method = "setBrightness", at = @At(value = "HEAD"), cancellable = true)

@@ -16,19 +16,42 @@ public class MixinItemRenderer {
     @Shadow
     private ItemStack itemToRender;
 
-    @Inject(method = "transformFirstPersonItem(FF)V", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "transformFirstPersonItem(FF)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     public void itemTransform(float equipProgress, float swingProgress, CallbackInfo ci) {
-//        if (ItemAnimations.itemTransformHook(equipProgress, swingProgress)) ci.cancel();
+        if (!ItemAnimations.shouldChange()) return;
+        ci.cancel();
+        ItemAnimations.processItemAnimation(equipProgress, swingProgress);
     }
 
-    @Inject(method = "doItemUsedTransformations", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "doItemUsedTransformations",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     public void useTransform(float swingProgress, CallbackInfo ci) {
-//        if (ItemAnimations.scaledSwing(swingProgress)) ci.cancel();
+        if (!ItemAnimations.shouldChangeScaleSwing()) return;
+        ci.cancel();
+        ItemAnimations.changeSwingScale(swingProgress);
     }
 
-    @Inject(method = "performDrinking", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "performDrinking",
+            at = @At("HEAD"),
+            cancellable = true
+    )
     public void drinkTransform(AbstractClientPlayer clientPlayer, float partialTicks, CallbackInfo ci) {
-//        if (ItemAnimations.rotationlessDrink(clientPlayer, partialTicks)) ci.cancel();
-//        if (ItemAnimations.scaledDrinking(clientPlayer, partialTicks, itemToRender)) ci.cancel();
+        if (ItemAnimations.shouldRotationlessDrink()) {
+            ci.cancel();
+            ItemAnimations.rotationlessDrink(clientPlayer, partialTicks);
+            return;
+        }
+        if (ItemAnimations.shouldScaledDrink()) {
+            ci.cancel();
+            ItemAnimations.scaledDrinking(clientPlayer, partialTicks, itemToRender);
+        }
     }
 }

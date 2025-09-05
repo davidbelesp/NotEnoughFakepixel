@@ -11,8 +11,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(NetHandlerPlayClient.class)
 public abstract class MixinNetHandlerPlayClient {
-    @Inject(method = "handleParticles", at = @At("HEAD"))
-    private void onHandleParticles(S2APacketParticles packet, CallbackInfo ci) {
-        MinecraftForge.EVENT_BUS.post(new ParticlePacketEvent(packet));
+
+    @Inject(
+            method = "handleParticles(Lnet/minecraft/network/play/server/S2APacketParticles;)V",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    private void nef$onHandleParticles(S2APacketParticles packet, CallbackInfo ci) {
+        ParticlePacketEvent evt = new ParticlePacketEvent(packet);
+        boolean canceled = MinecraftForge.EVENT_BUS.post(evt);
+        if (canceled) {
+            ci.cancel();
+        }
     }
+
 }

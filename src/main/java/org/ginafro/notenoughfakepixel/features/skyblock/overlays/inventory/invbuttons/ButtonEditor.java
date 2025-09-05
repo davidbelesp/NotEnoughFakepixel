@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import org.ginafro.notenoughfakepixel.utils.Utils;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class ButtonEditor extends GuiButton {
             GlStateManager.enableBlend();
             GlStateManager.enableAlpha();
             GlStateManager.disableLighting();
-            Minecraft.getMinecraft().getTextureManager().bindTexture(new ResourceLocation("notenoughfakepixel", "invbuttons/editor.png"));
+            Minecraft.getMinecraft().getTextureManager().bindTexture(Resources.ITEM_LOCK.getResource());
             float scale = Utils.getScale();
             drawScaledCustomSizeModalRect(xPosition, yPosition, 0f, 0f, width, height, width, height, width, height);
             processClicks(mouseX, mouseY);

@@ -16,6 +16,7 @@ import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
 import scala.actors.threadpool.Arrays;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RegisterCommand
@@ -94,7 +95,7 @@ public class CrystalWaypointCommand extends CommandBase {
         }
 
         if ("add".equalsIgnoreCase(args[0])) {
-            if (args.length < 5) throw new WrongUsageException("Usage: /chw add <Nombre...> <x> <y> <z>");
+            if (args.length < 5) throw new WrongUsageException("Usage: /chw add <name...> <x> <y> <z>");
             int n = args.length;
             String sx = args[n - 3], sy = args[n - 2], sz = args[n - 1];
             String name = StringUtils.joinRange(args, 1, n - 3);
@@ -103,7 +104,7 @@ public class CrystalWaypointCommand extends CommandBase {
             double y = NumberUtils.parseDoubleFlexible(sy);
             double z = NumberUtils.parseDoubleFlexible(sz);
 
-            ChWaypoint wp = new ChWaypoint(x, y, z, java.util.UUID.randomUUID().toString(), name);
+            ChWaypoint wp = ChWaypoint.of(x, y, z, name);
             CrystalWaypoints.getInstance().addWaypoint(wp);
             sender.addChatMessage(new ChatComponentText("§aWaypoint added from chat: §e" + name + " §7(" + WaypointChatMessages.formatCoordsEs(x,y,z) + ")"));
             return;
@@ -126,8 +127,13 @@ public class CrystalWaypointCommand extends CommandBase {
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        if (args.length == 1) return Arrays.asList(new String[]{"new", "list"});
-        return null;
+        List<String> cmds = new ArrayList<>();
+        if (args.length == 1) {
+            cmds.add("new");
+            cmds.add("list");
+            cmds.add("add");
+        }
+        return cmds;
     }
 
     public static void notify(ICommandSender sender, String format, Object... args) {
