@@ -14,6 +14,7 @@ public abstract class ChatNotifier {
         if (event.message == null) return;
         String message = event.message.getFormattedText();
         if (message.contains(getMessage())) {
+            afterDetection();
             if (shouldNotify()) notifyUser();
         }
     }
@@ -31,5 +32,7 @@ public abstract class ChatNotifier {
     public EnumChatFormatting getColor() {
         return EnumChatFormatting.GREEN;
     }
+
+    public void afterDetection() {}
 
 }

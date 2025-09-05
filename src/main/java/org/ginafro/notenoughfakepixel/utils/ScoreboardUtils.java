@@ -42,6 +42,8 @@ public class ScoreboardUtils {
     public static Slayer currentSlayer = Slayer.NONE;
     public static boolean isSlayerActive = false;
 
+    public static int heat = 0;
+
     @Getter
     @Setter
     private static Pattern floorPattern = Pattern.compile(" §7⏣ §cThe Catacombs §7\\(<?floor>.{2}\\)");
@@ -113,6 +115,16 @@ public class ScoreboardUtils {
                         if (clearedPercentage < 0) {
                             clearedPercentage = -1;
                             Logger.log("Failed to parse cleared percentage from scoreboard: " + clean);
+                        }
+                    }
+
+                    // get the heat from clean string "Heat: ♨ 9"
+                    if (StringUtils.startsWithFast(clean, "Heat:")) {
+                        final String num = StringUtils.sliceAfter(clean, "Heat:");
+                        heat = NumberUtils.parseIntSafe(StringUtils.removeChars(num, "♨ "));
+                        if (heat < 0) {
+                            heat = 0;
+                            Log.warn("Failed to parse heat from scoreboard: " + clean);
                         }
                     }
 

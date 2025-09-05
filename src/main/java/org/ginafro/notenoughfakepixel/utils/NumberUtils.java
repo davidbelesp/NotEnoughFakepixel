@@ -1,6 +1,6 @@
 package org.ginafro.notenoughfakepixel.utils;
 
-import net.minecraft.command.NumberInvalidException;
+import java.util.Locale;
 
 public class NumberUtils {
 
@@ -26,6 +26,10 @@ public class NumberUtils {
 
     public static double parseDoubleFlexible(String s) {
         return Double.parseDouble(s.replace(',', '.'));
+    }
+
+    public static String fmt1(double d) {
+        return String.format(Locale.ROOT, "%.1f", d);
     }
 
 }

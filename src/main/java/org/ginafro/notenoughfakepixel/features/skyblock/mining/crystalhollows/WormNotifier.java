@@ -27,4 +27,9 @@ public class WormNotifier extends ChatNotifier {
     public EnumChatFormatting getColor() {
         return EnumChatFormatting.RED;
     }
+
+    @Override
+    public void afterDetection() {
+        WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
+    }
 }

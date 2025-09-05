@@ -16,6 +16,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.*;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
@@ -67,7 +68,7 @@ public class RenderUtils {
         }
     }
 
-    private static final ResourceLocation beaconBeam = new ResourceLocation("textures/entity/beacon_beam.png");
+    private static final ResourceLocation beaconBeam = Resources.BEACON.getResource();
 
     public static void renderBeaconBeam(BlockPos block, int rgb, float alphaMult, float partialTicks) {
         double viewerX;
