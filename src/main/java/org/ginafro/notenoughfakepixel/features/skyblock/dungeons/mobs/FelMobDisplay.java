@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
@@ -36,7 +38,7 @@ public class FelMobDisplay {
                 if (armorStand.getEquipmentInSlot(4).getTagCompound() == null) return;
 
                 ItemStack head = armorStand.getEquipmentInSlot(4);
-                if (ItemUtils.hasSkinValue(Skins.ENDERMAN_HEAD.getValue(), head)) {
+                if (ItemUtils.hasSkinValue(Skins.ENDERMAN_HEAD, head)) {
                     Color color = new Color(
                             ColorUtils.getColor(Config.feature.dungeons.dungeonsFelColor).getRGB()
                     );

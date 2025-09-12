@@ -54,7 +54,7 @@ public class GuiWaypointCreate extends GuiScreen {
         this.yField = new GuiTextField(2, this.fontRendererObj, left + 156, top + 63, 60, 18);
         this.zField = new GuiTextField(3, this.fontRendererObj, left + 222, top + 63, 60, 18);
 
-        if (editMode && editing != null) {
+        if (editMode) {
             nameField.setText(editing.name);
             xField.setText(fmt1(editing.x));
             yField.setText(fmt1(editing.y));
@@ -193,7 +193,7 @@ public class GuiWaypointCreate extends GuiScreen {
 
         if (editMode) {
             ChWaypoint updated;
-            updated = new ChWaypoint(dx, dy, dz, editing.id, name, editing.isTemporarySafe(), editing.getColorRgbOrDefault(), editing.isToggledSafe() );
+            updated = new ChWaypoint(dx, dy, dz, editing.id, name, temporary, editing.getColorRgbOrDefault(), editing.isToggledSafe() );
             CrystalWaypoints.getInstance().updateWaypoint(updated);
             CrystalWaypoints.getInstance().saveIfDirty();
         } else {
@@ -229,7 +229,7 @@ public class GuiWaypointCreate extends GuiScreen {
         try {
             return (boolean) ChWaypoint.class.getMethod("isTemporarySafe").invoke(wp);
         } catch (Exception ignore) {
-            try { return (boolean) ChWaypoint.class.getMethod("isTemporary").invoke(wp); }
+            try { return (boolean) ChWaypoint.class.getMethod("getTemporary").invoke(wp); }
             catch (Exception ignore2) { return false; }
         }
     }

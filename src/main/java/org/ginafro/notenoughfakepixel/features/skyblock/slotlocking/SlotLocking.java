@@ -25,7 +25,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.client.config.GuiUtils;
@@ -45,8 +44,10 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector2f;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -83,6 +84,9 @@ public class SlotLocking {
 
     public static class SlotLockingConfig {
         public HashMap<String, SlotLockProfile> profileData = new HashMap<>();
+        public SlotLockingConfig() {}
+
+        public boolean enabled = true;
     }
 
     private SlotLockingConfig config = new SlotLockingConfig();
@@ -95,9 +99,6 @@ public class SlotLocking {
 
     public void loadConfig() {
         config = CustomConfigHandler.loadConfig();
-        if (config == null) {
-            config = new SlotLockingConfig();
-        }
     }
 
     public void changedSlot(int slotNumber) {
@@ -138,7 +139,6 @@ public class SlotLocking {
 
     public void saveConfig() {
         CustomConfigHandler.saveConfig(config);
-        loadConfig();
     }
 
     @SubscribeEvent
@@ -164,28 +164,17 @@ public class SlotLocking {
 
         if (Config.feature.sl.disableInStorage) {
             if (currentlyOpenChestName.trim().equals("Storage")) return null;
-
-            currentlyOpenChestName = StringUtils.stripControlCodes(currentlyOpenChestName);
-
+            currentlyOpenChestName = net.minecraft.util.StringUtils.stripControlCodes(currentlyOpenChestName);
             Matcher matcher = WINDOW_REGEX.matcher(currentlyOpenChestName);
             Matcher matcherEchest = ECHEST_WINDOW_REGEX.matcher(currentlyOpenChestName);
-
-            if (matcher.matches() || matcherEchest.matches()) {
-                return null;
-            }
+            if (matcher.matches() || matcherEchest.matches()) return null;
         }
 
         String profileName = "generic";
-        loadConfig();
-        SlotLockProfile profile = config.profileData.computeIfAbsent(
-                profileName,
-                k -> new SlotLockProfile()
-        );
-
+        SlotLockProfile profile = config.profileData.computeIfAbsent(profileName, k -> new SlotLockProfile());
         if (profile.slotLockData[0] == null) {
             profile.slotLockData[0] = new SlotLockData();
         }
-
         return profile.slotLockData[0].lockedSlots;
     }
 

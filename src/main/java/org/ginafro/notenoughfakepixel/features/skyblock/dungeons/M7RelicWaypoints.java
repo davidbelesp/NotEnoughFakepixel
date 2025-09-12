@@ -114,18 +114,17 @@ public class M7RelicWaypoints {
     private boolean hasRelicInInventory(RelicColor color) {
         Skins skin = getSkinForColor(color);
         if (skin == null) return false;
-        String targetValue = skin.getValue();
 
         for (int i = 0; i < 36; i++) {
             ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.getStackInSlot(i);
-            if (isRelicSkull(stack, targetValue)) {
+            if (isRelicSkull(stack, skin)) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isRelicSkull(ItemStack stack, String targetValue) {
+    private boolean isRelicSkull(ItemStack stack, Skins targetSkin) {
         if (stack == null ||
                 stack.getItem() != Items.skull ||
                 stack.getMetadata() != 3) {  // 3 = player skull
@@ -144,7 +143,8 @@ public class M7RelicWaypoints {
 
         NBTTagCompound texture = textures.getCompoundTagAt(0);
         String value = texture.getString("Value");
-        return value.equals(targetValue);
+
+        return Skins.getSkinByValue(value).equals(targetSkin);
     }
 
     private Skins getSkinForColor(RelicColor color) {

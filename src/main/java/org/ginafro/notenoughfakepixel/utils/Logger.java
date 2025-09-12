@@ -1,5 +1,6 @@
 package org.ginafro.notenoughfakepixel.utils;
 
+import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
@@ -9,14 +10,20 @@ import java.util.logging.Level;
 
 public class Logger {
 
+    private static final java.util.logging.Logger JUL =
+            java.util.logging.Logger.getLogger(Logger.class.getName());
+
     private static long lastLogTime = 0;
 
-    private Logger() {
-        // Prevent instantiation
-    }
+    private Logger() {}
 
     private static final java.util.logging.Logger LOGGER =
             java.util.logging.Logger.getLogger(Logger.class.getName());
+
+    @Setter
+    private static volatile Boolean debugOverride = null;
+
+    /* ----------------- Public API ----------------- */
 
     /**
      * Logs a message to the chat.
@@ -24,8 +31,15 @@ public class Logger {
      * @param message The String message to log.
      */
     public static void log(String message) {
-        if (Config.feature.debug.debug && Minecraft.getMinecraft().thePlayer != null) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Constants.PREFIX + message));
+        if (!isDebugEnabled()) return;
+        if (!isClientChatReady()) return;
+        try {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(
+                    new ChatComponentText(Constants.PREFIX + message)
+            );
+        } catch (Throwable ignored) {
+            // If chat logging fails (e.g., headless), fall back to console
+            logConsole(message);
         }
     }
 
@@ -35,14 +49,15 @@ public class Logger {
      * @param message The String message to log.
      */
     public static void logOnlyOnce(String message) {
-        if (Minecraft.getMinecraft().thePlayer != null) {
-            long currentTime = System.currentTimeMillis();
-            if (currentTime - lastLogTime > 1000) {
-                Minecraft.getMinecraft().thePlayer.addChatMessage(
-                        new ChatComponentText(message)
-                );
-                lastLogTime = currentTime;
+        if (!isClientChatReady()) return;
+        long now = System.currentTimeMillis();
+        if (now - lastLogTime > 1000L) {
+            try {
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(String.valueOf(message)));
+            } catch (Throwable ignored) {
+                // ignore
             }
+            lastLogTime = now;
         }
     }
 
@@ -52,8 +67,14 @@ public class Logger {
      * @param message The String message to log.
      */
     public static void logError(String message) {
-        if (Config.feature.debug.debug && Minecraft.getMinecraft().thePlayer != null) {
-            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Constants.ERROR_PREFIX + message));
+        if (!isDebugEnabled()) return;
+        if (!isClientChatReady()) return;
+        try {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(
+                    new ChatComponentText(Constants.ERROR_PREFIX + String.valueOf(message))
+            );
+        } catch (Throwable ignored) {
+            logErrorConsole(message);
         }
     }
 
@@ -63,12 +84,7 @@ public class Logger {
      * @param object The object to log.
      */
     public static void log(Object object) {
-        if (!Config.feature.debug.debug) return;
-        try {
-            log(object.toString());
-        } catch (Exception e) {
-            logConsole("Failed to log object: " + object.getClass().getName());
-        }
+        log(object.toString());
     }
 
     /**
@@ -77,8 +93,8 @@ public class Logger {
      * @param message The String message to log.
      */
     public static void logConsole(String message) {
-        if (!Config.feature.debug.debug) return;
-        LOGGER.log(Level.INFO, message);
+        if (!isDebugEnabled()) return;
+        safeJulLog(Level.INFO, message);
     }
 
     /**
@@ -87,8 +103,8 @@ public class Logger {
      * @param error The String message to log.
      */
     public static void logErrorConsole(String error) {
-        if (!Config.feature.debug.debug) return;
-        LOGGER.log(Level.WARNING, error);
+        if (!isDebugEnabled()) return;
+        safeJulLog(Level.WARNING, error);
     }
 
     /**
@@ -97,11 +113,45 @@ public class Logger {
      * @param object The object to log.
      */
     public static void logConsole(Object object) {
-        if (!Config.feature.debug.debug) return;
+        if (!isDebugEnabled()) return;
         try {
-            logConsole(object.toString());
-        } catch (Exception e) {
-            logConsole("Failed to log object: " + object.getClass().getName());
+            logConsole(String.valueOf(object));
+        } catch (Throwable t) {
+            safeJulLog(Level.WARNING, "Failed to log object: " + (object == null ? "null" : object.getClass().getName()));
+        }
+    }
+
+    /** Never throws; if JUL has issues, fallback to stdout/stderr. */
+    private static void safeJulLog(Level level, String msg) {
+        String text = String.valueOf(msg);
+        try {
+            JUL.log(level, text);
+        } catch (Throwable __) {
+            if (level.intValue() >= Level.WARNING.intValue()) {
+                System.err.println("[NEF][ERR] " + text);
+            } else {
+                System.out.println("[NEF] " + text);
+            }
+        }
+    }
+
+    private static boolean isDebugEnabled() {
+        if (debugOverride != null) return debugOverride;
+        try {
+            // Guard every hop to avoid NPEs during early lifecycle
+            return Config.feature.debug.debug;
+        } catch (Throwable __) {
+            return false;
+        }
+    }
+
+    /** Safe check: only true when chat is actually usable. */
+    private static boolean isClientChatReady() {
+        try {
+            Minecraft mc = Minecraft.getMinecraft();
+            return mc != null && mc.thePlayer != null && mc.getNetHandler() != null;
+        } catch (Throwable __) {
+            return false;
         }
     }
 

@@ -31,7 +31,7 @@ public class ChWaypoint {
     }
 
     public boolean isTemporarySafe() {
-        return temporary != null && temporary;
+        return temporary == null || temporary;
     }
 
     // Returns true if toggled is null or true

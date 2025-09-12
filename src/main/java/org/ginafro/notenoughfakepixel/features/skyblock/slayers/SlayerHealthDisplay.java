@@ -23,6 +23,8 @@ public class SlayerHealthDisplay {
     private boolean isBoss = false;
     private final Position position; // Added position field
 
+    private int ticks = 0;
+
     public SlayerHealthDisplay() {
         this.position = Config.feature.slayer.slayerBossHPPos; // Initialize position
     }
@@ -41,15 +43,13 @@ public class SlayerHealthDisplay {
         if (event.side != net.minecraftforge.fml.relauncher.Side.CLIENT || mc.theWorld == null) {
             return;
         }
+
+        ticks++;
+        if (ticks % 30 != 0) return;
+
         if (Config.feature.slayer.slayerBossHP) {
             List<String> sidebarLines = ScoreboardUtils.getScoreboardLines();
-            isBoss = false;
-            for (String line : sidebarLines) {
-                if (line.contains("Slay the boss!")) {
-                    isBoss = true;
-                    break;
-                }
-            }
+            isBoss = ScoreboardUtils.isSlayerActive;
 
             // Find closest Slayer boss
             if (isBoss && mc.thePlayer != null) {

@@ -1,6 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.gui;
 
-import com.sun.org.apache.bcel.internal.generic.I2F;
+
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

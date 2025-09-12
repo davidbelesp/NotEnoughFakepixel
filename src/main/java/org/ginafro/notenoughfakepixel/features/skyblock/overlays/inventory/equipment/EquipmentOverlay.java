@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.ginafro.notenoughfakepixel.utils.CustomConfigFiles.EQUIPMENTS;
-import static org.ginafro.notenoughfakepixel.utils.CustomConfigHandler.gson;
+import static org.ginafro.notenoughfakepixel.utils.CustomConfigHandler.GSON;
 
 @RegisterEvents
 public class EquipmentOverlay {
@@ -134,7 +134,7 @@ public class EquipmentOverlay {
     public static void saveData() {
         File file = new File(EQUIPMENTS.path);
         try (FileWriter writer = new FileWriter(file)) {
-            String json = gson.toJson(data);
+            String json = GSON.toJson(data);
             writer.write(json);
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,7 +147,7 @@ public class EquipmentOverlay {
         if (!file.exists()) return;
 
         try (FileReader reader = new FileReader(file)) {
-            data = gson.fromJson(reader, EquipmentData.class); // Convert JSON back to StorageData
+            data = GSON.fromJson(reader, EquipmentData.class); // Convert JSON back to StorageData
         } catch (IOException e) {
             e.printStackTrace();
         }
