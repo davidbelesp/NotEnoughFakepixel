@@ -139,9 +139,7 @@ public class Alerts {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (mc.theWorld == null) {
-            displayText = "";
-        }
+        if (mc.theWorld == null) displayText = "";
     }
 
     public static void save() {

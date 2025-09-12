@@ -20,9 +20,7 @@ import org.ginafro.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -139,8 +137,10 @@ public class GuessBurrow {
 
         while (!particleDripLavaQueue.isEmpty()) {
             S2APacketParticles particle = particleDripLavaQueue.poll();
+            if (particle == null) continue;
             Vec3 currLoc = new Vec3(particle.getXCoordinate(), particle.getYCoordinate(), particle.getZCoordinate());
 
+            if (currLoc == null || lastSoundPoint == null) continue;
             if (Math.abs(currLoc.xCoord - lastSoundPoint.xCoord) < 2 &&
                     Math.abs(currLoc.yCoord - lastSoundPoint.yCoord) < 0.5 &&
                     Math.abs(currLoc.zCoord - lastSoundPoint.zCoord) < 2) {

@@ -3,6 +3,3 @@
 run/
 build/
 .gradle/
-src/main/java/org/ginafro/notenoughfakepixel/Testing.java
-src/main/java/org/ginafro/notenoughfakepixel/features/skyblock/enchanting/SuperpairsSolver.java
-
