@@ -9,26 +9,38 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
+import org.ginafro.notenoughfakepixel.config.gui.commands.SimpleCommand;
 import org.ginafro.notenoughfakepixel.config.gui.core.util.StringUtils;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterCommand;
 import org.ginafro.notenoughfakepixel.utils.NumberUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.ginafro.notenoughfakepixel.variables.Location;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RegisterCommand
-public class CrystalWaypointCommand extends CommandBase {
+public class CrystalWaypointCommand extends SimpleCommand {
 
-    @Override public String getCommandName() { return "chw"; }
-    @Override public String getCommandUsage(ICommandSender sender) { return "/chw new <name>"; }
-    @Override public int getRequiredPermissionLevel() { return 0; }
+    @Override
+    public String getName() {
+        return "chw";
+    }
+
+    @Override
+    public String getUsage() {
+        return "/chw new <name>";
+    }
+
+    @Override
+    public void execute(ICommandSender sender, String[] args) throws CommandException {
+        processCommand(sender, args);
+    }
 
     private final String PREFIX = "§6[§eChWaypoints§6] §r";
 
-    @Override public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) throw new WrongUsageException("You can only use waypoints in Crystal Hollows");
         if (args.length >= 1 && "new".equalsIgnoreCase(args[0])) {
             if (args.length < 2) throw new WrongUsageException("Usage: " + getCommandUsage(sender));

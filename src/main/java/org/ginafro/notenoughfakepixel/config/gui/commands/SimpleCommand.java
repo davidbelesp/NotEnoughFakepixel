@@ -1,61 +1,69 @@
 package org.ginafro.notenoughfakepixel.config.gui.commands;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.BlockPos;
 
-import java.util.List;
+import java.util.*;
 
-/**
- * @author Moulberry
- **/
-public class SimpleCommand extends CommandBase {
+public abstract class SimpleCommand extends CommandBase {
 
-    private final String commandName;
-    private final ProcessCommandRunnable runnable;
-    private TabCompleteRunnable tabRunnable;
+    public abstract String getName();
+    public abstract String getUsage();
+    public abstract void execute(ICommandSender sender, String[] args) throws CommandException;
 
-    public SimpleCommand(String commandName, ProcessCommandRunnable runnable) {
-        this.commandName = commandName;
-        this.runnable = runnable;
+    private static final Set<String> SLASH_ONLY = new HashSet<>();
+
+    protected SimpleCommand() {
+        SLASH_ONLY.add(getName().toLowerCase(Locale.ROOT));
     }
 
-    public SimpleCommand(String commandName, ProcessCommandRunnable runnable, TabCompleteRunnable tabRunnable) {
-        this.commandName = commandName;
-        this.runnable = runnable;
-        this.tabRunnable = tabRunnable;
+    public List<String> getAliases() {
+        return Collections.emptyList();
+    };
+
+    @Override
+    public List<String> getCommandAliases() {
+        return getAliases();
     }
 
-    public abstract static class ProcessCommandRunnable {
-
-        public abstract void processCommand(ICommandSender sender, String[] args);
+    @Override
+    public String getCommandName() {
+        return getName();
     }
 
-    public abstract static class TabCompleteRunnable {
-
-        public abstract List<String> tabComplete(ICommandSender sender, String[] args, BlockPos pos);
+    @Override
+    public String getCommandUsage(ICommandSender sender) {
+        return getUsage();
     }
 
+    @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
         return true;
     }
 
-    public String getCommandName() {
-        return commandName;
-    }
-
-    public String getCommandUsage(ICommandSender sender) {
-        return "/" + commandName;
-    }
-
     @Override
-    public void processCommand(ICommandSender sender, String[] args) {
-        runnable.processCommand(sender, args);
+    public int getRequiredPermissionLevel() {
+        return 0;
     }
 
     @Override
     public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-        if (tabRunnable != null) return tabRunnable.tabComplete(sender, args, pos);
-        return null;
+        return Collections.emptyList();
     }
+
+    @Override
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+        execute(sender, args);
+    }
+
+    public static Set<String> getSlashOnlyNames() {
+        return Collections.unmodifiableSet(SLASH_ONLY);
+    }
+
+    public static boolean isSlashOnly(String cmd) {
+        return cmd != null && SLASH_ONLY.contains(cmd.toLowerCase(Locale.ROOT));
+    }
+
 }

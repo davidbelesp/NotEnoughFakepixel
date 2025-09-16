@@ -38,4 +38,5 @@ public abstract class MixinEntityLivingBase extends MixinEntity {
             cir.setReturnValue(true);
         }
     }
+
 }

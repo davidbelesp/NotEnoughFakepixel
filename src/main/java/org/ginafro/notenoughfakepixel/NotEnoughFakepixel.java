@@ -11,13 +11,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.alerts.Alerts;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
-import org.ginafro.notenoughfakepixel.config.gui.commands.Commands;
 import org.ginafro.notenoughfakepixel.envcheck.registers.ModEventRegistrar;
 import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 import org.ginafro.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import org.ginafro.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
-import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure.CrystalHollowsTreasureModule;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure.TreasureTriangulator;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.CrystalWaypoints;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.equipment.EquipmentOverlay;
@@ -64,7 +62,6 @@ public class NotEnoughFakepixel {
 
         EquipmentOverlay.loadData();
 
-        Commands.init();
         Alerts.load();
         CustomAliases.load();
 
