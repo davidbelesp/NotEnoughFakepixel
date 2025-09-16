@@ -82,7 +82,7 @@ public class ChocolateFactory {
             if (item != null && item.getItem() instanceof ItemSkull) {
                 String upgradeCost = ItemUtils.getLoreLine(item, upgradeCostPattern);
                 if (upgradeCost == null) continue;
-                upgradeCost = StringUtils.cleanColor(upgradeCost).replaceAll(",", "").replaceAll(" Chocolate", "");
+                upgradeCost = ColorUtils.cleanColor(upgradeCost).replaceAll(",", "").replaceAll(" Chocolate", "");
 
                 float costRatio = Float.parseFloat(upgradeCost) / index;
                 upgradeCosts.put(costRatio, slot);

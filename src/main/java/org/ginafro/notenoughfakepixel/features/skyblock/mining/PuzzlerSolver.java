@@ -11,10 +11,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
-import org.ginafro.notenoughfakepixel.utils.StringUtils;
-import org.ginafro.notenoughfakepixel.utils.TablistParser;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
@@ -35,7 +32,7 @@ public class PuzzlerSolver {
 
         if (event.message.getFormattedText().startsWith("\u00A7r\u00A7e[NPC] \u00A7r\u00A7dPuzzler") &&
                 event.message.getUnformattedText().contains(":")) {
-            String clean = StringUtils.cleanColor(event.message.getUnformattedText());
+            String clean = ColorUtils.cleanColor(event.message.getUnformattedText());
             clean = clean.split(":")[1].trim();
             BlockPos pos = new BlockPos(181, 195, 135);
 

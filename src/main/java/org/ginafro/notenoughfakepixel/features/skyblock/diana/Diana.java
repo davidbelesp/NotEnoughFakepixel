@@ -35,6 +35,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.List;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +46,7 @@ import java.util.regex.Pattern;
 public class Diana {
     ParticleProcessor processor = new ParticleProcessor();
     private final Queue<GaiaConstruct> listGaiaAlive = new ConcurrentLinkedQueue<>();
+    private final ConcurrentHashMap<UUID, GaiaConstruct> gaiaById = new ConcurrentHashMap<>();
     private final Queue<SiameseLynx> listSiameseAlive = new ConcurrentLinkedQueue<>();
     private final Pattern cooldownPattern =
             Pattern.compile("§r§cThis ability is on cooldown for \\d+ more second(?:s)?\\.§r");
@@ -353,25 +355,21 @@ public class Diana {
             if (entity == null) return;
             if (entity.getName() == null) return;
             if (entity instanceof EntityGolem) {
-                for (GaiaConstruct gaia : listGaiaAlive) {
+                GaiaConstruct gaia = gaiaById.get(entity.getUniqueID());
+                if (gaia != null) {
                     Entity gaiaEntity = gaia.getEntity();
-                    if (gaiaEntity.getUniqueID().equals(entity.getUniqueID())) {
-                        if (gaia.canBeHit()) {
-                            RenderUtils.renderEntityHitbox(
-                                    gaiaEntity,
-                                    partialTicks,
-                                    new Color(ColorUtils.getColor(Config.feature.diana.dianaGaiaHittableColor).getRed(), ColorUtils.getColor(Config.feature.diana.dianaGaiaHittableColor).getGreen(), ColorUtils.getColor(Config.feature.diana.dianaGaiaHittableColor).getBlue(), 150),
-                                    MobDisplayTypes.GAIA
-                            );
-                        } else {
-                            RenderUtils.renderEntityHitbox(
-                                    gaiaEntity,
-                                    partialTicks,
-                                    new Color(ColorUtils.getColor(Config.feature.diana.dianaGaiaUnhittableColor).getRed(), ColorUtils.getColor(Config.feature.diana.dianaGaiaUnhittableColor).getGreen(), ColorUtils.getColor(Config.feature.diana.dianaGaiaUnhittableColor).getBlue(), 150),
-                                    MobDisplayTypes.GAIA
-                            );
-                        }
-                        break;
+                    if (gaia.canBeHit()) {
+                        RenderUtils.renderEntityHitbox(gaiaEntity, partialTicks,
+                                new Color(ColorUtils.getColor(Config.feature.diana.dianaGaiaHittableColor).getRed(),
+                                        ColorUtils.getColor(Config.feature.diana.dianaGaiaHittableColor).getGreen(),
+                                        ColorUtils.getColor(Config.feature.diana.dianaGaiaHittableColor).getBlue(), 150),
+                                MobDisplayTypes.GAIA);
+                    } else {
+                        RenderUtils.renderEntityHitbox(gaiaEntity, partialTicks,
+                                new Color(ColorUtils.getColor(Config.feature.diana.dianaGaiaUnhittableColor).getRed(),
+                                        ColorUtils.getColor(Config.feature.diana.dianaGaiaUnhittableColor).getGreen(),
+                                        ColorUtils.getColor(Config.feature.diana.dianaGaiaUnhittableColor).getBlue(), 150),
+                                MobDisplayTypes.GAIA);
                     }
                 }
             } else if (entity instanceof EntityOcelot) {
@@ -398,12 +396,8 @@ public class Diana {
             if (entity.getName() == null) return;
             if (entity instanceof EntityGolem) {
                 // Iterate gaia list
-                for (GaiaConstruct gaia : listGaiaAlive) {
-                    // If already added, don't add again
-                    if (gaia.getEntity().getUniqueID() == entity.getUniqueID()) return;
-                }
-                // If this point reached, no occurrences, so new gaia added
-                listGaiaAlive.add(new GaiaConstruct(entity));
+                java.util.UUID id = entity.getUniqueID();
+                gaiaById.computeIfAbsent(id, k -> new GaiaConstruct(entity));
                 //System.out.println("Gaia added, "+listGaiaAlive.size());
             } else if (entity instanceof EntityArmorStand) {
                 if (!(entity.getDisplayName().getUnformattedText().contains("Bagheera") || entity.getDisplayName().getUnformattedText().contains("Azrael")))

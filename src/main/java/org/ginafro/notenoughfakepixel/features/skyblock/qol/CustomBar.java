@@ -8,6 +8,7 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
+import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.StringUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
@@ -35,13 +36,13 @@ public class CustomBar {
         if (e.type != 2) return;
         String[] actionBar = e.message.getUnformattedText().split(" {5}");
         if (actionBar.length == 3) {
-            String health = StringUtils.cleanColor(actionBar[0]);
+            String health = ColorUtils.cleanColor(actionBar[0]);
             if (health.endsWith("❤")) {
                 String[] healthValues = health.replace("❤", "").split("/");
                 currentHealth = Integer.parseInt(healthValues[0]);
                 maxHealth = Integer.parseInt(healthValues[1]);
             }
-            String mana = StringUtils.cleanColor(actionBar[2]);
+            String mana = ColorUtils.cleanColor(actionBar[2]);
             if (mana.contains("Mana")) {
                 int index = mana.indexOf("✎");
                 String[] manaValues = mana.substring(0, index).split("/");

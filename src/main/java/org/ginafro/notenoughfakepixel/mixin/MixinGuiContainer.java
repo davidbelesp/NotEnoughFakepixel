@@ -3,6 +3,7 @@ package org.ginafro.notenoughfakepixel.mixin;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -25,10 +26,10 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.awt.*;
 
-import static org.ginafro.notenoughfakepixel.config.gui.core.util.render.RenderUtils.drawGradientRect;
 
 @Mixin(value = GuiContainer.class, priority = 500)
-public class MixinGuiContainer {
+public class MixinGuiContainer extends GuiScreen {
+
     @Inject(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/GlStateManager;color(FFFF)V", ordinal = 1))
     private void drawBackground(int mouseX, int mouseY, float partialTicks, CallbackInfo ci) {
         new GuiContainerBackgroundDrawnEvent(((GuiContainer) (Object) this), partialTicks).post();
@@ -56,9 +57,9 @@ public class MixinGuiContainer {
         if (startColor == 0x80ffffff && endColor == 0x80ffffff &&
                 theSlot != null && SlotLocking.getInstance().isSlotLocked(theSlot)) {
             int col = 0x80ff8080;
-            drawGradientRect(100, left, top, right, bottom, col, col);
+            drawGradientRect(left, top, right, bottom, col, col);
         } else {
-            drawGradientRect(100, left, top, right, bottom, startColor, endColor);
+            drawGradientRect(left, top, right, bottom, startColor, endColor);
         }
     }
 

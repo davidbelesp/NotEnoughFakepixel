@@ -6,10 +6,6 @@ import java.util.*;
 
 public class StringUtils {
 
-    public static String cleanColor(String in) {
-        return in.replaceAll("(?i)\\u00A7.", "");
-    }
-
     public static boolean isNumeric(String string) {
         return string != null && !string.isEmpty() && string.chars().allMatch(Character::isDigit);
     }

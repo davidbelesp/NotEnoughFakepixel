@@ -144,7 +144,9 @@ public class M7RelicWaypoints {
         NBTTagCompound texture = textures.getCompoundTagAt(0);
         String value = texture.getString("Value");
 
-        return Skins.getSkinByValue(value).equals(targetSkin);
+        Skins skin = Skins.getSkinByValue(value);
+        if (skin == null) return false;
+        return skin.equals(targetSkin);
     }
 
     private Skins getSkinForColor(RelicColor color) {

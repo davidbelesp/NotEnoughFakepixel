@@ -42,7 +42,7 @@ public enum Location {
     }
 
     public boolean isHub() {
-        return this == HUB || this == PRIVATE_HUB;
+        return this == HUB || this == PRIVATE_HUB || this == ADMIN_HUB;
     }
 
     public boolean isCrimson() {

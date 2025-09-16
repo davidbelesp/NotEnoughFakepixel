@@ -13,6 +13,10 @@ public enum Resources {
 
     ITEM_LOCK(new ResourceLocation("notenoughfakepixel", "invbuttons/editor.png")),
 
+    LOCK(new ResourceLocation("notenoughfakepixel:slotlocking/lock.png")),
+    BOUND(new ResourceLocation("notenoughfakepixel:slotlocking/bound.png")),
+    RARITY_TEXTURE(new ResourceLocation("notenoughfakepixel:skyblock/textures/gui/rarity.png")),
+
     DARK_AH(new ResourceLocation("notenoughfakepixel:skyblock/dark_ah.png")),
 
     CRYSTAL_MAP_POINT(new ResourceLocation("notenoughfakepixel:crystalhollows/map_point.png")),

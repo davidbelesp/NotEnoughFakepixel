@@ -13,7 +13,7 @@ public class MixinGuiScreen {
     @Inject(method = "mouseClicked", at = @At("RETURN"))
     public void mouseClicked(int mouseX, int mouseY, int mouseButton, CallbackInfo ci) {
         if (mouseButton == 0) {
-            InvManager.click(mouseX, mouseY);
+//            InvManager.click(mouseX, mouseY);
         }
     }
 

@@ -6,63 +6,63 @@ import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Overlays {
 
-    @Expose
-    @ConfigOption(name = "Storage", desc = "Storage Overlay Settings")
-    @ConfigEditorAccordion(id = 0)
-    public boolean storage = false;
-
-    @Expose
-    @ConfigOption(name = "Storage Overlay", desc = "Redesign of Storage GUI")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 0)
-    public boolean storageOverlay = false;
-
-    @Expose
-    @ConfigOption(name = "Storage Search", desc = "Add a search bar to storage gui(Requires Storage Overlay)")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 0)
-    public boolean storageSearch = true;
-
-    @Expose
-    @ConfigOption(name = "Background Color", desc = "Color of the storage overlay")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 0)
-    public String storageColor = "0:102:32:32:32";
-
-    @Expose
-    @ConfigOption(name = "Chest Color", desc = "Color of the storage Chest Background")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 0)
-    public String chestColor = "0:102:32:32:32";
-
-    @Expose
-    @ConfigOption(name = "Search Highlight Color", desc = "Color to highlight search item with")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 0)
-    public String searchColor = "0:255:0:255:0";
-
-
-    @Expose
-    @ConfigOption(name = "Button Editor", desc = "Change Position or edit/add any inventory button")
-    @ConfigEditorButton(buttonText = "EDIT", runnableId = "nefButtons")
-    public String editor = "";
-
-    @Expose
-    @ConfigOption(name = "Inventory Buttons" , desc = "Settings for Inventory Buttons")
-    @ConfigEditorAccordion(id = 7)
-    public boolean invButtonsAccordion = false;
-
-    @Expose
-    @ConfigOption(name = "Enable Inventory Buttons", desc = "Show Inventory Buttons in the inventory")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 7)
-    public boolean invButtons = true;
-
-    @Expose
-    @ConfigOption(name = "Snap to Grid", desc = "Snap items to grid when moving them in storage")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 0)
-    public boolean snapToGrid = true;
+//    @Expose
+//    @ConfigOption(name = "Storage", desc = "Storage Overlay Settings")
+//    @ConfigEditorAccordion(id = 0)
+//    public boolean storage = false;
+//
+//    @Expose
+//    @ConfigOption(name = "Storage Overlay", desc = "Redesign of Storage GUI")
+//    @ConfigEditorBoolean
+//    @ConfigAccordionId(id = 0)
+//    public boolean storageOverlay = false;
+//
+//    @Expose
+//    @ConfigOption(name = "Storage Search", desc = "Add a search bar to storage gui(Requires Storage Overlay)")
+//    @ConfigEditorBoolean
+//    @ConfigAccordionId(id = 0)
+//    public boolean storageSearch = true;
+//
+//    @Expose
+//    @ConfigOption(name = "Background Color", desc = "Color of the storage overlay")
+//    @ConfigEditorColour
+//    @ConfigAccordionId(id = 0)
+//    public String storageColor = "0:102:32:32:32";
+//
+//    @Expose
+//    @ConfigOption(name = "Chest Color", desc = "Color of the storage Chest Background")
+//    @ConfigEditorColour
+//    @ConfigAccordionId(id = 0)
+//    public String chestColor = "0:102:32:32:32";
+//
+//    @Expose
+//    @ConfigOption(name = "Search Highlight Color", desc = "Color to highlight search item with")
+//    @ConfigEditorColour
+//    @ConfigAccordionId(id = 0)
+//    public String searchColor = "0:255:0:255:0";
+//
+//
+//    @Expose
+//    @ConfigOption(name = "Button Editor", desc = "Change Position or edit/add any inventory button")
+//    @ConfigEditorButton(buttonText = "EDIT", runnableId = "nefButtons")
+//    public String editor = "";
+//
+//    @Expose
+//    @ConfigOption(name = "Inventory Buttons" , desc = "Settings for Inventory Buttons")
+//    @ConfigEditorAccordion(id = 7)
+//    public boolean invButtonsAccordion = false;
+//
+//    @Expose
+//    @ConfigOption(name = "Enable Inventory Buttons", desc = "Show Inventory Buttons in the inventory")
+//    @ConfigEditorBoolean
+//    @ConfigAccordionId(id = 7)
+//    public boolean invButtons = false;
+//
+//    @Expose
+//    @ConfigOption(name = "Snap to Grid", desc = "Snap items to grid when moving them in storage")
+//    @ConfigEditorBoolean
+//    @ConfigAccordionId(id = 0)
+//    public boolean snapToGrid = false;
 
     @Expose
     @ConfigOption(name = "Equipment Overlay", desc = "Shows what equipment u are wearing")

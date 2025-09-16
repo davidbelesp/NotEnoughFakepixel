@@ -50,7 +50,6 @@ public class Config {
         try {
             //noinspection ResultOfMethodCallIgnored
             configFile.createNewFile();
-
             try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8))) {
                 writer.write(gson.toJson(feature));
                 SlotLocking.getInstance().saveConfig();

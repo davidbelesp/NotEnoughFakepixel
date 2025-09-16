@@ -53,7 +53,7 @@ public class Logger {
         long now = System.currentTimeMillis();
         if (now - lastLogTime > 1000L) {
             try {
-                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(String.valueOf(message)));
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Constants.PREFIX + message));
             } catch (Throwable ignored) {
                 // ignore
             }

@@ -503,6 +503,11 @@ public class QualityOfLife {
     public boolean qolDAtimer = true;
 
     @Expose
+    @ConfigOption(name = "Dark Auction Reminder", desc = "Notifies you when there is 1 minute left for Dark Auction.")
+    @ConfigEditorBoolean
+    public boolean qolDarkAhNotifier = false;
+
+    @Expose
     @ConfigOption(name = "Dark AH Timer Settings", desc = "Dark Auction timer settings.")
     @ConfigEditorAccordion(id = 9)
     public boolean darkAuctionAccordion = false;

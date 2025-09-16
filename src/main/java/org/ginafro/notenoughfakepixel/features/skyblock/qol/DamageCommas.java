@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.StringUtils;
 import org.ginafro.notenoughfakepixel.utils.Utils;
@@ -63,12 +64,12 @@ public class DamageCommas {
         Matcher matcherOverload = OVERLOAD_PATTERN.matcher(formatted);
         if (matcherCrit.matches()) {
             crit = true;
-            numbers = StringUtils.cleanColor(matcherCrit.group(1)).replace(",", "");
+            numbers = ColorUtils.cleanColor(matcherCrit.group(1)).replace(",", "");
             prefix = "§f" + STAR;
             suffix = "§f" + STAR + matcherCrit.group(2);
         } else if (matcherOverload.matches()) {
             crit = true;
-            numbers = StringUtils.cleanColor(matcherOverload.group(2)).replace(",", "");
+            numbers = ColorUtils.cleanColor(matcherOverload.group(2)).replace(",", "");
             prefix = matcherOverload.group(1) + OVERLOAD_STAR;
             suffix = matcherOverload.group(3) + OVERLOAD_STAR + "§r";
         } else {

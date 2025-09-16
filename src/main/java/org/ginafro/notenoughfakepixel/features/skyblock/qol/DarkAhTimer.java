@@ -2,6 +2,7 @@ package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
@@ -33,6 +34,9 @@ public class DarkAhTimer extends Timer {
         if (goal <= 0L || now > goal) {
             setGoalEpochMs(TimeUtils.nextXx55UtcEpochMs());
         }
+        if (goal - now <= 60000L && goal - now > 59900L) {
+            notifyDA();
+        }
     }
 
     @Override
@@ -50,6 +54,11 @@ public class DarkAhTimer extends Timer {
     @Override public long getGoalEpochMs() { return goal; }
     public static void setGoalEpochMs(long goal) {
         DarkAhTimer.goal = goal;
+    }
+
+    private static void notifyDA() {
+        if (!Config.feature.qol.qolDarkAhNotifier) return;
+        Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "Mining Ability Ready", "", 2, 70, 2);
     }
 
 }

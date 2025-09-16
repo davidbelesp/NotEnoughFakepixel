@@ -10,13 +10,14 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.opengl.GL11;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ItemBackgroundRarity {
-    private static final ResourceLocation RARITY_TEXTURE = new ResourceLocation("notenoughfakepixel:skyblock/textures/gui/rarity.png");
+    private static final ResourceLocation RARITY_TEXTURE = Resources.RARITY_TEXTURE.getResource();
     private static final Pattern RARITY_PATTERN = Pattern.compile("(§[0-9a-f]§l§ka§r )?([§0-9a-fk-or]+)(?<rarity>[A-Z]+)");
     private static final Pattern PET_PATTERN = Pattern.compile("§7\\[Lvl \\d+\\] (?<color>§[0-9a-fk-or]).+");
 
@@ -53,36 +54,38 @@ public class ItemBackgroundRarity {
 
     public static void renderRarityOverlay(ItemStack stack, int x, int y) {
         if (stack == null) return;
-
         ItemRarity rarity = getItemRarity(stack);
         if (rarity == null) return;
-
         renderRarityBackground(x, y, rarity);
     }
 
     private static void renderRarityBackground(int x, int y, ItemRarity rarity) {
-        GlStateManager.disableLighting();
+        GlStateManager.pushMatrix();
         GlStateManager.disableDepth();
         GlStateManager.enableBlend();
-        GlStateManager.enableAlpha();
+        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         Minecraft.getMinecraft().getTextureManager().bindTexture(RARITY_TEXTURE);
         setColorFromRarity(rarity);
-
         GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_BLEND);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, 16, 16, 16, 16);
 
-        resetRenderStates();
+        GlStateManager.color(1f, 1f, 1f, 1f);
+        GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.disableAlpha();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
     }
 
     private static void setColorFromRarity(ItemRarity rarity) {
-        EnumChatFormatting color = rarity.getColor();
-        int rgb = getColorValue(color);
+        int rgb = getColorValue(rarity.getColor());
         float r = ((rgb >> 16) & 0xFF) / 255f;
         float g = ((rgb >> 8) & 0xFF) / 255f;
         float b = (rgb & 0xFF) / 255f;
-
-        GlStateManager.color(r, g, b, Config.feature.qol.qolItemRarityOpacity);
+        float a = Math.max(0f, Math.min(1f, Config.feature.qol.qolItemRarityOpacity));
+        GlStateManager.color(r, g, b, a);
     }
 
     private static int getColorValue(EnumChatFormatting format) {
@@ -106,13 +109,6 @@ public class ItemBackgroundRarity {
             default:
                 return 0xFFFFFF;
         }
-    }
-
-    private static void resetRenderStates() {
-        GL11.glTexEnvi(GL11.GL_TEXTURE_ENV, GL11.GL_TEXTURE_ENV_MODE, GL11.GL_MODULATE);
-        GlStateManager.enableLighting();
-        GlStateManager.enableDepth();
-        GlStateManager.disableAlpha();
     }
 
     public static ItemRarity getItemRarity(ItemStack item) {

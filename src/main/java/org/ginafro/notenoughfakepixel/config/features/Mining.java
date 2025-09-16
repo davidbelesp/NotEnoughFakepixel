@@ -189,7 +189,7 @@ public class Mining {
     @ConfigOption(name = "Worm Notifier", desc = "Notifies in your screen when a worm spawned.")
     @ConfigEditorBoolean
     @ConfigAccordionId(id = 2)
-    public boolean crystalWormNotifier = true;
+    public boolean crystalWormNotifier = false;
 
     @Expose
     @ConfigOption(name = "Treasure Chest Helper", desc = "Shows a square where to aim when a treasure chest spawns.")

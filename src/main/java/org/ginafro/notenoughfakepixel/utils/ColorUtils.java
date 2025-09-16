@@ -33,6 +33,10 @@ public class ColorUtils {
         }
     }
 
+    public static String cleanColor(String in) {
+        return in.replaceAll("(?i)\\u00A7.", "");
+    }
+
     /**
      * Converts a Color object to a hexadecimal string.
      *

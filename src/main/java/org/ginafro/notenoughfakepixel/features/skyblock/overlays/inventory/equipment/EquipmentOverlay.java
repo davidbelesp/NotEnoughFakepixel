@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.ginafro.notenoughfakepixel.utils.CustomConfigFiles.EQUIPMENTS;
-import static org.ginafro.notenoughfakepixel.utils.CustomConfigHandler.GSON;
+import static org.ginafro.notenoughfakepixel.utils.ConfigHandler.GSON;
 
 @RegisterEvents
 public class EquipmentOverlay {

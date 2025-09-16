@@ -105,6 +105,7 @@ public class CrystalWaypointCommand extends CommandBase {
             double z = NumberUtils.parseDoubleFlexible(sz);
 
             ChWaypoint wp = ChWaypoint.of(x, y, z, name);
+            wp.setTemporary(true);
             CrystalWaypoints.getInstance().addWaypoint(wp);
             sender.addChatMessage(new ChatComponentText("§aWaypoint added from chat: §e" + name + " §7(" + WaypointChatMessages.formatCoordsEs(x,y,z) + ")"));
             return;

@@ -55,10 +55,9 @@ public class NotEnoughFakepixel {
         //registerCosmetics();
         //CapeManager.loadCapesFromGitHub();
 
-        createDirectoryIfNotExists(nefFolder);
         createDirectoryIfNotExists(Config.configDirectory);
-        createDirectoryIfNotExists(storageDirectory);
-        SlotLocking.getInstance().loadConfig();
+
+        SlotLocking.getInstance().loadConfig(new File(Config.configDirectory, "slotlocking.json"));
 
         Config.init();
         Runtime.getRuntime().addShutdownHook(new Thread(Config::saveConfig));
@@ -72,10 +71,6 @@ public class NotEnoughFakepixel {
         ModEventRegistrar.registerModEvents();
         ModEventRegistrar.registerKeybinds();
         ModEventRegistrar.registerCommands();
-        //InvManager.save();
-        //InvManager.load();
-
-        SlotLocking.getInstance().saveConfig();
 
         // REPO
         NefRepo.init();
@@ -99,9 +94,12 @@ public class NotEnoughFakepixel {
 
         try {
             CrystalWaypoints.getInstance().saveIfDirty();
+            SlotLocking.getInstance().saveConfig();
         } catch (Throwable t) {
             t.printStackTrace();
         }
+
+
     }
 
     public static void resetLockedSlots() {

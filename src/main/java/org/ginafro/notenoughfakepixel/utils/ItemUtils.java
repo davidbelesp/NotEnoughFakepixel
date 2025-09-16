@@ -142,7 +142,7 @@ public class ItemUtils {
         List<String> loreLines = getLoreLines(item);
         if (loreLines.isEmpty()) return Rarity.NONE;
 
-        String clean = StringUtils.cleanColor(loreLines.get(loreLines.size() - 1));
+        String clean = ColorUtils.cleanColor(loreLines.get(loreLines.size() - 1));
         return Optional.ofNullable(Rarity.fromString(clean)).orElse(Rarity.NONE);
     }
 

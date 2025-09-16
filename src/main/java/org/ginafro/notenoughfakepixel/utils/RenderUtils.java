@@ -6,10 +6,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
@@ -17,10 +14,13 @@ import net.minecraft.util.*;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
 import org.ginafro.notenoughfakepixel.variables.Resources;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RenderUtils {
 
@@ -1214,4 +1214,5 @@ public class RenderUtils {
         GlStateManager.enableLighting();
         GlStateManager.popMatrix();
     }
+
 }

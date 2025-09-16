@@ -39,6 +39,22 @@ public class ModEventRegistrar {
                         e.printStackTrace();
                     }
                 });
+
+        // Register classes that already have instances (e.g. singletons), classes annotated with @RegisterInstance. search for method getInstance()
+        Reflections reflections = new Reflections(new ConfigurationBuilder()
+                .forPackages(basePackage)
+                .addScanners(new FieldAnnotationsScanner()));
+        Set<Field> fields = reflections.getFieldsAnnotatedWith(RegisterInstance.class);
+        for (Field field : fields) {
+            try {
+                Object instance = field.get(null); // static field, so null instance
+                registrar.accept(instance);
+            } catch (Exception e) {
+                Logger.logErrorConsole("Failed to register instance from field: " + field.getName());
+                e.printStackTrace();
+            }
+        }
+
     }
 
     public static void registerKeybinds() {
