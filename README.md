@@ -19,6 +19,10 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
 
 <div align="left">
 
+## License
+This project is licensed under the GNU Lesser General Public License v3.0 or later (LGPL-3.0-or-later).
+See the [LICENSE](LICENSE) file for details.
+
 # Features
 
 ### Quality of life
