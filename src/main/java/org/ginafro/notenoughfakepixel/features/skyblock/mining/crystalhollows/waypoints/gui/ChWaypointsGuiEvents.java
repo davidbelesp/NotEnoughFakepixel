@@ -13,11 +13,11 @@ public class ChWaypointsGuiEvents {
 
     @RegisterKeybind
     public static final KeyBinding CHW_OPEN_WAYPOINTS =
-            new KeyBinding("Open Waypoints GUI", Keyboard.KEY_M, "Not Enough Fakepixel");
+            new KeyBinding("Open Waypoints GUI", Keyboard.KEY_M, "NotEnoughFakepixel");
 
     @RegisterKeybind
     public static final KeyBinding CHW_NEW_WAYPOINT =
-            new KeyBinding("Create new Waypoint", Keyboard.KEY_B, "Not Enough Fakepixel");
+            new KeyBinding("Create new Waypoint", Keyboard.KEY_B, "NotEnoughFakepixel");
 
     private final Minecraft mc = Minecraft.getMinecraft();
 

@@ -14,7 +14,9 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
+import org.ginafro.notenoughfakepixel.variables.Skins;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -29,13 +31,11 @@ public class HideFlamingFists {
     @SubscribeEvent
     public void onEntitySpawn(EntityJoinWorldEvent event) {
         if (!Config.feature.qol.qolHideFlamingFists || !ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        try {
-            if (event.entity instanceof EntityArmorStand) {
-                EntityArmorStand stand = (EntityArmorStand) event.entity;
-                if (stand.getCurrentArmor(4) == null) return;
-                trackedStands.add((EntityArmorStand) event.entity);
-            }
-        } catch (Exception ignored) {}
+        if (!event.world.isRemote) return; // client only
+
+        if (event.entity instanceof EntityArmorStand) {
+            trackedStands.add((EntityArmorStand) event.entity);
+        }
     }
 
     @SubscribeEvent
@@ -48,42 +48,29 @@ public class HideFlamingFists {
     }
 
     private void checkArmorStands() {
-        trackedStands.removeIf(stand -> stand.isDead || !stand.isEntityAlive());
-        for (EntityArmorStand stand : trackedStands) {
-            ItemStack head = stand.getCurrentArmor(3);
-            if (head == null) continue;
+        trackedStands.removeIf(s -> s == null || s.isDead || !s.isEntityAlive());
 
+        for (EntityArmorStand stand : trackedStands) {
+            ItemStack head = stand.getEquipmentInSlot(4);  // helmet (1-based API)
+
+            if (head == null) continue;
             if (isTargetSkull(head)) {
-                String texture = ItemUtils.getSkullTexture(head);
-                if (texture != null) {
-                    Logger.log(texture);
-                }
                 stand.setInvisible(true);
             }
         }
-
     }
 
     // Unified skull detection method
     public static boolean isTargetSkull(ItemStack stack) {
-        if (stack == null || stack.getItem() != Items.skull || stack.getItemDamage() != 3) return false;
+        if (stack == null || stack.getItem() != Items.skull) return false;
+        String texture = ItemUtils.getSkullTexture(stack);
+        if (texture == null || texture.isEmpty()) return false;
+        return Skins.equalsSkin(texture, Skins.FLAMING_FIST);
+    }
 
-        NBTTagCompound nbt = stack.getTagCompound();
-        if (nbt == null) return false;
-
-        String uuidString = null;
-        if (nbt.hasKey("SkullOwner", 10)) {
-            NBTTagCompound skullOwner = nbt.getCompoundTag("SkullOwner");
-            uuidString = skullOwner.getString("Id");
-        } else if (nbt.hasKey("SkullOwner", 8)) {
-            uuidString = nbt.getString("SkullOwner");
-        }
-
-        try {
-            return uuidString != null && UUID.fromString(uuidString).equals(TARGET_UUID);
-        } catch (IllegalArgumentException e) {
-            return false;
-        }
+    @SubscribeEvent
+    public void onWorldUnload(net.minecraftforge.event.world.WorldEvent.Unload event) {
+        if (event.world.isRemote) trackedStands.clear();
     }
 
     @SubscribeEvent
@@ -91,7 +78,8 @@ public class HideFlamingFists {
         if (!Config.feature.qol.qolHideFlamingFists || !(event.entity instanceof EntityArmorStand)) return;
 
         EntityArmorStand stand = (EntityArmorStand) event.entity;
-        if (isTargetSkull(stand.getEquipmentInSlot(4))) {
+        ItemStack head = stand.getEquipmentInSlot(4); // helmet
+        if (isTargetSkull(head)) {
             event.setCanceled(true);
         }
     }

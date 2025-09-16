@@ -12,6 +12,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.DungeonFloor;
@@ -127,22 +128,12 @@ public class M7RelicWaypoints {
     private boolean isRelicSkull(ItemStack stack, Skins targetSkin) {
         if (stack == null ||
                 stack.getItem() != Items.skull ||
-                stack.getMetadata() != 3) {  // 3 = player skull
+                stack.getMetadata() != 3) {
             return false;
         }
 
-        NBTTagCompound tag = stack.getTagCompound();
-        if (tag == null || !tag.hasKey("SkullOwner", 10)) return false;
-
-        NBTTagCompound skullOwner = tag.getCompoundTag("SkullOwner");
-        if (!skullOwner.hasKey("Properties", 10)) return false;
-
-        NBTTagCompound properties = skullOwner.getCompoundTag("Properties");
-        NBTTagList textures = properties.getTagList("textures", 10);  // 10 = compound type
-        if (textures.tagCount() == 0) return false;
-
-        NBTTagCompound texture = textures.getCompoundTagAt(0);
-        String value = texture.getString("Value");
+        String value = ItemUtils.getSkullTexture(stack);
+        if (value.isEmpty()) return false;
 
         Skins skin = Skins.getSkinByValue(value);
         if (skin == null) return false;

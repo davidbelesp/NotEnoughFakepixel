@@ -1,5 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.chocolate;
 
+import javafx.scene.control.Skin;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -24,6 +25,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.utils.*;
+import org.ginafro.notenoughfakepixel.variables.Skins;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -40,17 +42,9 @@ public class ChocolateFactory {
     @Getter
     @Setter
     private Pattern pattern = Pattern.compile("Id:\"([^\"]+)\"");
-    private final ArrayList<String> eggIDS = new ArrayList<>();
-    private final String eggLime = "e3da4593-afbb-38df-bf1e-b57e27a2e0e1";
-    private final String eggBlue = "15785089-b2b0-38ac-b379-8af3d6253c62";
-    private final String eggCake = "9e39f2f4-8038-3aac-97fd-d7420cdf4601";
     private final ArrayList<Waypoint> waypoints = new ArrayList<>();
 
-    public ChocolateFactory() {
-        eggIDS.add(eggLime);
-        eggIDS.add(eggBlue);
-        eggIDS.add(eggCake);
-    }
+    public ChocolateFactory() {}
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
@@ -136,17 +130,17 @@ public class ChocolateFactory {
             if (entity instanceof EntityArmorStand) {
                 ItemStack it = ((EntityArmorStand) entity).getEquipmentInSlot(4);
                 if (it != null && it.getItem() == Items.skull) {
-                    NBTTagCompound nbt = it.getTagCompound();
-                    if (nbt != null && nbt.hasKey("SkullOwner") && nbt.getCompoundTag("SkullOwner").hasKey("Id")) {
-                        String id = nbt.getCompoundTag("SkullOwner").getString("Id");
-                        if (isEgg(id)) {
-                            int[] entityCoords = new int[]{entity.getPosition().getX(), entity.getPosition().getY(), entity.getPosition().getZ()};
-                            Waypoint waypoint = new Waypoint("EGG", entityCoords);
-                            if (checkIfAdded(waypoint)) continue;
-                            waypoints.add(waypoint);
-                            SoundUtils.playSound(entityCoords, "random.pop", 4.0f, 2.5f);
-                        }
+                    String texture = ItemUtils.getSkullTexture(it);
+                    if (texture.isEmpty()) continue;
+
+                    if (isEgg(texture)) {
+                        int[] entityCoords = new int[]{entity.getPosition().getX(), entity.getPosition().getY(), entity.getPosition().getZ()};
+                        Waypoint waypoint = new Waypoint("EGG", entityCoords);
+                        if (checkIfAdded(waypoint)) continue;
+                        waypoints.add(waypoint);
+                        SoundUtils.playSound(entityCoords, "random.pop", 4.0f, 2.5f);
                     }
+
                 }
             }
         }
@@ -190,12 +184,15 @@ public class ChocolateFactory {
         return waypoints.stream().anyMatch(w -> Arrays.equals(w.getCoordinates(), waypoint.getCoordinates()));
     }
 
-    private boolean isEgg(String id) {
-        for (String egg : eggIDS) {
-            if (egg.equals(id)) {
-                return true;
-            }
+    private boolean isEgg(String texture) {
+        for (Skins skin : new Skins[]{
+                Skins.EASTER_EGG_BREAKFAST,
+                Skins.EASTER_EGG_LUNCH,
+                Skins.EASTER_EGG_DINNER
+        }) {
+            if (Skins.equalsSkin(texture, skin)) return true;
         }
         return false;
     }
+
 }
