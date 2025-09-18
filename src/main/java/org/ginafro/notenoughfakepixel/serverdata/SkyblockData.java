@@ -1,6 +1,5 @@
-package org.ginafro.notenoughfakepixel.utils;
+package org.ginafro.notenoughfakepixel.serverdata;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

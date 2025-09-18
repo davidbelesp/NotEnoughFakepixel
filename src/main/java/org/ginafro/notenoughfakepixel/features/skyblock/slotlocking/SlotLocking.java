@@ -31,6 +31,7 @@ import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterInstance;
 import org.ginafro.notenoughfakepixel.events.ReplaceItemEvent;
 import org.ginafro.notenoughfakepixel.events.SlotClickEvent;
 import org.ginafro.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
+import org.ginafro.notenoughfakepixel.serverdata.SkyblockData;
 import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Keyboard;

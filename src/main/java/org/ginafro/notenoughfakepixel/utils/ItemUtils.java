@@ -142,8 +142,10 @@ public class ItemUtils {
         List<String> loreLines = getLoreLines(item);
         if (loreLines.isEmpty()) return Rarity.NONE;
 
-        String clean = ColorUtils.cleanColor(loreLines.get(loreLines.size() - 1));
-        return Optional.ofNullable(Rarity.fromString(clean)).orElse(Rarity.NONE);
+        String lastLine = loreLines.get(loreLines.size() - 1);
+
+        lastLine = StringUtils.stripFormattingFast(lastLine);
+        return Rarity.fromString(lastLine);
     }
 
     public static List<String> getLoreLines(ItemStack item) {

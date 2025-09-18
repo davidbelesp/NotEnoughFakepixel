@@ -1,7 +1,6 @@
 package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -24,10 +23,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 @RegisterEvents
 public class FairySouls {
@@ -36,88 +33,76 @@ public class FairySouls {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent e) {
+        final FairySoulData all = getAllSouls();
+        final Map<String, List<String>> locs = (all != null) ? all.locations : null;
+        List<String> souls = Collections.emptyList();
+        island = null;
+
         if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
         if (!Config.feature.qol.fairySoulWaypoints) return;
+
         Location currentIsland = TablistParser.currentLocation;
-        List<String> souls = new ArrayList<>();
-        if (currentIsland == Location.HUB) {
-            souls = getAllSouls().locations.get("hub");
-            island = "hub";
+        if (locs != null && currentIsland != null) {
+            switch (currentIsland) {
+                case HUB:         souls = locs.getOrDefault("hub", Collections.emptyList());           island = "hub"; break;
+                case SPIDERS_DEN: souls = locs.getOrDefault("spider", Collections.emptyList());        island = "spider"; break;
+                case CRIMSON_ISLE:souls = locs.getOrDefault("crimson", Collections.emptyList());       island = "crimson"; break;
+                case THE_END:     souls = locs.getOrDefault("end", Collections.emptyList());           island = "end"; break;
+                case PARK:        souls = locs.getOrDefault("park", Collections.emptyList());          island = "park"; break;
+                case BARN:        souls = locs.getOrDefault("farming", Collections.emptyList());       island = "farming"; break;
+                case GOLD_MINE:   souls = locs.getOrDefault("gold", Collections.emptyList());          island = "gold"; break;
+                case DUNGEON_HUB: souls = locs.getOrDefault("dungeon_hub", Collections.emptyList());   island = "dungeon_hub"; break;
+                case JERRY:       souls = locs.getOrDefault("winter", Collections.emptyList());        island = "winter"; break;
+                case DWARVEN:     souls = locs.getOrDefault("dwarven", Collections.emptyList());       island = "dwarven"; break;
+                default: break;
+            }
         }
-        if (currentIsland == Location.SPIDERS_DEN) {
-            souls = getAllSouls().locations.get("spider");
-            island = "spider";
+
+        GlStateManager.pushMatrix();
+
+        try {
+            List<String> renderedSouls = checkSouls(souls);
+            for (String s : renderedSouls) {
+                String[] coords = s.split(",");
+
+                Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+                double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * e.partialTicks;
+                double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * e.partialTicks;
+                double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * e.partialTicks;
+                int x = Integer.parseInt(coords[0].trim());
+                int y = Integer.parseInt(coords[1].trim());
+                int z = Integer.parseInt(coords[2].trim());
+                GlStateManager.color(1f, 1f, 1f, 1f);
+                AxisAlignedBB aab = new AxisAlignedBB(
+                        x - viewerX + 0.2,
+                        y - viewerY - 1,
+                        z - viewerZ + 0.2,
+                        x + 0.8 - viewerX,
+                        y - viewerY + 256,
+                        z + 0.8 - viewerZ
+                ).expand(0.01f, 0.01f, 0.01f);
+
+                Color base = ColorUtils.getColor(Config.feature.qol.fairySoulWaypointsColor);
+                Color beam = new Color(base.getRed(), base.getGreen(), base.getBlue(), 102);
+
+                RenderUtils.highlightBlock(new BlockPos(x, y, z), base, true, e.partialTicks);
+                GlStateManager.disableCull();
+                GlStateManager.disableDepth();
+                RenderUtils.renderBeaconBeam(new BlockPos(x, y, z), beam.getRGB(), 1.0f, e.partialTicks);
+                GlStateManager.enableDepth();
+                GlStateManager.enableCull();
+                GlStateManager.enableTexture2D();
+            }
+        } finally {
+            GlStateManager.popMatrix();
         }
-        if (currentIsland == Location.CRIMSON_ISLE) {
-            souls = getAllSouls().locations.get("crimson");
-            island = "crimson";
-        }
-        if (currentIsland == Location.THE_END) {
-            souls = getAllSouls().locations.get("end");
-            island = "end";
-        }
-        if (currentIsland == Location.PARK) {
-            souls = getAllSouls().locations.get("park");
-            island = "park";
-        }
-        if (currentIsland == Location.BARN) {
-            souls = getAllSouls().locations.get("farming");
-            island = "farming";
-        }
-        if (currentIsland == Location.GOLD_MINE) {
-            souls = getAllSouls().locations.get("gold");
-            island = "gold";
-        }
-        if (currentIsland == Location.DUNGEON_HUB) {
-            souls = getAllSouls().locations.get("dungeon_hub");
-            island = "dungeon_hub";
-        }
-        if (currentIsland == Location.JERRY) {
-            souls = getAllSouls().locations.get("winter");
-            island = "winter";
-        }
-        if (currentIsland == Location.DWARVEN) {
-            souls = getAllSouls().locations.get("dwarven");
-            island = "dwarven";
-        }
-        List<String> renderedSouls = checkSouls(souls);
-        for (String s : renderedSouls) {
-            String[] coords = s.split(",");
-            Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
-            double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * e.partialTicks;
-            double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * e.partialTicks;
-            double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * e.partialTicks;
-            int x = Integer.parseInt(coords[0].trim());
-            int y = Integer.parseInt(coords[1].trim());
-            int z = Integer.parseInt(coords[2].trim());
-            GlStateManager.color(1f, 1f, 1f, 1f);
-            AxisAlignedBB aab = new AxisAlignedBB(
-                    x - viewerX + 0.2,
-                    y - viewerY - 1,
-                    z - viewerZ + 0.2,
-                    x + 0.8 - viewerX,
-                    y - viewerY + 256,
-                    z + 0.8 - viewerZ
-            ).expand(0.01f, 0.01f, 0.01f);
-            Color c = ColorUtils.getColor(Config.feature.qol.fairySoulWaypointsColor);
-            RenderUtils.highlightBlock(new BlockPos(x, y, z), c, true, e.partialTicks);
-            GlStateManager.disableCull();
-            Color fairySoulC = ColorUtils.getColor(Config.feature.qol.fairySoulWaypointsColor);
-            Color fairySoulColor = new Color(fairySoulC.getRed(), fairySoulC.getGreen(), fairySoulC.getBlue(), 102);
-            GlStateManager.disableDepth();
-            RenderUtils.renderBeaconBeam(new BlockPos(x, y, z), fairySoulColor.getRGB(), 1.0f, e.partialTicks);
-//            RenderUtils.drawFilledBoundingBox(aab, 1f, fairySoulColor);
-            GlStateManager.enableDepth();
-            GlStateManager.enableCull();
-            GlStateManager.enableTexture2D();
-        }
+
     }
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent e) {
-        if (StringUtils.stripControlCodes(e.message.getUnformattedText()).equalsIgnoreCase("SOUL! You found a Fairy Soul!")
-                || StringUtils.stripControlCodes(e.message.getFormattedText()).equalsIgnoreCase("You already found that Fairy Soul!")
-        ) {
+        String msg = StringUtils.stripControlCodes(e.message.getUnformattedText()).trim();
+        if (msg.equalsIgnoreCase("SOUL! You found a Fairy Soul!") || msg.equalsIgnoreCase("You already found that Fairy Soul!")) {
             System.out.println("Chat Recieved");
             String soul = null;
             double closestDistSq = 5 * 5;
@@ -128,7 +113,7 @@ public class FairySouls {
                 return;
             }
             List<String> souls = soulData.locations.get(island);
-            List<String> gainedSouls = soulData1.locations.get(island);
+            List<String> gainedSouls = soulData1.locations.computeIfAbsent(island, k -> new ArrayList<>());
             for (String s : souls) {
                 String[] s1 = s.split(",");
                 BlockPos pos = new BlockPos(Integer.parseInt(s1[0]), Integer.parseInt(s1[1]), Integer.parseInt(s1[2]));
@@ -149,23 +134,17 @@ public class FairySouls {
     }
 
     private List<String> checkSouls(List<String> shownSouls) {
-        List<String> souls = new ArrayList<>();
         FairySoulData data = getSoulData();
-        if (data != null) {
-            if (data.locations != null) {
-                if (data.locations.get(island) != null) {
-                    for (String s : shownSouls) {
-                        if (!data.locations.get(island).contains(s)) {
-                            souls.add(s);
-                        }
-                    }
-                }
-            }
+        if (data == null || data.locations == null || island == null) return shownSouls;
+
+        List<String> gained = data.locations.get(island);
+        if (gained == null || gained.isEmpty()) return shownSouls;
+
+        List<String> result = new ArrayList<>(shownSouls.size());
+        for (String s : shownSouls) {
+            if (!gained.contains(s)) result.add(s);
         }
-        if (souls.isEmpty()) {
-            return shownSouls;
-        }
-        return souls;
+        return result.isEmpty() ? shownSouls : result;
     }
 
     // FAIRY SOUL DATA HANDLING
@@ -183,38 +162,36 @@ public class FairySouls {
         }
 
     }
-
-    private static final FairySoulData STUB_LOAD_FAIL =
-            new FairySoulData("Could not load repository", 247, java.util.Collections.emptyMap());
-    private static volatile FairySoulData CACHED_SOULS = null;
-    private static volatile String LAST_JSON_REF = null;
-
     public static File SOULS_FILE = new File(Config.configDirectory, "gainedsouls.json");
-    public static Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static Gson gson = ConfigHandler.GSON;
     public static Map<String, List<String>> templateMap = new HashMap<>();
 
     public static FairySoulData getSoulData() {
         try {
             if (!Files.exists(SOULS_FILE.toPath())) {
-                templateMap.put("hub", new ArrayList<>());
-                templateMap.put("spider", new ArrayList<>());
-                templateMap.put("crimson", new ArrayList<>());
-                templateMap.put("end", new ArrayList<>());
-                templateMap.put("park", new ArrayList<>());
-                templateMap.put("farming", new ArrayList<>());
-                templateMap.put("gold", new ArrayList<>());
-                templateMap.put("dungeon_hub", new ArrayList<>());
-                templateMap.put("winter", new ArrayList<>());
+                Map<String, List<String>> template = new HashMap<>();
+                template.put("hub", new ArrayList<>());
+                template.put("spider", new ArrayList<>());
+                template.put("crimson", new ArrayList<>());
+                template.put("end", new ArrayList<>());
+                template.put("park", new ArrayList<>());
+                template.put("farming", new ArrayList<>());
+                template.put("gold", new ArrayList<>());
+                template.put("dungeon_hub", new ArrayList<>());
+                template.put("winter", new ArrayList<>());
+                template.put("dwarven", new ArrayList<>());
+
                 FairySoulData data = new FairySoulData(
                         "Do Not Manually Change This File, It will lead to errors",
-                        0,
-                        templateMap
+                        0, template
                 );
                 saveSoulData(data);
                 return data;
             }
-            FileReader reader = new FileReader(SOULS_FILE);
-            return gson.fromJson(reader, FairySoulData.class);
+
+            try (FileReader reader = new FileReader(SOULS_FILE)) {
+                return gson.fromJson(reader, FairySoulData.class);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             return new FairySoulData("Could not load file", 247, new HashMap<>());
@@ -229,31 +206,11 @@ public class FairySouls {
         }
     }
 
+    private static final FairySoulData STUB_SOULS =
+            new FairySoulData("Could not load repository", 247, Collections.emptyMap());
+
     public static FairySoulData getAllSouls() {
-        final String KEY = "fairysouls";
-        if (!RepoHandler.isLoaded(KEY)) {
-            RepoHandler.ensureLoadedAsync(KEY);
-            return CACHED_SOULS != null ? CACHED_SOULS : STUB_LOAD_FAIL;
-        }
-
-        final String json = RepoHandler.getJson(KEY);
-        if (json == null) {
-            return CACHED_SOULS != null ? CACHED_SOULS : STUB_LOAD_FAIL;
-        }
-
-        if (json != LAST_JSON_REF) {
-            try {
-                FairySoulData parsed = gson.fromJson(json, FairySoulData.class);
-                if (parsed != null) {
-                    CACHED_SOULS = parsed;
-                    LAST_JSON_REF = json;
-                }
-            } catch (Exception e) {
-                Logger.logErrorConsole("FairySouls parse error: " + e.getMessage());
-            }
-        }
-
-        return CACHED_SOULS != null ? CACHED_SOULS : STUB_LOAD_FAIL;
+        return RepoHandler.getData("fairysouls", FairySoulData.class, STUB_SOULS);
     }
 
 }

@@ -2,14 +2,17 @@ package org.ginafro.notenoughfakepixel.events.handlers;
 
 import com.google.gson.Gson;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import org.ginafro.notenoughfakepixel.utils.ConfigHandler;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -45,7 +48,7 @@ public class RepoHandler {
 
     private RepoHandler() {}
 
-    private static final Gson gson = new Gson();
+    private static final Gson gson = ConfigHandler.GSON;
 
     // State per source (if we want to add more sources in the future)
     private static final class SourceState {
@@ -183,6 +186,53 @@ public class RepoHandler {
             while ((line = br.readLine()) != null) sb.append(line).append('\n');
             return sb.toString();
         }
+    }
+
+    // Dynamic data loading
+
+    private static final class ParsedCache {
+        volatile Object parsed;
+        volatile String lastJsonRef;
+    }
+
+    private static final ConcurrentMap<String, ConcurrentMap<Type, ParsedCache>> PARSED =
+            new ConcurrentHashMap<>();
+
+    private static ParsedCache cacheFor(String key, Type type) {
+        return PARSED
+                .computeIfAbsent(key, k -> new ConcurrentHashMap<>())
+                .computeIfAbsent(type, t -> new ParsedCache());
+    }
+
+    public static <T> T getData(String key, Type type, T defaultValue) {
+        // kick off a load if needed, but return immediately
+        ensureLoadedAsync(key);
+
+        final String json = getJson(key);
+        if (json == null) return defaultValue;
+
+        final ParsedCache pc = cacheFor(key, type);
+
+        // parse only if JSON changed (by content, NOT reference)
+        if (!Objects.equals(json, pc.lastJsonRef)) {
+            try {
+                T parsed = gson.fromJson(json, type);
+                if (parsed != null) {
+                    pc.parsed = parsed;
+                    pc.lastJsonRef = json;
+                }
+            } catch (Exception e) {
+                Logger.logErrorConsole("JSON parse error (" + key + "): " + e.getMessage());
+            }
+        }
+
+        @SuppressWarnings("unchecked")
+        T result = (T) pc.parsed;
+        return result != null ? result : defaultValue;
+    }
+
+    public static <T> T getData(String key, Class<T> clazz, T defaultValue) {
+        return getData(key, (Type) clazz, defaultValue);
     }
 
 }

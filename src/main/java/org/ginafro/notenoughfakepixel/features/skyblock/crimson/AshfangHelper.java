@@ -19,11 +19,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.events.PacketReadEvent;
-import org.ginafro.notenoughfakepixel.utils.ColorUtils;
-import org.ginafro.notenoughfakepixel.utils.RenderUtils;
-import org.ginafro.notenoughfakepixel.utils.SoundUtils;
-import org.ginafro.notenoughfakepixel.utils.Waypoint;
+import org.ginafro.notenoughfakepixel.utils.*;
 import org.ginafro.notenoughfakepixel.variables.MobDisplayTypes;
+import org.ginafro.notenoughfakepixel.variables.Skins;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -123,25 +121,24 @@ public class AshfangHelper {
             // GRAVITY ORB
             if (entity instanceof EntityArmorStand) {
                 if (!Crimson.checkAshfangArea(position)) continue;
-                ItemStack it = ((EntityArmorStand) entity).getEquipmentInSlot(4); // Head slot
+                ItemStack it = ((EntityArmorStand) entity).getEquipmentInSlot(4);
                 String blazingSoul = "Blazing Soul";
                 if (it != null && it.getItem() == Items.skull) {
                     if (!Config.feature.crimson.crimsonGravityOrbWaypoint) continue;
-                    NBTTagCompound nbt = it.getTagCompound();
-                    if (nbt != null && nbt.hasKey("SkullOwner") && nbt.getCompoundTag("SkullOwner").hasKey("Id")) {
-                        String id = nbt.getCompoundTag("SkullOwner").getString("Id");
-                        String gravityOrbID = "e0614291-7855-32a6-825a-2315725b4cfa";
-                        if (id.equals(gravityOrbID)) {
-                            waypointGravityOrb = new Waypoint("GRAVITYORB", position);
-                            gravityFound = true;
-                            if (currentGravityOrb == null) {
-                                SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
-                            } else if (entity.getUniqueID() != currentGravityOrb.getUniqueID()) {
-                                SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
-                            }
-                            currentGravityOrb = entity;
+
+                    String texture = ItemUtils.getSkullTexture(it);
+                    if (texture == null || texture.isEmpty()) continue;
+                    if (Skins.equalsSkin(texture, Skins.GRAVITY_ORB)) {
+                        waypointGravityOrb = new Waypoint("GRAVITYORB", position);
+                        gravityFound = true;
+                        if (currentGravityOrb == null) {
+                            SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
+                        } else if (entity.getUniqueID() != currentGravityOrb.getUniqueID()) {
+                            SoundUtils.playSound(position, "random.pop", 5.0f, 1.5f);
                         }
+                        currentGravityOrb = entity;
                     }
+
                 } else if (entityName.contains("Ashfang") && !isNameAshfangMinion(entityName) &&
                         (currentAshfang == null || currentAshfang.getUniqueID() != entity.getUniqueID())) {
                     if (!Config.feature.crimson.crimsonAshfangWaypoint) continue;

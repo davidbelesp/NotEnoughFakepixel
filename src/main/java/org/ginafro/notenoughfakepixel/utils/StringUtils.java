@@ -75,7 +75,17 @@ public class StringUtils {
         for (int i = 0; i < n; i++) {
             char c = in.charAt(i);
             if (c == '§' || c == '&') {
-                if (i + 1 < n) i++;
+                if (i + 1 < n) {
+                    char code = in.charAt(++i);
+                    while (i + 1 < n) {
+                        char next = in.charAt(i + 1);
+                        if (next == 'k' || next == 'K') {
+                            i++;
+                        } else {
+                            break;
+                        }
+                    }
+                }
                 continue;
             }
             sb.append(c);
