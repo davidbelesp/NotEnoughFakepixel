@@ -19,6 +19,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.DragonCloseAlert;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
+import org.ginafro.notenoughfakepixel.serverdata.SkyblockData;
 import org.ginafro.notenoughfakepixel.variables.*;
 
 import java.awt.*;
@@ -125,6 +126,33 @@ public class ScoreboardUtils {
                         if (heat < 0) {
                             heat = 0;
                             Log.warn("Failed to parse heat from scoreboard: " + clean);
+                        }
+                    }
+
+                    List<String> seasons = Arrays.asList("Spring", "Summer", "Autumn", "Winter");
+                    for (String season : seasons) {
+                        if (clean.contains(season)) {
+                            SkyblockData.setSeason(SkyblockData.Season.valueOf(season.toUpperCase()));
+                            break;
+                        }
+                    }
+
+                    if (clean.contains("☀") || clean.contains("☽")) {
+                        final String timeStr = clean.split(" ")[0];
+                        final String[] parts = timeStr.split(":");
+                        final boolean am = clean.contains("am");
+                        if (parts.length == 2) {
+                            try {
+                                SkyblockData.setSbHour(Integer.parseInt(parts[0]));
+                                SkyblockData.setSbMinute(Integer.parseInt(parts[1].replaceAll("am|pm", "")));
+                                SkyblockData.setAm(am);
+                            } catch (NumberFormatException ex) {
+                                SkyblockData.setSbHour(0);
+                                SkyblockData.setSbMinute(0);
+                                SkyblockData.setAm(true);
+                                Logger.log("Failed to parse time from scoreboard: " + clean);
+                            }
+
                         }
                     }
 

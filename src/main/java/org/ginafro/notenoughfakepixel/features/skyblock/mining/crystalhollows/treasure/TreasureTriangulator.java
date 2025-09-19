@@ -150,7 +150,6 @@ public final class TreasureTriangulator {
     }
 
     public void reset() {
-        Logger.log("TreasureTriangulator: reset");
         samplesLock.lock();
         try {
             samples.clear();

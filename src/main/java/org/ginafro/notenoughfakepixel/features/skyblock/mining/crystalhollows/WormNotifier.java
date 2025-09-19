@@ -29,7 +29,7 @@ public class WormNotifier extends ChatNotifier {
     }
 
     @Override
-    public void afterDetection() {
+    public void afterDetection(String message) {
         WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
     }
 }

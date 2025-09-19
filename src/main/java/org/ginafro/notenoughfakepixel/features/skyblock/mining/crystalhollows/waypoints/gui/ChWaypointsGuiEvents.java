@@ -2,10 +2,13 @@ package org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.w
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterKeybind;
+import org.ginafro.notenoughfakepixel.utils.TablistParser;
+import org.ginafro.notenoughfakepixel.variables.Location;
 import org.lwjgl.input.Keyboard;
 
 @RegisterEvents
@@ -27,6 +30,10 @@ public class ChWaypointsGuiEvents {
             mc.displayGuiScreen(new GuiWaypointManager());
         }
         if (mc.currentScreen == null && CHW_NEW_WAYPOINT.isPressed()) {
+            if (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) {
+                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("§cYou can only use waypoints in Crystal Hollows"));
+                return;
+            }
             mc.displayGuiScreen(new GuiWaypointCreate());
         }
     }

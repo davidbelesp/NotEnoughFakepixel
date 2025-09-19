@@ -24,6 +24,7 @@ import org.ginafro.notenoughfakepixel.features.skyblock.dungeons.terminals.Termi
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.*;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
+import org.ginafro.notenoughfakepixel.serverdata.SkyblockData;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.Logger;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
@@ -140,6 +141,9 @@ public class Configuration {
         if ("editWormTimerPos".equals(runnableId)) {
             editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.mining.wormTimerScale), (int) Math.abs(9 * Config.feature.mining.wormTimerScale), Config.feature.mining.wormTimerPos);
         }
+        if ("editEggTimerPos".equals(runnableId)) {
+            editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.chocolateFactory.eggTimerScale), (int) Math.abs(9 * Config.feature.chocolateFactory.eggTimerScale), Config.feature.chocolateFactory.eggTimerPos);
+        }
         if ("editDarkAHTimerPos".equals(runnableId)) {
             editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.qol.darkAHTimerScale), (int) Math.abs(9 * Config.feature.qol.darkAHTimerScale), Config.feature.qol.darkAhTimerPos);
         }
@@ -181,6 +185,9 @@ public class Configuration {
         if ("triggerTimers".equals(runnableId)) {
             WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
             Logger.log("Set worm spawn to 30 seconds from now");
+        }
+        if ("logSeason".equals(runnableId)) {
+            Logger.log("Current Season: " + SkyblockData.getSeason());
         }
     }
 

@@ -18,6 +18,7 @@ public enum Resources {
     RARITY_TEXTURE(new ResourceLocation("notenoughfakepixel:skyblock/textures/gui/rarity.png")),
 
     DARK_AH(new ResourceLocation("notenoughfakepixel:skyblock/dark_ah.png")),
+    EGG_HUNT(new ResourceLocation("notenoughfakepixel:skyblock/egg_hunt.png")),
 
     CRYSTAL_MAP_POINT(new ResourceLocation("notenoughfakepixel:crystalhollows/map_point.png")),
     CRYSTAL_MAP_ARROW(new ResourceLocation("notenoughfakepixel:crystalhollows/map_arrow.png")),
