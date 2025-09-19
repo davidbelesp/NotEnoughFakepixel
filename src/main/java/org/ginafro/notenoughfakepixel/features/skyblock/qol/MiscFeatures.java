@@ -507,13 +507,13 @@ public class MiscFeatures {
             if (!unformattedText.replace(" ", "").isEmpty()) {
                 ChatComponentText copyText = new ChatComponentText(EnumChatFormatting.DARK_GRAY + "✍");
                 if (Config.feature.misc.copyChatString.equals("[COPY]")){
-                    copyText = new ChatComponentText(EnumChatFormatting.AQUA + "[COPY]");
+                    copyText = new ChatComponentText(EnumChatFormatting.AQUA + "" + EnumChatFormatting.BOLD + "[COPY]");
                 } else if (Config.feature.misc.copyChatString.equals("Legacy Emoji")) {
                     copyText = new ChatComponentText(EnumChatFormatting.DARK_GRAY + "✍");
                 }
 
                 ChatStyle style = new ChatStyle()
-                        .setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(EnumChatFormatting.GRAY + "Copy message")))
+                        .setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(EnumChatFormatting.AQUA + "Copy message")))
                         .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/copytoclipboard " + unformattedText));
                 copyText.setChatStyle(style);
 

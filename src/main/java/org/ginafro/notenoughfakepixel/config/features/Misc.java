@@ -22,8 +22,8 @@ public class Misc {
     @ConfigEditorDropdown(values = {
             "Legacy Emoji",
             "[COPY]"
-    },initialIndex = 1)
-    public String copyChatString = "[COPY]";
+    })
+    public String copyChatString = "Legacy Emoji";
 
 
     @Expose
