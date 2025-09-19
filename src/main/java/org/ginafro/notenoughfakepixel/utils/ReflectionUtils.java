@@ -15,8 +15,8 @@ public class ReflectionUtils {
         return null;
     }
 
-    public static int getInt(Field f, Object o, int def) {
-        try { return f != null ? f.getInt(o) : def; } catch (Throwable t) { return def; }
+    public static int getInt(Field f, Object o, int fallback) {
+        try { return f.getInt(o); } catch (Throwable t) { return fallback; }
     }
 
     public static final class Ref {

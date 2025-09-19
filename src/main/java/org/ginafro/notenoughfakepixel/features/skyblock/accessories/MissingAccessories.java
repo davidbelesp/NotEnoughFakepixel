@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.serverdata.AccessoriesData;
@@ -39,12 +40,20 @@ public class MissingAccessories {
     private int accPanelX, accPanelY, accPanelW, accPanelH;
 
     // Field cache, reflections
-    private static final Field F_GUI_LEFT, F_GUI_TOP, F_XSIZE, F_YSIZE;
+    private static final Field F_GUI_LEFT = ReflectionHelper.findField(GuiContainer.class,
+            "field_147003_i", "guiLeft");
+    private static final Field F_GUI_TOP  = ReflectionHelper.findField(GuiContainer.class,
+            "field_147009_r", "guiTop");
+    private static final Field F_XSIZE    = ReflectionHelper.findField(GuiContainer.class,
+            "field_146999_f", "xSize");
+    private static final Field F_YSIZE    = ReflectionHelper.findField(GuiContainer.class,
+            "field_147000_g", "ySize");
+
     static {
-        F_GUI_LEFT = ReflectionUtils.findField(GuiContainer.class, "guiLeft",  "field_147003_i");
-        F_GUI_TOP  = ReflectionUtils.findField(GuiContainer.class, "guiTop",   "field_147009_r");
-        F_XSIZE    = ReflectionUtils.findField(GuiContainer.class, "xSize",    "field_146999_f");
-        F_YSIZE    = ReflectionUtils.findField(GuiContainer.class, "ySize",    "field_147000_g");
+        F_GUI_LEFT.setAccessible(true);
+        F_GUI_TOP.setAccessible(true);
+        F_XSIZE.setAccessible(true);
+        F_YSIZE.setAccessible(true);
     }
 
     @SubscribeEvent public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e) {
@@ -140,10 +149,10 @@ public class MissingAccessories {
         GuiChest chest = (GuiChest) e.gui;
 
         try {
-            int guiLeft = ReflectionUtils.Ref.intField(GuiContainer.class, "guiLeft",  chest);
-            int guiTop = ReflectionUtils.Ref.intField(GuiContainer.class, "guiTop",   chest);
-            int xSize = ReflectionUtils.Ref.intField(GuiContainer.class, "xSize",    chest);
-            int ySize = ReflectionUtils.Ref.intField(GuiContainer.class, "ySize",    chest);
+            int xSize = ReflectionUtils.getInt(F_XSIZE, chest, 176);
+            int ySize = ReflectionUtils.getInt(F_YSIZE, chest, 222);
+            int guiLeft = ReflectionUtils.getInt(F_GUI_LEFT, chest, (e.gui.width  - xSize) / 2);
+            int guiTop  = ReflectionUtils.getInt(F_GUI_TOP,  chest, (e.gui.height - ySize) / 2);
 
             final int pad = 6;
             final int panelX = guiLeft + xSize + pad;
@@ -273,10 +282,10 @@ public class MissingAccessories {
 
         if (!AccessoriesData.show) return;
 
-
-        int guiLeft = ReflectionUtils.Ref.intField(GuiContainer.class, "guiLeft", chest);
-        int guiTop  = ReflectionUtils.Ref.intField(GuiContainer.class, "guiTop", chest);
-        int ySize   = ReflectionUtils.Ref.intField(GuiContainer.class, "ySize", chest);
+        int xSize = ReflectionUtils.getInt(F_XSIZE, chest, 176);
+        int ySize = ReflectionUtils.getInt(F_YSIZE, chest, 222);
+        int guiLeft = ReflectionUtils.getInt(F_GUI_LEFT, chest, (e.gui.width  - xSize) / 2);
+        int guiTop  = ReflectionUtils.getInt(F_GUI_TOP,  chest, (e.gui.height - ySize) / 2);
 
         FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
