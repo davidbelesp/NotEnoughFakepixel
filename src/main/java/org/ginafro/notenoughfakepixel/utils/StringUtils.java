@@ -93,5 +93,13 @@ public class StringUtils {
         return sb.toString().toLowerCase(java.util.Locale.ROOT);
     }
 
+    public static String capitalizeName(String lower) {
+        if (lower == null || lower.isEmpty()) return lower;
+        char[] ch = lower.toCharArray();
+        ch[0] = Character.toUpperCase(ch[0]);
+        return new String(ch);
+    }
+
+
 
 }

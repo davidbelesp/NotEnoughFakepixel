@@ -4,23 +4,23 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Data public class AccessoriesData {
 
     public static AccessoriesData INSTANCE = new AccessoriesData();
+
     public static boolean finalPage = false;
+    public static boolean show = false;
+
     public static int totalMp = 0;
     public static int maxMp = 0;
     public static int maxMpRec = 0;
     private static int bonuses = 0;
-    public static boolean show = false;
 
-    @AllArgsConstructor @Data public static class Accessory {
+    @AllArgsConstructor @Data
+    public static class Accessory {
         public String rarity;
         public String name;
     }
@@ -124,4 +124,13 @@ import java.util.stream.Collectors;
                 .sum();
         maxMpRec += bonuses;
     }
+
+    public static String getColorLevel(int max) {
+        int total = totalMp;
+        if (total >= max) return "§b";
+        if (total >= 2 * max / 3) return "§a";
+        if (total >= max / 3) return "§e";
+        return "§c";
+    }
+
 }

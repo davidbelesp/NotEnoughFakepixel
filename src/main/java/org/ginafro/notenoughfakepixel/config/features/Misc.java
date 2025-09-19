@@ -1,10 +1,7 @@
 package org.ginafro.notenoughfakepixel.config.features;
 
 import com.google.gson.annotations.Expose;
-import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.ConfigAccordionId;
-import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.ConfigEditorBoolean;
-import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.ConfigEditorButton;
-import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.ConfigOption;
+import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Misc {
 
@@ -17,6 +14,17 @@ public class Misc {
     @ConfigOption(name = "Copy Chat Message", desc = "Enable copying chat messages.")
     @ConfigEditorBoolean
     public boolean qolCopyChatMsg = true;
+
+    final String copyEmoji = Character.toString((char) Integer.parseInt("270D", 16));
+
+    @Expose
+    @ConfigOption(name = "Copy Chat Button", desc = "Button to copy chat.")
+    @ConfigEditorDropdown(values = {
+            "Legacy Emoji",
+            "[COPY]"
+    },initialIndex = 1)
+    public String copyChatString = "[COPY]";
+
 
     @Expose
     @ConfigOption(name = "Always Sprint", desc = "Always sprint.")

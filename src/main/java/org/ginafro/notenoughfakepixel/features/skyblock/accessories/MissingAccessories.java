@@ -14,14 +14,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.serverdata.AccessoriesData;
 import org.ginafro.notenoughfakepixel.utils.ItemUtils;
 import org.ginafro.notenoughfakepixel.utils.Logger;
+import org.ginafro.notenoughfakepixel.utils.ReflectionUtils;
 import org.ginafro.notenoughfakepixel.utils.StringUtils;
 import org.ginafro.notenoughfakepixel.variables.Rarity;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,18 +34,29 @@ public class MissingAccessories {
 
     private static int ticks = 0;
 
-    @SubscribeEvent
-    public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e) {
+    // Panel scrolling
+    private int accScroll = 0, accMaxScroll = 0;
+    private int accPanelX, accPanelY, accPanelW, accPanelH;
+
+    // Field cache, reflections
+    private static final Field F_GUI_LEFT, F_GUI_TOP, F_XSIZE, F_YSIZE;
+    static {
+        F_GUI_LEFT = ReflectionUtils.findField(GuiContainer.class, "guiLeft",  "field_147003_i");
+        F_GUI_TOP  = ReflectionUtils.findField(GuiContainer.class, "guiTop",   "field_147009_r");
+        F_XSIZE    = ReflectionUtils.findField(GuiContainer.class, "xSize",    "field_146999_f");
+        F_YSIZE    = ReflectionUtils.findField(GuiContainer.class, "ySize",    "field_147000_g");
+    }
+
+    @SubscribeEvent public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e) {
         if (!(e.gui instanceof GuiChest)) return;
         GuiChest chestGui = (GuiChest) e.gui;
         Container container = chestGui.inventorySlots;
         if (!(container instanceof ContainerChest)) return;
         if (!checkEssentials()) return;
+
         ContainerChest containerChest = (ContainerChest) container;
 
-        // throttle to 1 every 10 ticks
-        ticks++;
-        if (ticks < 100) return;
+        ticks++; if (ticks < 100) return;
         ticks = 0;
 
         String name = containerChest
@@ -58,15 +72,11 @@ public class MissingAccessories {
                 ItemStack item = slot.getStack();
                 if (item == null) continue;
 
-
-
                 if(ItemUtils.isSkyblockItem(item)) {
                     AccessoriesData.Accessory acc = new AccessoriesData.Accessory(
                             ItemUtils.getRarity(item).name(),
-                            StringUtils.stripFormattingFast(item.getDisplayName())
-                    );
+                            StringUtils.stripFormattingFast(item.getDisplayName()));
                     AccessoriesData.INSTANCE.addAccessory(acc);
-                    Logger.log(acc);
                 }
 
                 if (slot.getSlotIndex() == containerChest.inventorySlots.size() - 37) {
@@ -74,25 +84,19 @@ public class MissingAccessories {
                         AccessoriesData.finalPage = true;
                     }
                 }
-
-            }
-            AccessoriesData.calculateMp();
-            //AccessoriesData.INSTANCE.getMissingAccessories().forEach(acc -> Logger.log("Missing: " + acc.getName()));
-        } else {
-            AccessoriesData.show = false;
-        }
-    }
-
-    public boolean checkEssentials() {
-        return true;
+            } AccessoriesData.calculateMp();
+        } else AccessoriesData.show = false;
     }
 
     private GuiScreen lastScreen = null;
 
+    public boolean checkEssentials() {
+        return Config.feature.accessories.enable;
+    }
+
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
-
         GuiScreen current = Minecraft.getMinecraft().currentScreen;
 
         if (lastScreen instanceof GuiChest && !(current instanceof GuiChest)) {
@@ -101,66 +105,164 @@ public class MissingAccessories {
             }
             AccessoriesData.finalPage = false;
             AccessoriesData.show = false;
-            Logger.log("Cleared accessories data");
         }
-
         lastScreen = current;
+    }
+
+    @SubscribeEvent
+    public void onMouseWheel(GuiScreenEvent.MouseInputEvent.Pre e) {
+        if (!(e.gui instanceof GuiChest)) return;
+        if (!AccessoriesData.show) return;
+
+        int dWheel = org.lwjgl.input.Mouse.getDWheel();
+        if (dWheel == 0) return;
+
+        final Minecraft mc = Minecraft.getMinecraft();
+        int mouseX = org.lwjgl.input.Mouse.getX() * e.gui.width  / mc.displayWidth;
+        int mouseY = e.gui.height - org.lwjgl.input.Mouse.getY() * e.gui.height / mc.displayHeight - 1;
+
+        if (mouseX < accPanelX || mouseX > accPanelX + accPanelW || mouseY < accPanelY || mouseY > accPanelY + accPanelH) return;
+
+        final int step = mc.fontRendererObj.FONT_HEIGHT + 2;
+        accScroll = clamp(accScroll - Integer.signum(dWheel) * step, 0, accMaxScroll);
+    }
+    private static int clamp(int v, int lo, int hi){
+        return v < lo ? lo : (v > hi ? hi : v);
     }
 
     @SubscribeEvent
     public void onDrawChestPanel(GuiScreenEvent.DrawScreenEvent.Post e) {
         if (!(e.gui instanceof GuiChest)) return;
         if (!checkEssentials()) return;
+        if (!AccessoriesData.show) return;
+        if (!Config.feature.accessories.showMissingAccessoriesList) return;
+
         GuiChest chest = (GuiChest) e.gui;
 
-        if (!AccessoriesData.show) return;
+        try {
+            int guiLeft = ReflectionUtils.Ref.intField(GuiContainer.class, "guiLeft",  chest);
+            int guiTop = ReflectionUtils.Ref.intField(GuiContainer.class, "guiTop",   chest);
+            int xSize = ReflectionUtils.Ref.intField(GuiContainer.class, "xSize",    chest);
+            int ySize = ReflectionUtils.Ref.intField(GuiContainer.class, "ySize",    chest);
 
-        int guiLeft  = Ref.intField(GuiContainer.class, "guiLeft",  chest);
-        int guiTop   = Ref.intField(GuiContainer.class, "guiTop",   chest);
-        int xSize    = Ref.intField(GuiContainer.class, "xSize",    chest);
-        int ySize    = Ref.intField(GuiContainer.class, "ySize",    chest);
+            final int pad = 6;
+            final int panelX = guiLeft + xSize + pad;
+            final int panelY = guiTop;
+            final int panelW = 140;
 
+            FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+            HashMap<String, Rarity> accessories = getMissingByRarity();
 
-        final int pad = 6;
-        final int panelX = guiLeft + xSize + pad;
-        final int panelY = guiTop;
-        final int panelW = 140;
+            int headerH = fr.FONT_HEIGHT + 6;
+            int lineH   = fr.FONT_HEIGHT + 2;
 
-        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
+            // --- Decide a fixed visible height so scrolling is useful
+            int visibleListH = Math.min(180, ySize - headerH - 6);
+            int panelH = headerH + Math.max(0, visibleListH) + 6;
 
-        HashMap<String, Rarity> accessories = getMissingByRarity();
+            // Save panel rect for scissor & scrollbar
+            accPanelX = panelX; accPanelY = panelY; accPanelW = panelW; accPanelH = panelH;
 
-        int headerH = fr.FONT_HEIGHT + 6;
-        int lineH   = fr.FONT_HEIGHT + 2;
-        int panelH  = Math.max(ySize, headerH + accessories.size() * lineH + 6);
+            GlStateManager.disableLighting();
+            GlStateManager.disableDepth();
+            GlStateManager.translate(0, 0, -200);
 
-        GlStateManager.disableLighting();
-        GlStateManager.disableDepth();
-        Gui.drawRect(panelX, panelY, panelX + panelW, panelY + panelH, 0xB0000000); // translucent black
+            // Background + border
+            Gui.drawRect(panelX, panelY, panelX + panelW, panelY + panelH, 0xB0000000);
+            Gui.drawRect(panelX, panelY, panelX + panelW, panelY + 1, 0x40FFFFFF);
+            Gui.drawRect(panelX, panelY + panelH - 1, panelX + panelW, panelY + panelH, 0x40000000);
+            Gui.drawRect(panelX, panelY, panelX + 1, panelY + panelH, 0x40000000);
+            Gui.drawRect(panelX + panelW - 1, panelY, panelX + panelW, panelY + panelH, 0x40000000);
 
-        Gui.drawRect(panelX, panelY, panelX + panelW, panelY + 1, 0x40FFFFFF);
-        Gui.drawRect(panelX, panelY + panelH - 1, panelX + panelW, panelY + panelH, 0x40000000);
-        Gui.drawRect(panelX, panelY, panelX + 1, panelY + panelH, 0x40000000);
-        Gui.drawRect(panelX + panelW - 1, panelY, panelX + panelW, panelY + panelH, 0x40000000);
+            // Title + underline
+            fr.drawStringWithShadow("§7Missing Accessories", panelX + 6, panelY + 4, 0xFFFFFF);
+            Gui.drawRect(panelX + 6, panelY + headerH - 2, panelX + panelW - 6, panelY + headerH - 1, 0x40FFFFFF);
 
-        String title = "Missing Accessories";
-        fr.drawStringWithShadow(title, panelX + 6, panelY + 4, 0xFFFFFF);
+            if (!AccessoriesData.finalPage || accessories.isEmpty()) {
+                String line = AccessoriesData.finalPage ? "None! You're all set!" : "Visit all pages to see";
+                String clipped = fr.trimStringToWidth(line, panelW - 12);
+                int textW = fr.getStringWidth(clipped);
+                int textX = panelX + (panelW - textW) / 2;
+                int textY = panelY + (panelH - fr.FONT_HEIGHT) / 2;
+                fr.drawString(clipped, textX, textY, 0xFFAAAAAA);
 
-        Gui.drawRect(panelX + 6, panelY + headerH - 2, panelX + panelW - 6, panelY + headerH - 1, 0x40FFFFFF);
+                GlStateManager.enableDepth();
+                GlStateManager.enableLighting();
+                accScroll = 0; accMaxScroll = 0;
+                return;
+            }
 
-        // Text lines
-        int y = panelY + headerH;
-        // check accessories hashmap and print each
-        for (String name: accessories.keySet()) {
-            Rarity rarity = accessories.get(name);
-            String line = Rarity.getColor(rarity) + "■ §f" + name;
-            String clipped = fr.trimStringToWidth(line, panelW - 12);
-            fr.drawString(clipped, panelX + 6, y, 0xFFAAAAAA);
-            y += lineH;
+            // ---- SCROLLABLE LIST ----
+            java.util.List<java.util.Map.Entry<String, Rarity>> entries =
+                    new java.util.ArrayList<>(accessories.entrySet());
+            entries.sort((a, b) -> {
+                int c = b.getValue().ordinal() - a.getValue().ordinal();
+                if (c != 0) return c;
+                return a.getKey().compareToIgnoreCase(b.getKey());
+            });
+
+            int contentH = entries.size() * lineH + 8;
+            int viewH = Math.max(0, panelH - headerH - 6);
+            accMaxScroll = Math.max(0, contentH - viewH);
+
+            if (accScroll < 0) accScroll = 0;
+            if (accScroll > accMaxScroll) accScroll = accMaxScroll;
+
+            int listX = panelX + 6;
+            int listY = panelY + headerH;
+            enableScissor(listX - 2, listY, panelW - 8, viewH);
+
+            int y = listY + 4 - accScroll;
+            for (java.util.Map.Entry<String, Rarity> e2 : entries) {
+                String name = e2.getKey();
+                Rarity rar  = e2.getValue();
+                String line = Rarity.getColor(rar) + "■ " + name;
+
+                if (y > listY - lineH && y < listY + viewH) {
+                    fr.drawString(fr.trimStringToWidth(line, panelW - 12), listX, y, 0xFFFFFFFF);
+                }
+                y += lineH;
+            }
+
+            disableScissor();
+
+            if (accMaxScroll > 0) {
+                int trackX = panelX + panelW - 3;
+                int trackY = listY + 2;
+                int trackH = viewH - 4;
+
+                int barH = Math.max(16, (int) (trackH * (viewH / (float) (contentH))));
+                int barY = trackY + (int) ((trackH - barH) * (accScroll / (float) accMaxScroll));
+
+                Gui.drawRect(trackX, trackY, trackX + 2, trackY + trackH, 0x40FFFFFF);
+                Gui.drawRect(trackX, barY,   trackX + 2, barY + barH,   0xFFFFFFFF);
+            }
+
+            GlStateManager.enableDepth();
+            GlStateManager.enableLighting();
+            GlStateManager.translate(0, 0, +200);
+        } catch (Exception ex) {
+            Logger.logConsole("Error drawing accessories panel" + ex.getMessage());
         }
+    }
 
-        GlStateManager.enableDepth();
-        GlStateManager.enableLighting();
+    private void enableScissor(int x, int y, int w, int h) {
+        Minecraft mc = Minecraft.getMinecraft();
+        net.minecraft.client.gui.ScaledResolution sr = new net.minecraft.client.gui.ScaledResolution(mc);
+        int scale = sr.getScaleFactor();
+        int fbH = mc.displayHeight;
+
+        org.lwjgl.opengl.GL11.glEnable(org.lwjgl.opengl.GL11.GL_SCISSOR_TEST);
+        org.lwjgl.opengl.GL11.glScissor(
+                x * scale,
+                fbH - (y + h) * scale,
+                w * scale,
+                h * scale
+        );
+    }
+
+    private void disableScissor() {
+        org.lwjgl.opengl.GL11.glDisable(org.lwjgl.opengl.GL11.GL_SCISSOR_TEST);
     }
 
     @SubscribeEvent
@@ -171,19 +273,29 @@ public class MissingAccessories {
 
         if (!AccessoriesData.show) return;
 
-        int guiLeft = Ref.intField(GuiContainer.class, "guiLeft", chest);
-        int guiTop  = Ref.intField(GuiContainer.class, "guiTop", chest);
-        int ySize   = Ref.intField(GuiContainer.class, "ySize", chest);
+
+        int guiLeft = ReflectionUtils.Ref.intField(GuiContainer.class, "guiLeft", chest);
+        int guiTop  = ReflectionUtils.Ref.intField(GuiContainer.class, "guiTop", chest);
+        int ySize   = ReflectionUtils.Ref.intField(GuiContainer.class, "ySize", chest);
 
         FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
 
-        String line1 = "Your Mp: " + AccessoriesData.totalMp + " / " + AccessoriesData.maxMp;
-        String line2 = "Your Mp (Recomb): " + AccessoriesData.totalMp + " / " + AccessoriesData.maxMpRec;
+        List<String> lines = new ArrayList<>();
+        lines.add("§6MP Estimation");
+        if (AccessoriesData.finalPage) {
+            if (AccessoriesData.totalMp < AccessoriesData.maxMp) {
+                lines.add("§7Your Mp: " + AccessoriesData.getColorLevel(AccessoriesData.maxMp) + AccessoriesData.totalMp + "§7 / §b" + AccessoriesData.maxMp);
+            }
+            lines.add("§7Your Mp (§6Recomb§7): " + AccessoriesData.getColorLevel(AccessoriesData.maxMpRec) + AccessoriesData.totalMp + "§7 / §b" + AccessoriesData.maxMpRec);
+        } else {
+            lines.add("§cVisit All pages first");
+            lines.add("Max mp is: §b" + AccessoriesData.maxMpRec);
+        }
 
-        int maxWidth = Math.max(fr.getStringWidth(line1), fr.getStringWidth(line2));
+        int maxWidth = lines.stream().map(fr::getStringWidth).max(Integer::compare).orElse(0);
         int panelW   = maxWidth + 12;
         int lineH    = fr.FONT_HEIGHT + 2;
-        int panelH   = lineH * 2 + 6;
+        int panelH   = lineH * lines.size() + 6;
 
         int pad      = 6;
         int panelX   = guiLeft - panelW - pad;
@@ -200,8 +312,10 @@ public class MissingAccessories {
 
         int textX = panelX + 6;
         int textY = panelY + 4;
-        fr.drawStringWithShadow(line1, textX, textY, 0xFFFFFF);
-        fr.drawStringWithShadow(line2, textX, textY + lineH, 0xFFFFFF);
+        for (String line : lines) {
+            fr.drawStringWithShadow(line, textX, textY, 0xFFFFFF);
+            textY += lineH;
+        }
 
         GlStateManager.enableDepth();
         GlStateManager.enableLighting();
@@ -217,23 +331,10 @@ public class MissingAccessories {
         return map;
     }
 
-
     private List<String> getMissing() {
         AccessoriesData data = AccessoriesData.INSTANCE;
-        return data.getMissingAccessories().stream().map(
+        return data.getRepoAccessories().stream().map(
                 AccessoriesData.Accessory::getName
         ).collect(Collectors.toList());
-    }
-
-    static final class Ref {
-        static int intField(Class<?> owner, String name, Object instance) {
-            try {
-                Field f = owner.getDeclaredField(name);
-                f.setAccessible(true);
-                return f.getInt(instance);
-            } catch (Exception e) {
-                return 0;
-            }
-        }
     }
 }

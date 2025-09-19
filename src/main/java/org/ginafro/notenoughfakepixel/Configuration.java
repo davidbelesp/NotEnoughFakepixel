@@ -241,6 +241,10 @@ public class Configuration {
     public Overlays overlays = new Overlays();
 
     @Expose
+    @Category(name = "Accessories", desc = "Accessories settings.")
+    public Accessories accessories = new Accessories();
+
+    @Expose
     @Category(name = "Debug", desc = "Debug settings.")
     public Debug debug = new Debug();
 

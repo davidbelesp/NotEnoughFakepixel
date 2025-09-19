@@ -505,7 +505,13 @@ public class MiscFeatures {
             String unformattedText = StringUtils.stripControlCodes(e.message.getUnformattedText());
 
             if (!unformattedText.replace(" ", "").isEmpty()) {
-                ChatComponentText copyText = new ChatComponentText(EnumChatFormatting.DARK_GRAY + Character.toString((char) Integer.parseInt("270D", 16)));
+                ChatComponentText copyText = new ChatComponentText(EnumChatFormatting.DARK_GRAY + "✍");
+                if (Config.feature.misc.copyChatString.equals("[COPY]")){
+                    copyText = new ChatComponentText(EnumChatFormatting.AQUA + "[COPY]");
+                } else if (Config.feature.misc.copyChatString.equals("Legacy Emoji")) {
+                    copyText = new ChatComponentText(EnumChatFormatting.DARK_GRAY + "✍");
+                }
+
                 ChatStyle style = new ChatStyle()
                         .setChatHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ChatComponentText(EnumChatFormatting.GRAY + "Copy message")))
                         .setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/copytoclipboard " + unformattedText));
