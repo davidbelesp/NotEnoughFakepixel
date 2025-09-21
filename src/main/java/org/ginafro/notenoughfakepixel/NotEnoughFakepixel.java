@@ -19,6 +19,7 @@ import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure.TreasureTriangulator;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.CrystalWaypoints;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.equipment.EquipmentOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.Aliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.CustomAliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
 import org.ginafro.notenoughfakepixel.nefrepo.NefRepo;
@@ -63,7 +64,6 @@ public class NotEnoughFakepixel {
         EquipmentOverlay.loadData();
 
         Alerts.load();
-        CustomAliases.load();
 
         ModEventRegistrar.registerModEvents();
         ModEventRegistrar.registerKeybinds();
@@ -85,17 +85,18 @@ public class NotEnoughFakepixel {
     }
 
     private void shutdownHook() {
+        // Shutdown tasks
         RepoHandler.shutdown();
-
         TreasureTriangulator.getInstance().shutdown();
 
+        // Save configs
         try {
             CrystalWaypoints.getInstance().saveIfDirty();
             SlotLocking.getInstance().saveConfig();
+            CustomAliases.save();
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
 
     }
 
