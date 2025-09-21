@@ -121,49 +121,96 @@ public class Diana {
     }
 
     private final Set<EntityLivingBase> isInq = new HashSet<>();
+    private volatile long lastOutlineScanNs = 0L;
 
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
-        Minecraft mc = Minecraft.getMinecraft();
+        final Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.theWorld == null || mc.thePlayer == null) return;
+        if (!TablistParser.currentLocation.isHub()) return;
+        if (!Config.feature.diana.dianaMinosInquisitorAlert && !Config.feature.diana.dianaMinosInquisitorOutline) return;
 
-        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
-        if (!Config.feature.diana.dianaMinosInquisitorAlert) return;
-        String entityName = event.entity.getDisplayName().getUnformattedText();
-        if (entityName.contains("Minos Inquisitor")) {
-            Instant now = Instant.now();
-            if (now.isAfter(lastCaptureTime.plusSeconds(63))) {
-                Minecraft.getMinecraft().ingameGUI.displayTitle("Inquisitor detected!", null, 10, 40, 20);
-                double x = Math.floor(event.entity.posX);
-                double y = Math.floor(event.entity.posY);
-                double z = Math.floor(event.entity.posZ);
-                String locationName = findNearestLocation((int) x, (int) y, (int) z);
-                if (locationName != null) {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at " + locationName + ", x:" + event.entity.getPosition().getX() + ", y:" + (event.entity.getPosition().getY() - 2) + ", z:" + event.entity.getPosition().getZ() + " in HUB-" + ScoreboardUtils.getHubNumber());
-                } else {
-                    Minecraft.getMinecraft().thePlayer.sendChatMessage("/pc Minos Inquisitor found at x:" + event.entity.getPosition().getX() + ", y:" + (event.entity.getPosition().getY() - 2) + ", z:" + event.entity.getPosition().getZ() + " in HUB-" + ScoreboardUtils.getHubNumber());
+        try {
+            // === Detección por nombre seguro (sin NBT) ===
+            final String entityName = getSafeEntityName(event.entity);
+            if (Config.feature.diana.dianaMinosInquisitorAlert && containsInquisitor(entityName)) {
+
+                final Instant now = Instant.now();
+                if (lastCaptureTime == null || now.isAfter(lastCaptureTime.plusSeconds(63))) {
+                    // Evita subtítulo nulo
+                    mc.ingameGUI.displayTitle("¡Inquisidor detectado!", "", 10, 40, 20);
+
+                    final int ex = event.entity.getPosition().getX();
+                    final int ey = event.entity.getPosition().getY() - 2; // tu ajuste
+                    final int ez = event.entity.getPosition().getZ();
+
+                    final String loc = findNearestLocation(ex, ey, ez);
+                    final String hub = String.valueOf(ScoreboardUtils.getHubNumber());
+
+                    final String msgBase = "Minos Inquisitor found";
+                    final String where = (loc != null && !loc.isEmpty())
+                            ? (" at " + loc + ", x:" + ex + ", y:" + ey + ", z:" + ez)
+                            : (" at x:" + ex + ", y:" + ey + ", z:" + ez);
+
+                    mc.thePlayer.sendChatMessage("/pc " + msgBase + where + " in HUB-" + hub);
+                    lastCaptureTime = now;
                 }
-                lastCaptureTime = now;
             }
-        }
-        if (Config.feature.diana.dianaMinosInquisitorOutline) {
-            clearCache();
-            if (Configuration.isPojav()) return;
 
-            WorldClient world = Minecraft.getMinecraft().theWorld;
-            if (world == null) return;
-            for (Entity entity : new ArrayList<>(world.loadedEntityList)) {
-                if (entity instanceof EntityArmorStand) {
-                    EntityArmorStand armorStand = (EntityArmorStand) entity;
-                    if (armorStand.getName().contains("Minos Inquisitor")) {
-                        EntityLivingBase inq = findAssociatedMob(armorStand);
-                        if (inq != null) {
-                            isInq.add(inq);
+            // === Outline (optimización mínima si no puedes mover a tick) ===
+            if (Config.feature.diana.dianaMinosInquisitorOutline) {
+                if (Configuration.isPojav()) return;
+                // Limita frecuencia: solo cada 5 renders (~cada 0.25s a 20 tps)
+                if ((System.nanoTime() - lastOutlineScanNs) < 250_000_000L) return;
+                lastOutlineScanNs = System.nanoTime();
+
+                // No limpies caché completo en cada frame; solo descarta referencias muertas
+                pruneInqCache();
+
+                final WorldClient world = mc.theWorld;
+                if (world == null) return;
+
+                for (Entity e : world.loadedEntityList) {
+                    if (e instanceof EntityArmorStand) {
+                        final EntityArmorStand as = (EntityArmorStand) e;
+                        final String asName = getSafeEntityName(as);
+                        if (containsInquisitor(asName)) {
+                            final EntityLivingBase inq = findAssociatedMob(as);
+                            if (inq != null) isInq.add(inq);
                         }
                     }
                 }
             }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
+    }
+
+    private boolean containsInquisitor(String s) {
+        if (s == null) return false;
+        final String x = s.toLowerCase(java.util.Locale.ROOT);
+        return x.contains("minos inquisitor");
+    }
+
+    private String getSafeEntityName(Entity entity) {
+        try {
+            if (entity == null) return "";
+            if (entity.hasCustomName()) {
+                final String cn = entity.getCustomNameTag();
+                if (cn != null && !cn.isEmpty()) {
+                    return net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(cn);
+                }
+            }
+            final String n = entity.getName();
+            return n == null ? "" : net.minecraft.util.EnumChatFormatting.getTextWithoutFormattingCodes(n);
+        } catch (Throwable ignored) {
+            return "";
+        }
+    }
+
+    private void pruneInqCache() {
+        if (isInq == null) return;
+        isInq.removeIf(e -> e == null || e.isDead || e.worldObj == null);
     }
 
     public void clearCache() {
