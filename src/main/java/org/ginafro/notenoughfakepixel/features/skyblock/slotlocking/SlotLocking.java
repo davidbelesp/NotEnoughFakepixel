@@ -27,6 +27,7 @@ import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import org.ginafro.notenoughfakepixel.config.gui.core.util.StringUtils;
 import org.ginafro.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterInstance;
 import org.ginafro.notenoughfakepixel.events.ReplaceItemEvent;
 import org.ginafro.notenoughfakepixel.events.SlotClickEvent;

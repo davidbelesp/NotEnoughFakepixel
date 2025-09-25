@@ -56,8 +56,6 @@ public class NotEnoughFakepixel {
 
         createDirectoryIfNotExists(Config.configDirectory);
 
-        SlotLocking.getInstance().loadConfig(new File(Config.configDirectory, "slotlocking.json"));
-
         Config.init();
         Runtime.getRuntime().addShutdownHook(new Thread(Config::saveConfig));
 
@@ -69,13 +67,15 @@ public class NotEnoughFakepixel {
         ModEventRegistrar.registerKeybinds();
         ModEventRegistrar.registerCommands();
 
+        // Load this after register for instance
+        SlotLocking.getInstance().loadConfig(new File(Config.configDirectory, "slotlocking.json"));
+
         // REPO
         NefRepo.init();
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHook, "Shutdown Hook"));
 
         // Ch waypoints
         CrystalWaypoints.getInstance().load();
-
     }
 
     private void createDirectoryIfNotExists(File directory) {
@@ -107,7 +107,6 @@ public class NotEnoughFakepixel {
     public static GuiScreen openGui;
     public static long lastOpenedGui;
     public static String th = "default";
-    public static ResourceLocation bg = new ResourceLocation("notenoughfakepixel:backgrounds/" + th + "/background.png");
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {

@@ -19,6 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
 import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import org.ginafro.notenoughfakepixel.utils.RenderUtils;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
@@ -147,8 +148,13 @@ public class BoulderSolver {
                     double y = buttonPos.getY() - viewerY;
                     double z = buttonPos.getZ() - viewerZ;
                     GlStateManager.disableCull();
-                    drawFilledBoundingBox(new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1), new Color(255, 0, 0), 0.6f);
+                    GlStateManager.disableDepth();
+                    GlStateManager.disableLighting();
+                    RenderUtils.drawFilledBoundingBox(new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1), new Color(255, 0, 0), 0.6f);
                     GlStateManager.enableCull();
+                    GlStateManager.enableTexture2D();
+                    GlStateManager.enableDepth();
+                    GlStateManager.disableBlend();
                     break;
                 }
             }
@@ -307,68 +313,4 @@ public class BoulderSolver {
         PLACEHOLDER
     }
 
-    public static void drawFilledBoundingBox(AxisAlignedBB aabb, Color c, float alphaMultiplier) {
-        GlStateManager.enableBlend();
-        GlStateManager.disableCull();
-        GlStateManager.disableDepth();
-        GlStateManager.disableLighting();
-        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.disableTexture2D();
-
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-
-        GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f * alphaMultiplier);
-
-        // Vertical
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
-        tessellator.draw();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
-        tessellator.draw();
-
-        GlStateManager.color(c.getRed() / 255f * 0.8f, c.getGreen() / 255f * 0.8f, c.getBlue() / 255f * 0.8f, c.getAlpha() / 255f * alphaMultiplier);
-
-        // X-axis
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
-        tessellator.draw();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        GlStateManager.color(c.getRed() / 255f * 0.9f, c.getGreen() / 255f * 0.9f, c.getBlue() / 255f * 0.9f, c.getAlpha() / 255f * alphaMultiplier);
-
-        // Z-axis
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
-        tessellator.draw();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
-        worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        GlStateManager.enableTexture2D();
-        GlStateManager.enableCull();
-        GlStateManager.enableDepth();
-        GlStateManager.disableBlend();
-    }
 }

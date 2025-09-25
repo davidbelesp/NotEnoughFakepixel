@@ -68,7 +68,7 @@ public class StringUtils {
         return h;
     }
 
-    public static String stripFormattingFast(final String in) {
+    public static String stripFormattingFastRarity(final String in) {
         if (in == null) return "";
         final int n = in.length();
         final StringBuilder sb = new StringBuilder(n);
@@ -85,6 +85,23 @@ public class StringUtils {
                             break;
                         }
                     }
+                }
+                continue;
+            }
+            sb.append(c);
+        }
+        return sb.toString().toLowerCase(java.util.Locale.ROOT);
+    }
+
+    public static String stripFormattingFast(final String in) {
+        if (in == null) return "";
+        final int n = in.length();
+        final StringBuilder sb = new StringBuilder(n);
+        for (int i = 0; i < n; i++) {
+            char c = in.charAt(i);
+            if (c == '§' || c == '&') {
+                if (i + 1 < n) {
+                    char code = in.charAt(++i);
                 }
                 continue;
             }
