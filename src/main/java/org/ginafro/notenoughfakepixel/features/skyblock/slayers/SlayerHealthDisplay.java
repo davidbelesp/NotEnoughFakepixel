@@ -45,7 +45,7 @@ public class SlayerHealthDisplay {
         }
 
         ticks++;
-        if (ticks % 30 != 0) return;
+        if (ticks % 10 != 0) return;
 
         if (Config.feature.slayer.slayerBossHP) {
             List<String> sidebarLines = ScoreboardUtils.getScoreboardLines();
