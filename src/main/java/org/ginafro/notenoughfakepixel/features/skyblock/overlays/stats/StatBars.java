@@ -228,6 +228,7 @@ public class StatBars {
         GlStateManager.pushMatrix();
         GlStateManager.resetColor();
         GlStateManager.color(1f,1f,1f);
+        GlStateManager.enableAlpha();
         Minecraft.getMinecraft().getTextureManager().bindTexture(type.logo);
         Gui.drawModalRectWithCustomSizedTexture(x - 11,y - 1,0f,0f,9,9,9,9);
         float filled = barLength.width;

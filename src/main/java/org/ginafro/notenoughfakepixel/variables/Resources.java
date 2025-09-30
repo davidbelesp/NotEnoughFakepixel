@@ -8,6 +8,13 @@ import net.minecraft.util.ResourceLocation;
 @AllArgsConstructor
 public enum Resources {
 
+    STORAGE_SMALL(new ResourceLocation("notenoughfakepixel:skyblock/storage/storage_size_1.png")),
+    STORAGE_MEDIUM(new ResourceLocation("notenoughfakepixel:skyblock/storage/storage_size_2.png")),
+    STORAGE_LARGE(new ResourceLocation("notenoughfakepixel:skyblock/storage/storage_size_3.png")),
+    STORAGE_GREATER(new ResourceLocation("notenoughfakepixel:skyblock/storage/storage_size_4.png")),
+    STORAGE_JUMBO(new ResourceLocation("notenoughfakepixel:skyblock/storage/storage_size_5.png")),
+    STORAGE_INVENTORY(new ResourceLocation("notenoughfakepixel:skyblock/storage/inventory.png")),
+
     BEACON(new ResourceLocation("textures/entity/beacon_beam.png")),
     MAP_ICONS(new ResourceLocation("textures/map/map_icons.png")),
 

@@ -6,41 +6,37 @@ import org.ginafro.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Overlays {
 
-//    @Expose
-//    @ConfigOption(name = "Storage", desc = "Storage Overlay Settings")
-//    @ConfigEditorAccordion(id = 0)
-//    public boolean storage = false;
-//
-//    @Expose
-//    @ConfigOption(name = "Storage Overlay", desc = "Redesign of Storage GUI")
-//    @ConfigEditorBoolean
-//    @ConfigAccordionId(id = 0)
-//    public boolean storageOverlay = false;
-//
-//    @Expose
-//    @ConfigOption(name = "Storage Search", desc = "Add a search bar to storage gui(Requires Storage Overlay)")
-//    @ConfigEditorBoolean
-//    @ConfigAccordionId(id = 0)
-//    public boolean storageSearch = true;
-//
-//    @Expose
-//    @ConfigOption(name = "Background Color", desc = "Color of the storage overlay")
-//    @ConfigEditorColour
-//    @ConfigAccordionId(id = 0)
-//    public String storageColor = "0:102:32:32:32";
-//
-//    @Expose
-//    @ConfigOption(name = "Chest Color", desc = "Color of the storage Chest Background")
-//    @ConfigEditorColour
-//    @ConfigAccordionId(id = 0)
-//    public String chestColor = "0:102:32:32:32";
-//
-//    @Expose
-//    @ConfigOption(name = "Search Highlight Color", desc = "Color to highlight search item with")
-//    @ConfigEditorColour
-//    @ConfigAccordionId(id = 0)
-//    public String searchColor = "0:255:0:255:0";
-//
+    @Expose
+    @ConfigOption(name = "Storage", desc = "Storage Overlay Settings")
+    @ConfigEditorAccordion(id = 0)
+    public boolean storage = false;
+
+    @Expose
+    @ConfigOption(name = "Storage Overlay", desc = "Redesign of Storage GUI")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 0)
+    public boolean storageOverlay = false;
+
+
+    @Expose
+    @ConfigOption(name = "Ender Chest Tint", desc = "Add a tint to the ender chest texture")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 0)
+    public String enderTint = "0:255:255:255:255";
+
+    @Expose
+    @ConfigOption(name = "Backpack Tint", desc = "Add a tint to the backpack texture")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 0)
+    public String bagTint = "0:255:255:255:255";
+
+    @Expose
+    @ConfigOption(name = "Inventory Tint", desc = "Add a tint to the inventory texture")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 0)
+    public String invTint = "0:255:255:255:255";
+
+
 //
 //    @Expose
 //    @ConfigOption(name = "Button Editor", desc = "Change Position or edit/add any inventory button")
