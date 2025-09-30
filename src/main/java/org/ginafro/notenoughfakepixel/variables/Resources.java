@@ -26,6 +26,7 @@ public enum Resources {
 
     DARK_AH(new ResourceLocation("notenoughfakepixel:skyblock/dark_ah.png")),
     EGG_HUNT(new ResourceLocation("notenoughfakepixel:skyblock/egg_hunt.png")),
+    SCATHA(new ResourceLocation("notenoughfakepixel:crystalhollows/pets_scatha.png")),
 
     CRYSTAL_MAP_POINT(new ResourceLocation("notenoughfakepixel:crystalhollows/map_point.png")),
     CRYSTAL_MAP_ARROW(new ResourceLocation("notenoughfakepixel:crystalhollows/map_arrow.png")),
@@ -33,7 +34,10 @@ public enum Resources {
     CRYSTAL_MAP_ZONES(new ResourceLocation("notenoughfakepixel:crystalhollows/map.png")),
     CRYSTAL_MAP_GEMS( new ResourceLocation("notenoughfakepixel:crystalhollows/map_gems.png")),
 
-    SCATHA(new ResourceLocation("notenoughfakepixel:crystalhollows/pets_scatha.png")),
+    EQUIPMENT(new ResourceLocation("notenoughfakepixel", "equipment.png")),
+
+    RESET(new ResourceLocation("notenoughfakepixel:core/reset.png")),
+
     ;
 
     private final ResourceLocation resource;

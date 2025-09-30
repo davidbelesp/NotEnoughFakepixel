@@ -36,32 +36,35 @@ See the [LICENSE](LICENSE) file for details.
   - Block placing items
   - Show unclaimed Jacob rewards
   - Fairy soul waypoints
-  - Spider's den relic waypoints **(NEW)**
+  - Spider's den relic waypoints
   - Etherwarp overlay
   - Etherwarp sounds
   - Hide flaming fists
   - Hide player armor
   - Hide dead mobs
-  - Hide falling blocks **(NEW)**
+  - Hide falling blocks
   - Item animations
   - Smol people
-  - Reforge helper **(NEW)**
+  - Reforge helper
   - Disable Hyperion Explosions
   - Disable Thunderlord enchantment bolts
   - No Hurt camera animation
-  - Golden enchants **(NEW)**
+  - Golden enchants
   - Fullbright
   - Disable Potion Effects in inventory
   - Show current pet in pet menu
-  - Storage overlay **(NEW)**
-  - Equipment overlay **(NEW)**
-  - Slot locking & binding **(NEW)**
-  - Middle click on Menus **(NEW)**
+  - Storage overlay
+  - Equipment overlay
+  - Slot locking & binding
+  - Middle click on Menus
   - Scrollable tooltips
   - Disable sounds from Jerry-chine gun and AOTE
   - Midas Staff minimal animation and sounds
   - Wardrobe key shortcut
-  - Equipment key shortcut **(NEW)**
+  - Equipment key shortcut
+  - Hide players close to NPCs **(NEW)**
+  - Missing Accessories GUI **(NEW)**
+  - Show Ender Nodes **(NEW)**
 - Chat
   - Disable Friend > joined messages
   - Disable Info & Watchdog messages
@@ -71,7 +74,7 @@ See the [LICENSE](LICENSE) file for details.
 - 1.12 Crop height
 
 ### Fishing
-- Fishing countdown **(NEW)**
+- Fishing countdown
 - Fishing notifier for Legendary Sea Creatures
 - Notifier for Trophy Fishing
 
@@ -82,7 +85,7 @@ See the [LICENSE](LICENSE) file for details.
   - Blood ready title
   - Boulder Solver
   - Silverfish Solver
-  - Wither doors highlight **(NEW)**
+  - Wither doors highlight
   - Teleport maze Solver
   - Terminal waypoints
   - Custom S+ message
@@ -101,22 +104,32 @@ See the [LICENSE](LICENSE) file for details.
   - Bat position display
 - Floor 7
   - Terminal solvers
-  - Terminal tracker **(NEW)**
-  - Box withers **(NEW)**
+  - Terminal tracker
+  - Box withers
 - Master Mode 7
-  - M7 dragon highlight **(NEW)**
-  - M7 relic waypoints **(NEW)**
+  - M7 dragon highlight
+  - M7 relic waypoints
 ### Mining
 - General
   - Drill Animation Reset FIX
   - Mining Ability ready notifier
-  - Dwarven waypoints **(NEW)**
+  - Dwarven waypoints
 - Mining Overlay
   - Drill Fuel Overlay
   - Mining Ability cooldown Overlay
   - Commissions Overlay
   - Mithril Powder Overlay
   - Puzzler NPC Solver
+- Crystal Hollows **(NEW)**
+  - Crystal Hollows Map  **(NEW)**
+  - Crystal Hollows Waypoints  **(NEW)**
+  - FullBlock glass panes **(NEW)**
+  - Treasure Found notifier  **(NEW)**
+  - Precursor City Overlay **(NEW)**
+  - Automaton Overlay **(NEW)**
+  - Metal Detector Guesser **(NEW)**
+  - Worm Notifier **(NEW)**
+  - Mines of Divan Overlay **(NEW)**
 
 ### Experimentation Table
 - Chronomatron solver
@@ -126,6 +139,8 @@ See the [LICENSE](LICENSE) file for details.
 ### Chocolate Factory
 - Show best rabbit in Chocolate Factory
 - Hoppity's hunt eggs waypoints
+- New Egg notifier **(NEW)**
+- New Egg timer **(NEW)**
 
 ### Crimson Isle
 - Bosses notifier
@@ -133,7 +148,7 @@ See the [LICENSE](LICENSE) file for details.
 
 ### Diana
 - Burrow guess
-- Warp keybind **(NEW)**
+- Warp keybind
 - Burrow waypoints
 - Gaia construct helper
 - Syamese Lynx helper

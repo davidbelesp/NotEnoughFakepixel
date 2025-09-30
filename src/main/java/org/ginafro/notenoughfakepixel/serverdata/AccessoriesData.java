@@ -3,6 +3,7 @@ package org.ginafro.notenoughfakepixel.serverdata;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.ginafro.notenoughfakepixel.events.handlers.RepoHandler;
+import org.ginafro.notenoughfakepixel.utils.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -48,6 +49,7 @@ import java.util.stream.Collectors;
         return repoAccessories.stream()
                 .filter(acc -> {
                     for (Accessory current : currentAccessories) {
+                        if (handleSpecialCases(current, acc)) return false;
                         if (current.getName().equalsIgnoreCase(acc.getName())) {
                             return false;
                         }
@@ -55,6 +57,19 @@ import java.util.stream.Collectors;
                     return true;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private boolean handleSpecialCases(Accessory current, Accessory accessory) {
+        String name = current.getName().toLowerCase();
+        String accName = accessory.getName().toLowerCase();
+        if (name.contains("abicase") && accName.contains("abicase")) {
+            for (Accessory acc : currentAccessories) {
+                if (acc.getName().toLowerCase().contains("abicase")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void addAccessory(Accessory accessory) {

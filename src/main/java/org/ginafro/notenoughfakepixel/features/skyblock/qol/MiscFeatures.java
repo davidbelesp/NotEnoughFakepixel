@@ -153,25 +153,26 @@ public class MiscFeatures {
     public void onClientTick(TickEvent.ClientTickEvent event) {
         if (event.phase != TickEvent.Phase.END) return;
         if (teleportTarget == null) return;
+        try {
+            EntityPlayerSP player = mc.thePlayer;
+            if (player == null) return;
 
-        EntityPlayerSP player = mc.thePlayer;
-        if (player == null) return;
+            double targetX = teleportTarget.getX() + 0.5;
+            double targetY = teleportTarget.getY() + 1;
+            double targetZ = teleportTarget.getZ() + 0.5;
 
-        double targetX = teleportTarget.getX() + 0.5;
-        double targetY = teleportTarget.getY() + 1;
-        double targetZ = teleportTarget.getZ() + 0.5;
+            if (System.currentTimeMillis() - teleportStartTime > TELEPORT_GRACE_PERIOD_MS) {
+                teleportTarget = null;
+                landingTime = null;
+                return;
+            }
 
-        if (System.currentTimeMillis() - teleportStartTime > TELEPORT_GRACE_PERIOD_MS) {
-            teleportTarget = null;
-            landingTime = null;
-            return;
-        }
-
-        // Distance check
-        double distance = player.getDistance(targetX, targetY, targetZ);
-        if (distance < 1.0 && landingTime == null) {
-            landingTime = System.currentTimeMillis();
-        }
+            // Distance check
+            double distance = player.getDistance(targetX, targetY, targetZ);
+            if (distance < 1.0 && landingTime == null) {
+                landingTime = System.currentTimeMillis();
+            }
+        } catch (Exception ignored) {}
     }
 
     @SubscribeEvent

@@ -144,7 +144,7 @@ public class ItemUtils {
 
         String lastLine = loreLines.get(loreLines.size() - 1);
 
-        lastLine = StringUtils.stripFormattingFast(lastLine);
+        lastLine = StringUtils.stripFormattingFastRarity(lastLine);
         return Rarity.fromString(lastLine);
     }
 

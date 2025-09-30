@@ -2,11 +2,7 @@ package org.ginafro.notenoughfakepixel.features.skyblock.qol;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import org.ginafro.notenoughfakepixel.config.gui.commands.SimpleCommand;
-import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterCommand;
-import org.ginafro.notenoughfakepixel.envcheck.registers.RegisterEvents;
 
 public class Aliases {
 

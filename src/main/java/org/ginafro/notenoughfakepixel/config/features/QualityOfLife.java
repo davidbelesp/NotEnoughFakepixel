@@ -497,31 +497,58 @@ public class QualityOfLife {
     @ConfigEditorBoolean
     public boolean qolReforgeHelper = true;
 
+    // End Nodes Subcategory
+    @Expose
+    @ConfigOption(name = "End Nodes Settings", desc = "Settings for end nodes highlighter.")
+    @ConfigEditorAccordion(id = 11)
+    public boolean endNodesSettingsAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "End Node Highlighter", desc = "Highlight end nodes in the end.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 11)
+    public boolean qolEndNodeHighlighter = true;
+
+    @Expose
+    @ConfigOption(name = "End Node Color", desc = "Color of end node highlighter.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 11)
+    public String endNodeColor = "0:100:0:255:0";
+
+    // Dark Auction Subcategory
+    @Expose
+    @ConfigOption(name= "Dark Auction Settings", desc = "Settings for Dark Auction features.")
+    @ConfigEditorAccordion(id = 9)
+    public boolean darkAuctionSettingsAccordion = false;
+
     @Expose
     @ConfigOption(name = "Dark Auction Timer", desc = "Shows timer to the next Dark Auction.")
     @ConfigEditorBoolean
+    @ConfigAccordionId(id = 9)
     public boolean qolDAtimer = true;
 
     @Expose
     @ConfigOption(name = "Dark Auction Reminder", desc = "Notifies you when there is 1 minute left for Dark Auction.")
     @ConfigEditorBoolean
+    @ConfigAccordionId(id = 9)
     public boolean qolDarkAhNotifier = false;
 
     @Expose
     @ConfigOption(name = "Dark AH Timer Settings", desc = "Dark Auction timer settings.")
-    @ConfigEditorAccordion(id = 9)
+    @ConfigEditorAccordion(id = 10)
+    @ConfigAccordionId(id = 9)
     public boolean darkAuctionAccordion = false;
 
     @Expose
     @ConfigOption(name = "Scale", desc = "Scale of the Dark AH Timer.")
-    @ConfigAccordionId(id = 9)
+    @ConfigAccordionId(id = 10)
     @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
     public float darkAHTimerScale = 1.0f;
 
     @Expose
     @ConfigOption(name = "Position", desc = "Position of the Dark AH Timer.")
     @ConfigEditorButton(runnableId = "editDarkAHTimerPos", buttonText = "Edit")
-    @ConfigAccordionId(id = 9)
+    @ConfigAccordionId(id = 10)
     public String editDarkAHTimerPos = "";
 
     @Expose

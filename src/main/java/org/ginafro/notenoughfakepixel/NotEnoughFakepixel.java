@@ -19,6 +19,7 @@ import org.ginafro.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure.TreasureTriangulator;
 import org.ginafro.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.CrystalWaypoints;
 import org.ginafro.notenoughfakepixel.features.skyblock.overlays.inventory.equipment.EquipmentOverlay;
+import org.ginafro.notenoughfakepixel.features.skyblock.qol.Aliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.qol.customaliases.CustomAliases;
 import org.ginafro.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
 import org.ginafro.notenoughfakepixel.nefrepo.NefRepo;
@@ -55,19 +56,19 @@ public class NotEnoughFakepixel {
 
         createDirectoryIfNotExists(Config.configDirectory);
 
-        SlotLocking.getInstance().loadConfig(new File(Config.configDirectory, "slotlocking.json"));
-
         Config.init();
         Runtime.getRuntime().addShutdownHook(new Thread(Config::saveConfig));
 
         EquipmentOverlay.loadData();
 
         Alerts.load();
-        CustomAliases.load();
 
         ModEventRegistrar.registerModEvents();
         ModEventRegistrar.registerKeybinds();
         ModEventRegistrar.registerCommands();
+
+        // Load this after register for instance
+        SlotLocking.getInstance().loadConfig(new File(Config.configDirectory, "slotlocking.json"));
 
         // REPO
         NefRepo.init();
@@ -75,7 +76,6 @@ public class NotEnoughFakepixel {
 
         // Ch waypoints
         CrystalWaypoints.getInstance().load();
-
     }
 
     private void createDirectoryIfNotExists(File directory) {
@@ -85,17 +85,18 @@ public class NotEnoughFakepixel {
     }
 
     private void shutdownHook() {
+        // Shutdown tasks
         RepoHandler.shutdown();
-
         TreasureTriangulator.getInstance().shutdown();
 
+        // Save configs
         try {
             CrystalWaypoints.getInstance().saveIfDirty();
             SlotLocking.getInstance().saveConfig();
+            CustomAliases.save();
         } catch (Throwable t) {
             t.printStackTrace();
         }
-
 
     }
 
@@ -106,7 +107,6 @@ public class NotEnoughFakepixel {
     public static GuiScreen openGui;
     public static long lastOpenedGui;
     public static String th = "default";
-    public static ResourceLocation bg = new ResourceLocation("notenoughfakepixel:backgrounds/" + th + "/background.png");
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event) {

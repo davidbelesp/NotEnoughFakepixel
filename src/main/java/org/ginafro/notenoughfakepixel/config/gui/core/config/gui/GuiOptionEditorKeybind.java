@@ -7,6 +7,7 @@ import org.ginafro.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import org.ginafro.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
 import org.ginafro.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
 import org.ginafro.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -15,7 +16,7 @@ import static org.ginafro.notenoughfakepixel.config.gui.GuiTextures.button_tex;
 
 public class GuiOptionEditorKeybind extends GuiOptionEditor {
 
-    private static final ResourceLocation RESET = new ResourceLocation("notenoughfakepixel:core/reset.png");
+    private static final ResourceLocation RESET = Resources.RESET.getResource();
 
     private int keyCode;
     private final int defaultKeyCode;

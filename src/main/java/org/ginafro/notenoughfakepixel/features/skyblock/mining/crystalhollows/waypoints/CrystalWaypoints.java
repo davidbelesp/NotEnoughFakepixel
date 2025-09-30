@@ -16,7 +16,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@RegisterEvents
 public class CrystalWaypoints {
 
     private static final CrystalWaypoints INSTANCE = new CrystalWaypoints();

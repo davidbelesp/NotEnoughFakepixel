@@ -32,4 +32,12 @@ public class NumberUtils {
         return String.format(Locale.ROOT, "%.1f", d);
     }
 
+    public static boolean basicallyEqual(double num1, double num2, double dist) {
+        return Math.abs(num1 - num2) < dist;
+    }
+
+    public static double truncateTwoDecimalPlaces(double value) {
+        return Math.floor(value * 100) / 100;
+    }
+
 }

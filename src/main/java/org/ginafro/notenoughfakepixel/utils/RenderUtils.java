@@ -1145,7 +1145,121 @@ public class RenderUtils {
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.popMatrix();
     }
+
+    public static Vector3f getInterpolatedPlayerPosition(float partialTicks) {
+        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Vector3f lastPos = new Vector3f(
+                (float) viewer.lastTickPosX,
+                (float) viewer.lastTickPosY,
+                (float) viewer.lastTickPosZ
+        );
+        Vector3f currentPos = new Vector3f(
+                (float) viewer.posX,
+                (float) viewer.posY,
+                (float) viewer.posZ
+        );
+        Vector3f movement = Vector3f.sub(currentPos, lastPos, currentPos);
+        movement.scale(partialTicks);
+        return Vector3f.add(lastPos, movement, lastPos);
+    }
+
+    public static void renderBlockBox(BlockPos pos, Color c, float partialTicks) {
+        renderBlockBox(pos, c, partialTicks, false);
+    }
+
+    public static void renderBlockBox(BlockPos pos, Color c, float partialTicks, boolean disableDepth) {
+        Vector3f interpolatedPlayerPosition = getInterpolatedPlayerPosition(partialTicks);
+        renderBoundingBoxInViewSpace(
+                pos.getX() - interpolatedPlayerPosition.x,
+                pos.getY() - interpolatedPlayerPosition.y,
+                pos.getZ() - interpolatedPlayerPosition.z,
+                c,
+                disableDepth
+        );
+    }
+
+    private static void renderBoundingBoxInViewSpace(double x, double y, double z, Color c, boolean disableDepth) {
+        AxisAlignedBB bb = new AxisAlignedBB(x, y, z, x + 1, y + 1, z + 1);
+
+        if (disableDepth) GlStateManager.disableDepth();
+        GlStateManager.disableCull();
+        GlStateManager.disableTexture2D();
+        drawFilledBoundingBox(bb, c, 1f);
+        GlStateManager.enableTexture2D();
+        GlStateManager.enableCull();
+        if (disableDepth) GlStateManager.enableDepth();
+    }
+
+    public static void drawFilledBoundingBox(AxisAlignedBB p_181561_0_, Color c, float alpha) {
+
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.disableTexture2D();
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f * alpha);
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        tessellator.draw();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        tessellator.draw();
+
+        GlStateManager.color(
+                c.getRed() / 255f * 0.8f,
+                c.getGreen() / 255f * 0.8f,
+                c.getBlue() / 255f * 0.8f,
+                c.getAlpha() / 255f * alpha
+        );
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        tessellator.draw();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        tessellator.draw();
+
+        GlStateManager.color(
+                c.getRed() / 255f * 0.9f,
+                c.getGreen() / 255f * 0.9f,
+                c.getBlue() / 255f * 0.9f,
+                c.getAlpha() / 255f * alpha
+        );
+
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
+        tessellator.draw();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
+        tessellator.draw();
+    }
+
     public static void renderBoundingBox(BlockPos pos, int rgb, float partialTicks) {
+        renderBoundingBox(pos, rgb, partialTicks, true);
+    }
+
+    public static void renderBoundingBox(BlockPos pos, int rgb, float partialTicks, boolean ignoreDepth) {
         double playerX = Minecraft.getMinecraft().thePlayer.prevPosX + (Minecraft.getMinecraft().thePlayer.posX - Minecraft.getMinecraft().thePlayer.prevPosX) * partialTicks;
         double playerY = Minecraft.getMinecraft().thePlayer.prevPosY + (Minecraft.getMinecraft().thePlayer.posY - Minecraft.getMinecraft().thePlayer.prevPosY) * partialTicks;
         double playerZ = Minecraft.getMinecraft().thePlayer.prevPosZ + (Minecraft.getMinecraft().thePlayer.posZ - Minecraft.getMinecraft().thePlayer.prevPosZ) * partialTicks;
@@ -1160,7 +1274,7 @@ public class RenderUtils {
 
         GlStateManager.pushMatrix();
         GlStateManager.disableTexture2D();
-        GlStateManager.disableDepth();
+        if (ignoreDepth) GlStateManager.disableDepth();
         GlStateManager.enableBlend();
         GL11.glDisable(GL11.GL_LIGHTING);
         GlStateManager.disableLighting();
@@ -1207,7 +1321,7 @@ public class RenderUtils {
 
         tessellator.draw();
 
-        GlStateManager.enableDepth();
+        if (ignoreDepth) GlStateManager.enableDepth();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
         GL11.glEnable(GL11.GL_LIGHTING);

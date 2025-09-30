@@ -12,9 +12,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -29,10 +27,10 @@ import java.util.zip.ZipInputStream;
  * @author Linnea Gräf
  */
 public class AutoDiscoveryMixinPlugin implements IMixinConfigPlugin {
-    @Getter
-    private static final List<AutoDiscoveryMixinPlugin> mixinPlugins = new ArrayList<>();
-    @Getter
-    private String mixinPackage;
+    @Getter private static final List<AutoDiscoveryMixinPlugin> mixinPlugins = new ArrayList<>();
+    @Getter private String mixinPackage;
+
+    private static final Map<Path, List<String>> MIXIN_CACHE = new HashMap<>();
 
     @Override
     public void onLoad(String mixinPackage) {

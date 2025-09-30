@@ -26,6 +26,7 @@ import org.ginafro.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
 import org.ginafro.notenoughfakepixel.utils.CustomConfigFiles;
 import org.ginafro.notenoughfakepixel.utils.ScoreboardUtils;
 import org.ginafro.notenoughfakepixel.variables.Gamemode;
+import org.ginafro.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -173,7 +174,7 @@ public class EquipmentOverlay {
         AccessorGuiContainer container = ((AccessorGuiContainer) inventory);
         final int overlayLeft = container.getGuiLeft() - ARMOR_OVERLAY_OVERHAND_WIDTH;
         final int overlayTop = container.getGuiTop();
-        ResourceLocation equipmentTexture = new ResourceLocation("notenoughfakepixel", "equipment.png");
+        ResourceLocation equipmentTexture = Resources.EQUIPMENT.getResource();
         Minecraft.getMinecraft().getTextureManager().bindTexture(equipmentTexture);
         Gui.drawScaledCustomSizeModalRect(overlayLeft, overlayTop, 0f, 0f, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT);
         GlStateManager.bindTexture(0);
@@ -181,7 +182,7 @@ public class EquipmentOverlay {
     public static void renderHudBackground(int guiLeft,int guiTop) {
         GL11.glColor4f(1F, 1F, 1F, 1F);
         final int overlayLeft = guiLeft - ARMOR_OVERLAY_OVERHAND_WIDTH;
-        ResourceLocation equipmentTexture = new ResourceLocation("notenoughfakepixel", "equipment.png");
+        ResourceLocation equipmentTexture = Resources.EQUIPMENT.getResource();
         Minecraft.getMinecraft().getTextureManager().bindTexture(equipmentTexture);
         Gui.drawScaledCustomSizeModalRect(overlayLeft, guiTop, 0f, 0f, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT, ARMOR_OVERLAY_WIDTH, ARMOR_OVERLAY_HEIGHT);
         GlStateManager.bindTexture(0);

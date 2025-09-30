@@ -65,7 +65,7 @@ public class MissingAccessories {
 
         ContainerChest containerChest = (ContainerChest) container;
 
-        ticks++; if (ticks < 100) return;
+        ticks++; if (ticks < 10) return;
         ticks = 0;
 
         String name = containerChest
@@ -137,6 +137,27 @@ public class MissingAccessories {
     }
     private static int clamp(int v, int lo, int hi){
         return v < lo ? lo : (v > hi ? hi : v);
+    }
+
+    // Also scroll with arrow keys
+    @SubscribeEvent
+    public void onKeyDown(GuiScreenEvent.KeyboardInputEvent.Pre e) {
+        if (!(e.gui instanceof GuiChest)) return;
+        if (!AccessoriesData.show) return;
+
+        final Minecraft mc = Minecraft.getMinecraft();
+        int key = org.lwjgl.input.Keyboard.getEventKey();
+        if (key == 0) return;
+        if (!org.lwjgl.input.Keyboard.getEventKeyState()) return;
+
+        int step = mc.fontRendererObj.FONT_HEIGHT + 2;
+        if (key == org.lwjgl.input.Keyboard.KEY_UP) {
+            accScroll = clamp(accScroll - step, 0, accMaxScroll);
+            e.setCanceled(true);
+        } else if (key == org.lwjgl.input.Keyboard.KEY_DOWN) {
+            accScroll = clamp(accScroll + step, 0, accMaxScroll);
+            e.setCanceled(true);
+        }
     }
 
     @SubscribeEvent
