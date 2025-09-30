@@ -139,7 +139,7 @@ public class Mining {
     /* Crystal Hollows */
 
     @Expose
-    @ConfigOption(name = "Crystal Hollows", desc = "Settings for Crtystal Hollows.")
+    @ConfigOption(name = "Crystal Hollows", desc = "Settings for Crystal Hollows.")
     @ConfigEditorAccordion(id = 2)
     public boolean crystalSubcategory = false;
 
@@ -159,7 +159,7 @@ public class Mining {
     @ConfigOption(name = "Metal Detector Waypoint", desc = "Triangulates the possible position for the treasure in Mines of Divan.")
     @ConfigEditorBoolean
     @ConfigAccordionId(id = 2)
-    public boolean crysalMetalDetector = true;
+    public boolean crystalMetalDetector = true;
 
     @Expose
     @ConfigOption(name = "Full block Crystal Panes", desc = "Modifies the crystal pane hitbox to be a full block instead of a thin pane.")

@@ -185,7 +185,6 @@ public class StorageHandler {
         saveCorruptFile(new File(Config.configDirectory, "storage.json"));
     }
 
-    // Item Saving Helper Methods
     public static String itemStackToJson(ItemStack stack) {
         NBTTagCompound nbt = new NBTTagCompound();
         stack.writeToNBT(nbt);
@@ -193,8 +192,12 @@ public class StorageHandler {
     }
 
     public static ItemStack jsonToItemStack(String json) throws NBTException {
+        if (json == null || json.isEmpty()) return null;
         NBTTagCompound nbt = JsonToNBT.getTagFromJson(json);
-        return ItemStack.loadItemStackFromNBT(nbt);
+        if (nbt != null) {
+            return ItemStack.loadItemStackFromNBT(nbt);
+        }
+        return null;
     }
 
 

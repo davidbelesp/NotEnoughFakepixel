@@ -6,6 +6,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTException;
 import org.ginafro.notenoughfakepixel.config.gui.Config;
+import org.ginafro.notenoughfakepixel.features.skyblock.overlays.storage.StorageHandler;
 import org.ginafro.notenoughfakepixel.utils.ColorUtils;
 import org.lwjgl.input.Mouse;
 
@@ -52,33 +53,58 @@ public class StorageContainer {
         return temp;
     }
 
-    public void draw(int xPos,float yPos){
+    public void draw(int xPos, float yPos) {
+        GlStateManager.pushMatrix();
+
+        Minecraft.getMinecraft().getTextureManager().bindTexture(StorageHandler.getResource(this.size));
+
         int width = (int) getXStatic(420);
         int height = (int) getYStatic(80 + (44 * this.size));
 
-        GlStateManager.pushMatrix();
-        GlStateManager.resetColor();
-        Minecraft.getMinecraft().getTextureManager().bindTexture(getResource(this.size));
-        if(this.type.equals("backpack")) {
-            Color ce = ColorUtils.getColor(Config.feature.overlays.bagTint);
-            GlStateManager.color(ce.getRed()/255f,ce.getGreen()/255f,ce.getBlue()/255f,ce.getAlpha()/255f);
-        }
-        if(this.type.equals("echest")){
-            Color ce = ColorUtils.getColor(Config.feature.overlays.enderTint);
-            GlStateManager.color(ce.getRed()/255f,ce.getGreen()/255f,ce.getBlue()/255f,ce.getAlpha()/255f);
-        }
+        Color ce = ColorUtils.getColor(
+                this.type.equals("echest") ? Config.feature.overlays.enderTint : Config.feature.overlays.bagTint
+        );
+
+        GlStateManager.disableLighting();
+
+        GlStateManager.color(1f, 1f, 1f, 1f);
+
+        GlStateManager.color(
+                ce.getRed() / 255f,
+                ce.getGreen() / 255f,
+                ce.getBlue() / 255f,
+                ce.getAlpha() / 255f
+        );
 
         Gui.drawScaledCustomSizeModalRect(
-                xPos,
-                Math.round(yPos),
+                xPos, Math.round(yPos),
                 0f, 0f,
                 210, height / 2,
                 width, height,
                 210, height / 2f
         );
+
+        GlStateManager.color(1f, 1f, 1f, 1f);
+
         GlStateManager.popMatrix();
-        drawItems(xPos,yPos,getMouseX(),getMouseY());
-        drawContainerTitle(xPos, yPos);
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(xPos + getXStatic(15), yPos + getYStatic(20), 0f);
+        GlStateManager.scale(getXStatic(1), getXStatic(1), getXStatic(1));
+        GlStateManager.disableLighting();
+        Minecraft.getMinecraft().fontRendererObj.drawString(this.title, 0, 0, -1);
+        GlStateManager.popMatrix();
+
+        if (Mouse.isButtonDown(0)) {
+            if (getMouseX() > xPos && getMouseX() < xPos + width &&
+                    getMouseY() > yPos && getMouseY() < yPos + height) {
+                Minecraft.getMinecraft().thePlayer.sendChatMessage("/storage " + this.type + " " + this.containerNumber);
+            }
+        }
+
+        drawItems(xPos, yPos, getMouseX(), getMouseY());
+
+        GlStateManager.color(1f, 1f, 1f, 1f);
     }
 
     private void drawItems(int xPos, float yPos,int mouseX,int mouseY) {
@@ -87,6 +113,8 @@ public class StorageContainer {
         boolean mouseDown = Mouse.isButtonDown(0);
         int xi = 0, yi = 0;
         for (int i = 0; i < (9 * size); i++) {
+            String json = items.get(i);
+            if (json == null || json.trim().isEmpty()) continue;
             try {
                 ItemStack item = jsonToItemStack(items.get(i));
                 int posX = (int) (xPos + (getXStatic(40) * xi));
@@ -126,21 +154,6 @@ public class StorageContainer {
         }
 
         wasMouseDown = mouseDown;
-    }
-
-    private void drawContainerTitle( int xPos, float yPos) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(xPos + getXStatic(15), yPos + getYStatic(20), 0f);
-        GlStateManager.scale(getXStatic(1), getXStatic(1),getXStatic(1));
-        GlStateManager.resetColor();
-//
-//        Color color = ColorUtils.getColor(Config.feature.overlays.bagTint);
-//        if(c.type.equals("echest")) color = ColorUtils.getColor(Config.feature.overlays.enderTint);
-//        int mcColor = color.getRGB() & 0xFFFFFF;
-
-        Minecraft.getMinecraft().fontRendererObj.drawString(this.title, 0, 0, -1);
-
-        GlStateManager.popMatrix();
     }
 }
 

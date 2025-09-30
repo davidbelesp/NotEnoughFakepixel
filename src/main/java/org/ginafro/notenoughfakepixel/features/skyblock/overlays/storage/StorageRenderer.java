@@ -5,8 +5,11 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -43,7 +46,7 @@ public class StorageRenderer {
 
     public float scrollOffset = 0f;
     public float targetScrollOffset = 0f;
-    public final float scrollSpeed = 0.33f;
+    public final float scrollSpeed = 0.5f;
     public final float scrollStep = 1f;
     public boolean draggingScrollBar = false;
     public float dragStartY = 0f;
@@ -173,7 +176,6 @@ public class StorageRenderer {
     }
 
     private void drawInventory(int mouseX, int mouseY) {
-        float xTemp = xStart + boxWidth;
         int xPos = (int)(sr.getScaledWidth() - getXStatic(520));
         int yPos = (int)(sr.getScaledHeight() / 2f - getYStatic(150));
         GlStateManager.pushMatrix();
@@ -194,8 +196,63 @@ public class StorageRenderer {
         GlStateManager.resetColor();
         GlStateManager.color(1f,1f,1f);
         GlStateManager.popMatrix();
+
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(xPos + getXStatic(15), yPos + getYStatic(20), 0f);
+        GlStateManager.scale(getXStatic(1), getXStatic(1),getXStatic(1));
+        GlStateManager.resetColor();
+        Minecraft.getMinecraft().fontRendererObj.drawString("Inventory", 0, 0, -1);
+        GlStateManager.popMatrix();
+        drawInventoryItems(xPos,yPos,mouseX,mouseY);
     }
 
+    private void drawInventoryItems(int xPos, int yPos, int mouseX, int mouseY) {
+        Minecraft mc = Minecraft.getMinecraft();
+        Container inv = mc.thePlayer.inventoryContainer;
+        RenderItem itemRenderer = mc.getRenderItem();
+
+        int xStart = xPos + (int) getXStatic(16);
+        int yStart = yPos + (int) getYStatic(66);
+        int offset = (int) getXStatic(44);
+        int xi = 0, yi = 0;
+
+        GlStateManager.pushMatrix();
+        RenderHelper.enableGUIStandardItemLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.enableRescaleNormal();
+
+        for (int i = 0; i < 36; i++) {
+            int slotX = xStart + xi * offset;
+            int slotY = yStart + yi * offset;
+
+            if (inv.getSlot(i).getHasStack()) {
+                ItemStack stack = inv.getSlot(i).getStack();
+
+                GlStateManager.pushMatrix();
+                GlStateManager.translate(0, 0, 32);
+                itemRenderer.zLevel = 100.0F;
+
+                itemRenderer.renderItemAndEffectIntoGUI(stack, slotX + 10, slotY + 10);
+                itemRenderer.renderItemOverlayIntoGUI(mc.fontRendererObj, stack, slotX + 10, slotY + 10, null);
+
+                itemRenderer.zLevel = 0.0F;
+                GlStateManager.popMatrix();
+            }
+
+            if (mouseX >= slotX && mouseX < slotX + offset && mouseY >= slotY && mouseY < slotY + offset) {
+            }
+
+            xi++;
+            if (xi >= 9) {
+                xi = 0;
+                yi++;
+            }
+        }
+
+        GlStateManager.disableRescaleNormal();
+        RenderHelper.disableStandardItemLighting();
+        GlStateManager.popMatrix();
+    }
     private void drawContainers(int mouseX, int mouseY) {
         int buttonStartX = (int) (xStart + getXStatic(7));
         int buttonStartY = (int) (yStart + getYStatic(7));
@@ -205,13 +262,13 @@ public class StorageRenderer {
         float rowHeight = 0;
 
         for (StorageContainer c : containers) {
-
             int width = (int) getXStatic(420);
             int height = (int) getYStatic(80 + (44 * c.size));
-
             int xPos = buttonStartX + (int) ((width + buttonOffsetX) * xi);
             float yPos = yRunning;
-            c.draw(xPos,yPos);
+            GlStateManager.color(1f, 1f, 1f, 1f);
+            c.draw(xPos, yPos);
+
             rowHeight = Math.max(rowHeight, height);
             xi++;
             if (xi >= 3) {

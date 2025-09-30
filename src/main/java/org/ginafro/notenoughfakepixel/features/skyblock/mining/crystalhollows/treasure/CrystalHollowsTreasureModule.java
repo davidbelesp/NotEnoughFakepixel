@@ -23,7 +23,7 @@ public class CrystalHollowsTreasureModule {
 
     @SubscribeEvent
     public void onChatReceived(net.minecraftforge.client.event.ClientChatReceivedEvent e) {
-        if (!Config.feature.mining.crysalMetalDetector) return;
+        if (!Config.feature.mining.crystalMetalDetector) return;
         if (ScoreboardUtils.currentArea != Area.CH_MINES_OF_DIVAN) return;
         String msg = e.message.getFormattedText();
         if (msg.contains("TREASURE: ")) {
@@ -40,19 +40,19 @@ public class CrystalHollowsTreasureModule {
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload e) {
-        if (!Config.feature.mining.crysalMetalDetector) return;
+        if (!Config.feature.mining.crystalMetalDetector) return;
         TRI.reset();
     }
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load e) {
-        if (!Config.feature.mining.crysalMetalDetector) return;
+        if (!Config.feature.mining.crystalMetalDetector) return;
         if (TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) TRI.reset();
     }
 
     @SubscribeEvent
     public void onRightClick(PlayerInteractEvent e) {
-        if (!Config.feature.mining.crysalMetalDetector) return;
+        if (!Config.feature.mining.crystalMetalDetector) return;
         if (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) return;
         if (e.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) &&
                 e.world.getBlockState(e.pos).getBlock() instanceof BlockChest) {
@@ -62,7 +62,7 @@ public class CrystalHollowsTreasureModule {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (!Config.feature.mining.crysalMetalDetector) return;
+        if (!Config.feature.mining.crystalMetalDetector) return;
         if (ScoreboardUtils.currentArea != Area.CH_MINES_OF_DIVAN) return;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.thePlayer == null || mc.theWorld == null) return;
