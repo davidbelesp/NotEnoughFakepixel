@@ -87,13 +87,13 @@ public class Alerts {
                 boolean trigger;
                 switch (alert.mode) {
                     case "Starts With":
-                        trigger = message.startsWith(alert.message);
+                        trigger = message.startsWith(alert.getMessage());
                         break;
                     case "Contains":
-                        trigger = message.contains(alert.message);
+                        trigger = message.contains(alert.getMessage());
                         break;
                     case "Ends With":
-                        trigger = message.endsWith(alert.message);
+                        trigger = message.endsWith(alert.getMessage());
                         break;
                     default:
                         continue;
@@ -145,7 +145,7 @@ public class Alerts {
     public static void save() {
         for (Alert alert : alerts) {
             if (alert.mode.equals("Regex")) {
-                Pattern pattern = Pattern.compile(alert.message);
+                Pattern pattern = Pattern.compile(alert.getMessage());
                 patterns.put(alert, pattern);
             }
         }
@@ -173,7 +173,7 @@ public class Alerts {
                     // Rebuild patterns for Regex alerts
                     for (Alert alert : alerts) {
                         if (alert.mode.equals("Regex")) {
-                            Pattern pattern = Pattern.compile(alert.message);
+                            Pattern pattern = Pattern.compile(alert.getMessage());
                             patterns.put(alert, pattern);
                         }
                     }
@@ -201,7 +201,9 @@ public class Alerts {
             this.alert = alert;
             this.toggled = toggled;
         }
-
+        public String getMessage(){
+            return Variables.replaceVariables(this.message);
+        }
         public void toggle() {
             toggled = !toggled;
         }

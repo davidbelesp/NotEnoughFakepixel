@@ -3,8 +3,10 @@ package org.ginafro.notenoughfakepixel.alerts;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.input.Keyboard;
 
+import java.awt.*;
 import java.io.IOException;
 
 public class AddAlertGui extends GuiScreen {
@@ -63,7 +65,16 @@ public class AddAlertGui extends GuiScreen {
         int saveButtonY = centerY + 2 * spacing + 30;
         int instructionY = saveButtonY + 20 + 10;
         fontRendererObj.drawString(instruction, centerX - fontRendererObj.getStringWidth(instruction) / 2, instructionY, 0xFFFFFF);
-
+        int yPos = 15;
+        int xPos = 15;
+        int yHeight = 4 + (Variables.values().length * 15);
+        int wHeight = 350;
+        drawRect(xPos - 4,yPos - 4,xPos + wHeight,yHeight + yPos,Color.darkGray.getRGB());
+        for(Variables v : Variables.values()){
+            fontRendererObj.drawString(v.variableText + ":",xPos,yPos, Color.green.getRGB());
+            fontRendererObj.drawString(v.variableUsage,xPos + fontRendererObj.getStringWidth(v.variableText + ":"),yPos,Color.yellow.getRGB());
+            yPos += 15;
+        }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
