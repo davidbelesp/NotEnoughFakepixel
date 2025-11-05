@@ -12,6 +12,7 @@ This is a fork and remaster of official NotEnoughFakepixel mod from GinaFro.
      <a href="https://github.com/davidbelesp/NotEnoughFakepixel/graphs/contributors" target="_blank">
         <img alt="GitHub contributors" src="https://img.shields.io/github/contributors-anon/davidbelesp/NotEnoughFakepixel?style=for-the-badge&color=008b8b">
     </a>
+    <a href="https://deepwiki.com/davidbelesp/NotEnoughFakepixel"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
     <a href="https://github.com/davidbelesp/NotEnoughFakepixel/releases" target="_blank">
        <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/davidbelesp/NotEnoughFakepixel/total?style=for-the-badge&color=008b8b">
     </a>
