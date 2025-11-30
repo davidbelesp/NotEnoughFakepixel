@@ -17,9 +17,11 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RegisterEvents
 public class LockedTreasureHelper {
@@ -30,7 +32,7 @@ public class LockedTreasureHelper {
     private static final float  SQUARE_SIZE = 0.18f;
     private static final long   MARKER_TTL_MS = 300;
 
-    private final List<AxisAlignedBB> chestBoxes = new ArrayList<>(64);
+    private final List<AxisAlignedBB> chestBoxes = new CopyOnWriteArrayList<>();
     private final List<Marker> markers = new ArrayList<>(64);
 
     private static class Marker {
@@ -50,11 +52,55 @@ public class LockedTreasureHelper {
         return m;
     }
 
+    private int tickCounter = 0;
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent e) {
+        if (e.phase != TickEvent.Phase.END) return;
+        if (MC.theWorld == null || MC.thePlayer == null) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
+        if (!Config.feature.mining.lockedTreasureChest) return;
+
+        tickCounter++;
+        if (tickCounter % 10 == 0) {
+            updateChestList();
+        }
+    }
+
+    private void updateChestList() {
+        final int view = MC.gameSettings.renderDistanceChunks * 16 + 16;
+        final double px = MC.thePlayer.posX;
+        final double py = MC.thePlayer.posY;
+        final double pz = MC.thePlayer.posZ;
+        final double maxDistSq = (double) view * (double) view;
+
+        List<AxisAlignedBB> tempBoxes = new ArrayList<>();
+
+        for (TileEntity te : MC.theWorld.loadedTileEntityList) {
+            if (!(te instanceof TileEntityChest)) continue;
+
+            BlockPos bp = te.getPos();
+            double cx = bp.getX() + 0.5 - px;
+            double cy = bp.getY() + 0.5 - py;
+            double cz = bp.getZ() + 0.5 - pz;
+
+            if (cx * cx + cy * cy + cz * cz > maxDistSq) continue;
+
+            tempBoxes.add(new AxisAlignedBB(
+                    bp.getX(), bp.getY(), bp.getZ(),
+                    bp.getX() + 1, bp.getY() + 1, bp.getZ() + 1
+            ));
+        }
+
+        // Swap the list safely
+        chestBoxes.clear();
+        chestBoxes.addAll(tempBoxes);
+    }
+
     @SubscribeEvent
     public void onParticlePacket(ParticlePacketEvent e) {
         if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!Config.feature.mining.lockedTreasureChest) return;
-        if (MC.theWorld == null) return;
 
         final S2APacketParticles p = e.getPacket();
         if (p.getParticleType() != EnumParticleTypes.CRIT) return;
@@ -63,16 +109,16 @@ public class LockedTreasureHelper {
         final double y = p.getYCoordinate();
         final double z = p.getZCoordinate();
 
-        collectNearbyChestAABBs();
-
         if (chestBoxes.isEmpty()) return;
 
         for (AxisAlignedBB box : chestBoxes) {
             if (pointWithinExpandedAABB(x, y, z, box, CHEST_RANGE)) {
                 e.setCanceled(true);
 
-                Marker m = obtainMarker();
-                m.set(x, y, z, System.currentTimeMillis() + MARKER_TTL_MS);
+                synchronized (markers) {
+                    Marker m = obtainMarker();
+                    m.set(x, y, z, System.currentTimeMillis() + MARKER_TTL_MS);
+                }
                 break;
             }
         }
@@ -85,11 +131,14 @@ public class LockedTreasureHelper {
         if (MC.theWorld == null || MC.thePlayer == null) return;
 
         final long now = System.currentTimeMillis();
+
         boolean anyAlive = false;
-        for (Marker marker : markers) {
-            if (marker.dieAt > now) {
-                anyAlive = true;
-                break;
+        synchronized (markers) {
+            for (Marker marker : markers) {
+                if (marker.dieAt > now) {
+                    anyAlive = true;
+                    break;
+                }
             }
         }
         if (!anyAlive) return;
@@ -114,41 +163,43 @@ public class LockedTreasureHelper {
         WorldRenderer wr = tess.getWorldRenderer();
         wr.begin(7, DefaultVertexFormats.POSITION); // GL_QUADS
 
-        for (Marker m : markers) {
-            if (m.dieAt <= now) {
-                m.dieAt = 0;
-                continue;
+        synchronized (markers) {
+            for (Marker m : markers) {
+                if (m.dieAt <= now) {
+                    m.dieAt = 0;
+                    continue;
+                }
+
+                double cx = m.x - camX;
+                double cy = m.y - camY;
+                double cz = m.z - camZ;
+
+                // 1) horizontal vector
+                double vx = cx;
+                double vz = cz;
+                double vLen = Math.sqrt(vx * vx + vz * vz);
+                if (vLen < 1e-6) {
+                    vx = 0.0;
+                    vz = 1.0;
+                    vLen = 1.0;
+                }
+                vx /= vLen;
+                vz /= vLen;
+
+                // 2) up = (0,1,0); right = up × viewHoriz = (vz, 0, -vx)
+                double rdx = vz * half;
+                double rdz = -vx * half;
+
+                // 3) up * half
+                double udx = 0.0;
+                double udy = half;
+                double udz = 0.0;
+
+                wr.pos(cx - rdx - udx, cy - udy, cz - rdz - udz).endVertex();
+                wr.pos(cx - rdx + udx, cy + udy, cz - rdz + udz).endVertex();
+                wr.pos(cx + rdx + udx, cy + udy, cz + rdz + udz).endVertex();
+                wr.pos(cx + rdx - udx, cy - udy, cz + rdz - udz).endVertex();
             }
-
-            double cx = m.x - camX;
-            double cy = m.y - camY;
-            double cz = m.z - camZ;
-
-            // 1) horizontal vector
-            double vx = cx;
-            double vz = cz;
-            double vLen = Math.sqrt(vx * vx + vz * vz);
-            if (vLen < 1e-6) {
-                vx = 0.0;
-                vz = 1.0;
-                vLen = 1.0;
-            }
-            vx /= vLen;
-            vz /= vLen;
-
-            // 2) up = (0,1,0); right = up × viewHoriz = (vz, 0, -vx)
-            double rdx = vz * half;
-            double rdz = -vx * half;
-
-            // 3) up * half
-            double udx = 0.0;
-            double udy = half;
-            double udz = 0.0;
-
-            wr.pos(cx - rdx - udx, cy - udy, cz - rdz - udz).endVertex();
-            wr.pos(cx - rdx + udx, cy + udy, cz - rdz + udz).endVertex();
-            wr.pos(cx + rdx + udx, cy + udy, cz + rdz + udz).endVertex();
-            wr.pos(cx + rdx - udx, cy - udy, cz + rdz - udz).endVertex();
         }
 
         tess.draw();
@@ -167,35 +218,6 @@ public class LockedTreasureHelper {
         return x >= box.minX - expand && x <= box.maxX + expand
                 && y >= box.minY - expand && y <= box.maxY + expand
                 && z >= box.minZ - expand && z <= box.maxZ + expand;
-    }
-
-    private void collectNearbyChestAABBs() {
-        chestBoxes.clear();
-        if (MC.theWorld == null || MC.thePlayer == null) return;
-
-        final int view = MC.gameSettings.renderDistanceChunks * 16 + 16;
-        final double px = MC.thePlayer.posX;
-        final double py = MC.thePlayer.posY;
-        final double pz = MC.thePlayer.posZ;
-        final double maxDistSq = (double) view * (double) view;
-
-        @SuppressWarnings("unchecked")
-        List<TileEntity> tiles = MC.theWorld.loadedTileEntityList;
-
-        for (TileEntity te : tiles) {
-            if (!(te instanceof TileEntityChest)) continue;
-
-            BlockPos bp = te.getPos();
-            double cx = bp.getX() + 0.5 - px;
-            double cy = bp.getY() + 0.5 - py;
-            double cz = bp.getZ() + 0.5 - pz;
-            if (cx * cx + cy * cy + cz * cz > maxDistSq) continue;
-
-            chestBoxes.add(new AxisAlignedBB(
-                    bp.getX(), bp.getY(), bp.getZ(),
-                    bp.getX() + 1, bp.getY() + 1, bp.getZ() + 1
-            ));
-        }
     }
 
 }

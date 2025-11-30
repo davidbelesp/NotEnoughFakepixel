@@ -3,7 +3,6 @@ package com.nef.notenoughfakepixel.envcheck;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 import com.nef.notenoughfakepixel.utils.ChatUtils;
-import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.utils.NumberUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
