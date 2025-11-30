@@ -14,8 +14,6 @@ import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 import com.nef.notenoughfakepixel.features.capes.gui.CapeGui;
 import com.nef.notenoughfakepixel.features.duels.Duels;
 import com.nef.notenoughfakepixel.features.duels.KDCounter;
-import com.nef.notenoughfakepixel.features.mlf.Info;
-import com.nef.notenoughfakepixel.features.mlf.Map;
 import com.nef.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
 import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
 import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.PrecursorItemsOverlay;
@@ -57,23 +55,6 @@ public class Configuration {
         }
         if ("editDungeonsMapPosition".equals(runnableId)) {
             editOverlay(activeConfigCategory, 128, 128, Config.feature.dungeons.dungeonsMapPos);
-        }
-        if ("editMlfInfoPosition".equals(runnableId)) {
-            Position tempPosition = new Position((int) Config.feature.mlf.mlfInfoOffsetX, (int) Config.feature.mlf.mlfInfoOffsetY);
-            Minecraft.getMinecraft().displayGuiScreen(
-                    new GuiPositionEditor(
-                            tempPosition,
-                            35, 60,
-                            () -> new Map().renderDummy(),
-                            () -> {
-                                ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
-                                Config.feature.mlf.mlfInfoOffsetX = tempPosition.getAbsX(sr, 35);
-                                Config.feature.mlf.mlfInfoOffsetY = tempPosition.getAbsY(sr, 60);
-                            },
-                            () -> {
-                            }
-                    )
-            );
         }
         if ("editKdCounterPosition".equals(runnableId)) {
             Position tempPosition = new Position((int) Config.feature.duels.kdCounterOffsetX, (int) Config.feature.duels.kdCounterOffsetY);
@@ -247,10 +228,6 @@ public class Configuration {
     @Expose
     @Category(name = "Fishing", desc = "Fishing settings.")
     public Fishing fishing = new Fishing();
-
-    @Expose
-    @Category(name = "My Little Farm", desc = "Mlf settings.")
-    public Info mlf = new Info();
 
     @Expose
     @Category(name = "Slot Locking", desc = "Slot Locking Settings")
