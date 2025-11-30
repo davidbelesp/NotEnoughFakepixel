@@ -1,10 +1,10 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.features.capes.CapeManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.features.capes.CapeManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

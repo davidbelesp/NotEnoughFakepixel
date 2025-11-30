@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.fishing;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.ParticlePacketEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -14,11 +19,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.ParticlePacketEvent;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -188,7 +188,7 @@ public class FishingCountdown {
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
     public void onRenderOverlay(RenderGameOverlayEvent.Post event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!Config.feature.fishing.fishingCountdown) return;
         if (event.type != RenderGameOverlayEvent.ElementType.TEXT || countdownText == null) return;
         if (System.currentTimeMillis() > countdownEndTime) {

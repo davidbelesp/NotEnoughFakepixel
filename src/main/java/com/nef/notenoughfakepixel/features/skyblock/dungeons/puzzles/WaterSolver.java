@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.puzzles;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.BlockLever;
@@ -17,11 +22,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.Logger;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
 
 import java.awt.*;
 import java.util.*;

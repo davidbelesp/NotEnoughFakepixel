@@ -1,6 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.slayers;
 
-import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.Configuration;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.EntityHighlightUtils;
+import com.nef.notenoughfakepixel.utils.MapUtils;
+import com.nef.notenoughfakepixel.utils.OutlineUtils;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -12,10 +19,6 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.Configuration;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -41,7 +44,7 @@ public class BlazeAttunements {
         }
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null || mc.thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock() || !TablistParser.currentLocation.isCrimson()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock() || !SkyblockData.getCurrentLocation().isCrimson()) return;
 
         EntityLivingBase entity = event.entity;
         if (entity.isInvisible() || entity == mc.thePlayer) return;
@@ -85,7 +88,7 @@ public class BlazeAttunements {
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onRenderEntityModel(RenderEntityModelEvent event) {
         if (!Config.feature.slayer.slayerBlazeAttunements) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock() || !TablistParser.currentLocation.isCrimson()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock() || !SkyblockData.getCurrentLocation().isCrimson()) return;
 
         EntityLivingBase entity = event.getEntity();
         if (entity == null || !blazeEntity.contains(entity)) return;

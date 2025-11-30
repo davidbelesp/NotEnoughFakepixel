@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.BlockPos;
@@ -8,11 +13,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
 import java.util.*;
@@ -55,7 +55,7 @@ public class RelicWaypoints {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (!Config.feature.qol.qolRelicWaypoints || TablistParser.currentLocation != Location.SPIDERS_DEN) {
+        if (!Config.feature.qol.qolRelicWaypoints || SkyblockData.getCurrentLocation() != Location.SPIDERS_DEN) {
             return;
         }
 
@@ -82,7 +82,7 @@ public class RelicWaypoints {
 
     @SubscribeEvent
     public void onChatReceived(ClientChatReceivedEvent event) {
-        if (!Config.feature.qol.qolRelicWaypoints || TablistParser.currentLocation != Location.SPIDERS_DEN) {
+        if (!Config.feature.qol.qolRelicWaypoints || SkyblockData.getCurrentLocation() != Location.SPIDERS_DEN) {
             return;
         }
 

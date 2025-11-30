@@ -1,6 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.chocolate;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.variables.Skins;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -21,9 +25,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.variables.Skins;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
@@ -46,7 +47,7 @@ public class ChocolateFactory {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!Config.feature.chocolateFactory.chocolateChocolateEggWaypoints) return;
         checkForEggs();
         drawWaypoints(event.partialTicks);
@@ -90,7 +91,7 @@ public class ChocolateFactory {
     @SubscribeEvent
     public void onChat(@NotNull ClientChatReceivedEvent e) {
         if (!Config.feature.chocolateFactory.chocolateChocolateEggWaypoints) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (ChatUtils.middleBar.matcher(e.message.getFormattedText()).matches()) return;
         Matcher matcher = Pattern.compile("HOPPITY'S HUNT You found").matcher(e.message.getUnformattedText());
         Matcher matcher2 = Pattern.compile("HOPPITY'S HUNT A Chocolate .* Egg has appeared").matcher(e.message.getUnformattedText());

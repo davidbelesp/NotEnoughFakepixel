@@ -1,9 +1,9 @@
 package com.nef.notenoughfakepixel.commands;
 
-import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommandSender;
 import com.nef.notenoughfakepixel.config.gui.utils.Utils;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.ICommandSender;
 
 @RegisterCommand
 public class CopyCommand extends CommandBase {

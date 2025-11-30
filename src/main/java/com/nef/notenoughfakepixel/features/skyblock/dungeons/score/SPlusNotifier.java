@@ -1,16 +1,16 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.score;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
+import com.nef.notenoughfakepixel.utils.TitleUtils;
+import com.nef.notenoughfakepixel.variables.DungeonFloor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
-import com.nef.notenoughfakepixel.utils.TitleUtils;
-import com.nef.notenoughfakepixel.variables.DungeonFloor;
 
 @RegisterEvents
 public class SPlusNotifier {
@@ -40,7 +40,7 @@ public class SPlusNotifier {
 
         int currentScore = ScoreManager.getSkillScore() + ScoreManager.getExplorationClearScore() + ScoreManager.getSpeedScore() + ScoreManager.getBonusScore();
         int virtualSecretScore = Math.min(40, ScoreManager.getSecretPercentage() * 40 /
-                DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getSecretPercentage());
+                DungeonFloor.getFloor(SkyblockData.getCurrentFloor().name()).getSecretPercentage());
         int virtualTotalScore = currentScore + virtualSecretScore;
 
         if (virtualTotalScore >= 300) {

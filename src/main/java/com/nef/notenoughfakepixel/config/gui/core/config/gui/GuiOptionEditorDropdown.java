@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.config.gui.core.config.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import com.nef.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
 import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
 import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import org.lwjgl.input.Mouse;
 
 public class GuiOptionEditorDropdown extends GuiOptionEditor {

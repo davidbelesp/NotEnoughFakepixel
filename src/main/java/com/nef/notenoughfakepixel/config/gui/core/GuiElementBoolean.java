@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.config.gui.core;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.ResourceLocation;
 import com.nef.notenoughfakepixel.config.gui.GuiTextures;
 import com.nef.notenoughfakepixel.config.gui.core.util.lerp.LerpUtils;
 import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Mouse;
 
 import java.util.function.Consumer;

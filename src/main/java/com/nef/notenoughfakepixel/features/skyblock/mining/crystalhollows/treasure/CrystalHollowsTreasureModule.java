@@ -1,6 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.treasure;
 
-import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
+import com.nef.notenoughfakepixel.variables.Area;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.block.BlockChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -9,10 +16,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.variables.Area;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
 
@@ -24,7 +27,7 @@ public class CrystalHollowsTreasureModule {
     @SubscribeEvent
     public void onChatReceived(net.minecraftforge.client.event.ClientChatReceivedEvent e) {
         if (!Config.feature.mining.crystalMetalDetector) return;
-        if (ScoreboardUtils.currentArea != Area.CH_MINES_OF_DIVAN) return;
+        if (SkyblockData.getCurrentArea() != Area.CH_MINES_OF_DIVAN) return;
         String msg = e.message.getFormattedText();
         if (msg.contains("TREASURE: ")) {
             try {
@@ -47,13 +50,13 @@ public class CrystalHollowsTreasureModule {
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load e) {
         if (!Config.feature.mining.crystalMetalDetector) return;
-        if (TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) TRI.reset();
+        if (SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) TRI.reset();
     }
 
     @SubscribeEvent
     public void onRightClick(PlayerInteractEvent e) {
         if (!Config.feature.mining.crystalMetalDetector) return;
-        if (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) return;
+        if (!SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) return;
         if (e.action.equals(PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK) &&
                 e.world.getBlockState(e.pos).getBlock() instanceof BlockChest) {
             TRI.reset();
@@ -63,7 +66,7 @@ public class CrystalHollowsTreasureModule {
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (!Config.feature.mining.crystalMetalDetector) return;
-        if (ScoreboardUtils.currentArea != Area.CH_MINES_OF_DIVAN) return;
+        if (SkyblockData.getCurrentArea() != Area.CH_MINES_OF_DIVAN) return;
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.thePlayer == null || mc.theWorld == null) return;
 

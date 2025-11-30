@@ -1,9 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows;
 
-import net.minecraft.util.EnumChatFormatting;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.ChatNotifier;
+import net.minecraft.util.EnumChatFormatting;
 
 @RegisterEvents
 public class WormNotifier extends ChatNotifier {

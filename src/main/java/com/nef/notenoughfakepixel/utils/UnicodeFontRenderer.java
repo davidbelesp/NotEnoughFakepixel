@@ -1,8 +1,8 @@
 package com.nef.notenoughfakepixel.utils;
 
+import com.nef.notenoughfakepixel.NotEnoughFakepixel;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.StringUtils;
-import com.nef.notenoughfakepixel.NotEnoughFakepixel;
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.UnicodeFont;
 import org.newdawn.slick.font.effects.ColorEffect;

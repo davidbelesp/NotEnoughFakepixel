@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.Configuration;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -14,10 +19,6 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.Configuration;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 
 import java.awt.*;
 
@@ -30,7 +31,7 @@ public class MiscDungFeatures {
     public void onChat(ClientChatReceivedEvent event) {
         String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         if (message.startsWith("[BOSS] The Watcher: That will be enough for now.")) {
             if (Config.feature.dungeons.dungeonsBloodReady) {
@@ -52,7 +53,7 @@ public class MiscDungFeatures {
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         WorldClient world = Minecraft.getMinecraft().theWorld;
 
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         for (Entity entity : world.loadedEntityList) {
             if (entity instanceof EntityArmorStand) {

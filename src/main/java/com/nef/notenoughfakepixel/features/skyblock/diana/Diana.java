@@ -1,6 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.diana;
 
+import com.nef.notenoughfakepixel.Configuration;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
+import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -23,12 +30,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.Configuration;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
-import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
 
 import java.awt.*;
 import java.time.Instant;
@@ -60,7 +61,7 @@ public class Diana {
     @SubscribeEvent
     public void onParticlePacketReceive(PacketReadEvent event) {
         if (!Config.feature.diana.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
-        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!SkyblockData.getCurrentLocation().isHub()) return; // Check if the player is in a hub
         //if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
 
         Packet packet = event.packet;
@@ -101,7 +102,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
-        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!SkyblockData.getCurrentLocation().isHub()) return;
         if (Config.feature.diana.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
         if (Config.feature.diana.dianaShowTracersWaypoints) drawTracers(event.partialTicks);
         if (Config.feature.diana.dianaShowLabelsWaypoints) drawLabels(event.partialTicks);
@@ -115,7 +116,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
-        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!SkyblockData.getCurrentLocation().isHub()) return; // Check if the player is in a hub
         if (!Config.feature.diana.dianaMinosInquisitorAlert) return;
         initializeLocations();
     }
@@ -127,7 +128,7 @@ public class Diana {
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
         final Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.theWorld == null || mc.thePlayer == null) return;
-        if (!TablistParser.currentLocation.isHub()) return;
+        if (!SkyblockData.getCurrentLocation().isHub()) return;
         if (!Config.feature.diana.dianaMinosInquisitorAlert && !Config.feature.diana.dianaMinosInquisitorOutline) return;
 
         try {
@@ -514,7 +515,7 @@ public class Diana {
     }*/
     @SubscribeEvent
     public void onSoundPacketReceive(PacketReadEvent event) {
-        if (!TablistParser.currentLocation.isHub()) return; // Check if the player is in a hub
+        if (!SkyblockData.getCurrentLocation().isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundEffect = (S29PacketSoundEffect) packet;
@@ -621,7 +622,7 @@ public class Diana {
     public void onChatRecieve(ClientChatReceivedEvent event) {
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
-        if (!TablistParser.currentLocation.isHub()) return;
+        if (!SkyblockData.getCurrentLocation().isHub()) return;
         if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
         //System.out.println(event.message.getFormattedText());
         if (Config.feature.diana.dianaCancelCooldownSpadeMessage && InventoryUtils.getSlot("Ancestral Spade") == InventoryUtils.getCurrentSlot()) {

@@ -3,6 +3,7 @@ package com.nef.notenoughfakepixel.config.features;
 import com.google.gson.annotations.Expose;
 import com.nef.notenoughfakepixel.config.gui.core.config.Position;
 import com.nef.notenoughfakepixel.config.gui.core.config.annotations.*;
+import org.lwjgl.input.Keyboard;
 
 public class Mining {
 
@@ -221,6 +222,18 @@ public class Mining {
     @ConfigAccordionId(id = 2)
     @ConfigEditorAccordion(id = 2_1)
     public boolean crystalMapAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Open Waypoints GUI Key", desc = "Keybind to open Waypoints GUI")
+    @ConfigEditorKeybind(defaultKey = Keyboard.KEY_M)
+    @ConfigAccordionId(id = 2_1)
+    public int chWaypointsGUI = Keyboard.KEY_M;
+
+    @Expose
+    @ConfigOption(name = "Create new Waypoint Key", desc = "Keybind to open GUI to create a new Waypoint")
+    @ConfigEditorKeybind(defaultKey = Keyboard.KEY_B)
+    @ConfigAccordionId(id = 2_1)
+    public int chNewWaypointGUI = Keyboard.KEY_B;
 
     @Expose
     @ConfigOption(name = "Crystal Hollows Map Type", desc = "Choose the type of Crystal Hollows map.")

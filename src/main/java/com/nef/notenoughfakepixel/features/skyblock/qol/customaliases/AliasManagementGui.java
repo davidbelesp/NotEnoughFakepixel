@@ -1,8 +1,8 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.customaliases;
 
+import com.nef.notenoughfakepixel.utils.Utils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import com.nef.notenoughfakepixel.utils.Utils;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;

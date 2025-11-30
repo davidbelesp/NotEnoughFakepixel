@@ -2,7 +2,10 @@ package com.nef.notenoughfakepixel.utils;
 
 import net.minecraft.scoreboard.Score;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.NavigableMap;
 
 public class StringUtils {
 

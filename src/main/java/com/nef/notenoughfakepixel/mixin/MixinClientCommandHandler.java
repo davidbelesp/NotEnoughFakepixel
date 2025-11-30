@@ -1,8 +1,8 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.config.gui.commands.SimpleCommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraftforge.client.ClientCommandHandler;
-import com.nef.notenoughfakepixel.config.gui.commands.SimpleCommand;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

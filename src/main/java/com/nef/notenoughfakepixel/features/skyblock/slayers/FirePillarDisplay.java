@@ -1,16 +1,15 @@
 package com.nef.notenoughfakepixel.features.skyblock.slayers;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
+import com.nef.notenoughfakepixel.utils.TitleUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.client.event.RenderLivingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.utils.TitleUtils;
 
 @RegisterEvents
 public class FirePillarDisplay {
@@ -23,8 +22,8 @@ public class FirePillarDisplay {
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
         if (!Config.feature.slayer.slayerFirePillarDisplay || mc.theWorld == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!TablistParser.currentLocation.isCrimson()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
+        if (!SkyblockData.getCurrentLocation().isCrimson()) return;
 
         if (mc.theWorld.getTotalWorldTime() % 5 != 0) return;
 

@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.StringUtils;
+import com.nef.notenoughfakepixel.variables.Gamemode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.item.ItemStack;
@@ -7,11 +12,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.StringUtils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -60,7 +60,7 @@ public class VisualCooldowns {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent e) {
-        if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.SKYBLOCK) return;
         if (e.message.getUnformattedText().startsWith("This ability is on cooldown for")) {
             int cooldownTime = 0;
             for (String s : e.message.getUnformattedText().split(" ")) {

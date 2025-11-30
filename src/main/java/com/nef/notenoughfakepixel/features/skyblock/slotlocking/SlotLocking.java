@@ -1,9 +1,18 @@
 package com.nef.notenoughfakepixel.features.skyblock.slotlocking;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
+import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterInstance;
+import com.nef.notenoughfakepixel.events.ReplaceItemEvent;
+import com.nef.notenoughfakepixel.events.SlotClickEvent;
+import com.nef.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ConfigHandler;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.variables.Resources;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -27,16 +36,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
-import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterInstance;
-import com.nef.notenoughfakepixel.events.ReplaceItemEvent;
-import com.nef.notenoughfakepixel.events.SlotClickEvent;
-import com.nef.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
-import com.nef.notenoughfakepixel.serverdata.SkyblockData;
-import com.nef.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -106,10 +105,8 @@ public class SlotLocking {
 
     // ----- CONTEXT HELPERS -----
     private static Minecraft mc() { return Minecraft.getMinecraft(); }
-    private static boolean isSkyblock() { return ScoreboardUtils.currentGamemode.isSkyblock(); }
-    private static boolean featureOn() { return Config.feature.sl.enableSlotLocking; }
     private static boolean bindingOn() { return Config.feature.sl.enableSlotBinding; }
-    private static boolean lockAndOnSkyblock() { return isSkyblock() && featureOn(); }
+    private static boolean lockAndOnSkyblock() { return SkyblockData.getCurrentGamemode().isSkyblock() && Config.feature.sl.enableSlotLocking; }
 
     private static GuiContainer currentContainer() {
         return (mc().currentScreen instanceof GuiContainer) ? (GuiContainer) mc().currentScreen : null;

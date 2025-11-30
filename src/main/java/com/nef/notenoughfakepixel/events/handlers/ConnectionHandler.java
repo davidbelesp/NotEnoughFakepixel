@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.events.handlers;
 
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.NEFClientConnectedToServerEvent;
 import com.nef.notenoughfakepixel.utils.Logger;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 
 @RegisterEvents
 public class ConnectionHandler {

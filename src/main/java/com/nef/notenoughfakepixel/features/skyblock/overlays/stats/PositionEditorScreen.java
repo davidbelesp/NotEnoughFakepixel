@@ -1,10 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.stats;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.config.gui.core.config.Position;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.config.gui.core.config.Position;
 
 import java.io.IOException;
 import java.util.EnumMap;

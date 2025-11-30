@@ -1,6 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.crimson;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
 import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
+import com.nef.notenoughfakepixel.variables.Skins;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -16,11 +21,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
-import com.nef.notenoughfakepixel.variables.Skins;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;

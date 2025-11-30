@@ -1,6 +1,12 @@
 package com.nef.notenoughfakepixel.mixin;
 
 
+import com.nef.notenoughfakepixel.NotEnoughFakepixel;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.events.GuiContainerBackgroundDrawnEvent;
+import com.nef.notenoughfakepixel.events.SlotClickEvent;
+import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import com.nef.notenoughfakepixel.utils.ReforgePair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
@@ -8,12 +14,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import com.nef.notenoughfakepixel.NotEnoughFakepixel;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.events.GuiContainerBackgroundDrawnEvent;
-import com.nef.notenoughfakepixel.events.SlotClickEvent;
-import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
-import com.nef.notenoughfakepixel.utils.ReforgePair;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

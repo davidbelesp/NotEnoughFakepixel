@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.mixin.bugfixes;
 
+import com.nef.notenoughfakepixel.events.NefPacketBlockChange;
+import com.nef.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.network.play.server.S23PacketBlockChange;
 import net.minecraft.util.IChatComponent;
-import com.nef.notenoughfakepixel.events.NefPacketBlockChange;
-import com.nef.notenoughfakepixel.features.skyblock.slayers.VoidgloomSeraph;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

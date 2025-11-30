@@ -1,5 +1,7 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
+import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
@@ -7,8 +9,6 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +19,7 @@ public abstract class KeyShortcut {
 
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
-        if (!getConfigOption() || !ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!getConfigOption() || !SkyblockData.getCurrentGamemode().isSkyblock()) return;
         int keyBind = getKeyBind();
         if (KeybindHelper.isKeyDown(keyBind)) {
             if (activeKeySet.add(keyBind)) {
@@ -30,7 +30,7 @@ public abstract class KeyShortcut {
 
     @SubscribeEvent
     public void onKeyPressOnGui(GuiScreenEvent event) {
-        if (!getConfigOption() || !ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!getConfigOption() || !SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!(event.gui instanceof GuiChest)) return;
 
         Container container = ((GuiChest) event.gui).inventorySlots;

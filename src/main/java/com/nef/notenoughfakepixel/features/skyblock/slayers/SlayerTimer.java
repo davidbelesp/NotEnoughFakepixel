@@ -1,14 +1,15 @@
 package com.nef.notenoughfakepixel.features.skyblock.slayers;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class SlayerTimer {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (Config.feature.slayer.slayerBossTimer && ScoreboardUtils.currentGamemode.isSkyblock()) {
+        if (Config.feature.slayer.slayerBossTimer && SkyblockData.getCurrentGamemode().isSkyblock()) {
             if (event.side == net.minecraftforge.fml.relauncher.Side.CLIENT) {
                 List<String> sidebarLines = ScoreboardUtils.getScoreboardLines();
 
@@ -39,7 +40,7 @@ public class SlayerTimer {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-        if (Config.feature.slayer.slayerBossTimer && ScoreboardUtils.currentGamemode.isSkyblock()) {
+        if (Config.feature.slayer.slayerBossTimer && SkyblockData.getCurrentGamemode().isSkyblock()) {
             String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
 
             if (message.contains("SLAYER QUEST COMPLETE!")) {

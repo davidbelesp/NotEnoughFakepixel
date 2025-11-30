@@ -1,19 +1,19 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.mobs;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ColorUtils;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
 import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
+import com.nef.notenoughfakepixel.variables.Skins;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
-import com.nef.notenoughfakepixel.variables.Skins;
 
 import java.awt.*;
 
@@ -25,7 +25,7 @@ public class FelMobDisplay {
         if (!Config.feature.dungeons.dungeonsFelMob) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         WorldClient world = Minecraft.getMinecraft().theWorld;
 

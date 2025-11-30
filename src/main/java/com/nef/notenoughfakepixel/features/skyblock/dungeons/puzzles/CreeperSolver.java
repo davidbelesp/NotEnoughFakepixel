@@ -1,5 +1,8 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.puzzles;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -17,9 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -58,7 +58,7 @@ public class CreeperSolver {
         EntityPlayerSP player = mc.thePlayer;
         ticks++;
         if (ticks % 20 == 0) {
-            if (Config.feature.dungeons.dungeonsCreeper && TablistParser.currentLocation.isDungeon() && world != null && player != null) {
+            if (Config.feature.dungeons.dungeonsCreeper && SkyblockData.getCurrentLocation().isDungeon() && world != null && player != null) {
                 double x = player.posX;
                 double y = player.posY;
                 double z = player.posZ;

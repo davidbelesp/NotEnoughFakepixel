@@ -1,5 +1,6 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.highlighters;
 
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.util.BlockPos;
@@ -10,7 +11,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
 
 import java.awt.*;
 import java.util.HashSet;

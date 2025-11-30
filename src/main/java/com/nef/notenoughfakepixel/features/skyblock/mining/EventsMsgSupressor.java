@@ -1,13 +1,12 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.regex.Pattern;
 
@@ -38,8 +37,8 @@ public class EventsMsgSupressor {
 
     private void checkDonEspressoMessage(ClientChatReceivedEvent e) {
         if (!Config.feature.mining.miningDisableDonEspresso) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (TablistParser.currentLocation != Location.DWARVEN) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
+        if (SkyblockData.getCurrentLocation() != Location.DWARVEN) return;
         if (donEspressoPattern.matcher(e.message.getFormattedText()).find()) {
             e.setCanceled(true);
         }

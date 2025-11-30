@@ -2,6 +2,12 @@ package com.nef.notenoughfakepixel.utils;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Area;
+import com.nef.notenoughfakepixel.variables.Gamemode;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerTabOverlay;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -16,11 +22,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
-import com.nef.notenoughfakepixel.variables.Area;
-import com.nef.notenoughfakepixel.variables.Gamemode;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -30,9 +31,6 @@ import java.util.List;
 public class TablistParser {
 
     private static final Ordering<NetworkPlayerInfo> playerOrdering = Ordering.from(new PlayerComparator());
-
-    public static int mithrilPowder = 0;
-    public static int gemstonePowder = 0;
 
     public static int secretPercentage = 0;
     public static int deaths = 0;
@@ -46,8 +44,6 @@ public class TablistParser {
     private final List<String> accountInfo = new ArrayList<>();
     private final List<String> serverInfo  = new ArrayList<>();
     public static List<String> commissions = new ArrayList<>();
-
-    public static Location currentLocation = Location.NONE;
 
     @SideOnly(Side.CLIENT)
     static class PlayerComparator implements Comparator<NetworkPlayerInfo> {
@@ -71,7 +67,7 @@ public class TablistParser {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onGuiOpen(GuiOpenEvent event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (event.gui == null) return;
 
         if (event.gui instanceof GuiChest) {
@@ -98,7 +94,7 @@ public class TablistParser {
 
         final Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
 
         accountInfo.clear();
         serverInfo.clear();
@@ -151,19 +147,19 @@ public class TablistParser {
                         String s = line.substring(line.indexOf("Server: ") + 8).trim();
                         final int dashDigits = StringUtils.indexOfDashDigits(s);
                         if (dashDigits >= 0) s = s.substring(0, dashDigits + 1);
-                        currentLocation = Location.getLocation(s);
+                        SkyblockData.setCurrentLocation(Location.getLocation(s));
                     }
 
                     // Mithril Powder: 12,345
                     if (StringUtils.startsWithFast(line, "Mithril Powder: ")) {
                         final String num = StringUtils.sliceAfter(line, "Mithril Powder: ");
-                        mithrilPowder = NumberUtils.parseIntSafe(StringUtils.removeChars(num, ","));
+                        SkyblockData.setMithrilPowder(NumberUtils.parseIntSafe(StringUtils.removeChars(num, ",")));
                     }
 
                     // Gemstone Powder: 12,345
                     if (StringUtils.startsWithFast(line, "Gemstone Powder: ")) {
                         final String num = StringUtils.sliceAfter(line, "Gemstone Powder: ");
-                        gemstonePowder = NumberUtils.parseIntSafe(StringUtils.removeChars(num, ","));
+                        SkyblockData.setGemstonePowder(NumberUtils.parseIntSafe(StringUtils.removeChars(num, ",")));
                     }
 
                     // Secrets Found: 97%
@@ -181,14 +177,14 @@ public class TablistParser {
                     }
 
                     if (StringUtils.startsWithFast(line, "Dungeon: ")) {
-                        ScoreboardUtils.currentGamemode = Gamemode.SKYBLOCK;
-                        currentLocation = Location.DUNGEON;
+                        SkyblockData.setCurrentGamemode(Gamemode.SKYBLOCK);
+                        SkyblockData.setCurrentLocation(Location.DUNGEON);
                     }
 
                     if (StringUtils.startsWithFast(line, "Area: ")) {
-                        ScoreboardUtils.currentGamemode = Gamemode.SKYBLOCK;
+                        SkyblockData.setCurrentGamemode(Gamemode.SKYBLOCK);
                         final String areaName = line.replace("Area: ", "");
-                        ScoreboardUtils.currentArea = Area.getArea(areaName);
+                        SkyblockData.setCurrentArea(Area.getArea(areaName));
                     }
 
                     serverInfo.add(line);
@@ -232,7 +228,7 @@ public class TablistParser {
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        currentLocation = Location.NONE;
+        SkyblockData.setCurrentLocation(Location.NONE);
     }
 
 

@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.utils;
 
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DragonCloseAlert;
+import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.variables.Area;
 import com.nef.notenoughfakepixel.variables.DungeonFloor;
 import com.nef.notenoughfakepixel.variables.Gamemode;
@@ -19,11 +23,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DragonCloseAlert;
-import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
-import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 
 import java.awt.*;
 import java.util.*;
@@ -34,23 +33,9 @@ import java.util.stream.IntStream;
 
 @RegisterEvents
 public class ScoreboardUtils {
-
-    public static Area currentArea = Area.NONE;
-    public static Gamemode currentGamemode = Gamemode.LOBBY;
-
-    public static DungeonFloor currentFloor = DungeonFloor.NONE;
-    public static int clearedPercentage = -1;
-
     private int lastBoardHash = 0;
 
-    public static Slayer currentSlayer = Slayer.NONE;
-    public static boolean isSlayerActive = false;
-
-    public static int heat = 0;
-
-    @Getter
-    @Setter
-    private static Pattern floorPattern = Pattern.compile(" §7⏣ §cThe Catacombs §7\\(<?floor>.{2}\\)");
+    @Getter @Setter private static Pattern floorPattern = Pattern.compile(" §7⏣ §cThe Catacombs §7\\(<?floor>.{2}\\)");
 
     private static final int TICK_INTERVAL = 20;
     private int tickCounter = 0;
@@ -74,7 +59,7 @@ public class ScoreboardUtils {
 
         if (objective != null) {
             final String objNameClear = net.minecraft.util.StringUtils.stripControlCodes(objective.getDisplayName());
-            currentGamemode = Gamemode.getGamemode(ScoreboardUtils.cleanSB(objective.getDisplayName()));
+            SkyblockData.setCurrentGamemode(Gamemode.getGamemode(ScoreboardUtils.cleanSB(objective.getDisplayName())));
 
             final List<Score> scores = new ArrayList<>(scoreboard.getSortedScores(objective));
             for (int i = scores.size() - 1; i >= 0; i--) {
@@ -106,16 +91,16 @@ public class ScoreboardUtils {
                         final int close = raw.indexOf(')', open + 1);
                         if (open >= 0 && close > open) {
                             final String floor = raw.substring(open + 1, close);
-                            currentFloor = DungeonFloor.getFloor(floor);
+                            SkyblockData.setCurrentFloor(DungeonFloor.getFloor(floor));
                         }
                     }
 
                     // --- Dungeon Cleared: 97% ---
                     if (StringUtils.startsWithFast(clean, "Dungeon Cleared: ")) {
                         final String num = StringUtils.sliceAfter(clean, "Dungeon Cleared: ");
-                        clearedPercentage = NumberUtils.parseIntSafe(StringUtils.removeChars(num, "%"));
-                        if (clearedPercentage < 0) {
-                            clearedPercentage = -1;
+                        SkyblockData.setClearedPercentage(NumberUtils.parseIntSafe(StringUtils.removeChars(num, "%")));
+                        if (SkyblockData.getClearedPercentage() < 0) {
+                            SkyblockData.setClearedPercentage(-1);
                             Logger.log("Failed to parse cleared percentage from scoreboard: " + clean);
                         }
                     }
@@ -123,9 +108,9 @@ public class ScoreboardUtils {
                     // get the heat from clean string "Heat: ♨ 9"
                     if (StringUtils.startsWithFast(clean, "Heat:")) {
                         final String num = StringUtils.sliceAfter(clean, "Heat:");
-                        heat = NumberUtils.parseIntSafe(StringUtils.removeChars(num, "♨ "));
-                        if (heat < 0) {
-                            heat = 0;
+                        SkyblockData.setHeat(NumberUtils.parseIntSafe(StringUtils.removeChars(num, "♨ ")));
+                        if (SkyblockData.getHeat() < 0) {
+                            SkyblockData.setHeat(0);
                             Log.warn("Failed to parse heat from scoreboard: " + clean);
                         }
                     }
@@ -157,15 +142,19 @@ public class ScoreboardUtils {
                         }
                     }
 
-                    if      (StringUtils.startsWithFast(clean, "Voidgloom Seraph"))      currentSlayer = Slayer.VOIDGLOOM;
-                    else if (StringUtils.startsWithFast(clean, "Inferno Demonlord"))     currentSlayer = Slayer.INFERNO;
-                    else if (StringUtils.startsWithFast(clean, "Sven Packmaster"))       currentSlayer = Slayer.SVEN;
-                    else if (StringUtils.startsWithFast(clean, "Revenant Horror"))       currentSlayer = Slayer.REVENANT;
-                    else if (StringUtils.startsWithFast(clean, "Tarantula Broodfather")) currentSlayer = Slayer.TARANTULA;
+                    if      (StringUtils.startsWithFast(clean, "Voidgloom Seraph"))      SkyblockData.setCurrentSlayer(Slayer.VOIDGLOOM);
+                    else if (StringUtils.startsWithFast(clean, "Inferno Demonlord"))     SkyblockData.setCurrentSlayer(Slayer.INFERNO);
+                    else if (StringUtils.startsWithFast(clean, "Sven Packmaster"))       SkyblockData.setCurrentSlayer(Slayer.SVEN);
+                    else if (StringUtils.startsWithFast(clean, "Revenant Horror"))       SkyblockData.setCurrentSlayer(Slayer.REVENANT);
+                    else if (StringUtils.startsWithFast(clean, "Tarantula Broodfather")) SkyblockData.setCurrentSlayer(Slayer.TARANTULA);
 
-                    if (clean.indexOf("Slay the boss!") >= 0) isSlayerActive = true;
+                    if (SkyblockData.getCurrentSlayer() != Slayer.NONE) {
+                        SkyblockData.setSlayerActive(true);
+                    }
+
+                    if (clean.indexOf("Slay the boss!") >= 0) SkyblockData.setBossActive(true);
                     if (clean.indexOf(") Kills") >= 0 || clean.indexOf("Quest Failed") >= 0 || clean.indexOf("Boss slain!") >= 0) {
-                        isSlayerActive = false;
+                        SkyblockData.setBossActive(false);
                     }
 
                     for (Map.Entry<String, Color> e : DragonCloseAlert.DRAGON_COLORS.entrySet()) {
@@ -187,7 +176,7 @@ public class ScoreboardUtils {
         }
 
 
-        if (currentGamemode == Gamemode.SKYBLOCK && mc.getNetHandler() != null) {
+        if (SkyblockData.getCurrentGamemode() == Gamemode.SKYBLOCK && mc.getNetHandler() != null) {
             final Collection<NetworkPlayerInfo> infos = mc.getNetHandler().getPlayerInfoMap();
             boolean gotSpeed = false;
 
@@ -326,10 +315,10 @@ public class ScoreboardUtils {
 
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
-        currentGamemode = Gamemode.LOBBY;
-        currentArea = Area.NONE;
-        currentFloor = DungeonFloor.NONE;
-        clearedPercentage = -1;
+        SkyblockData.setCurrentGamemode(Gamemode.LOBBY);
+        SkyblockData.setCurrentArea(Area.NONE);
+        SkyblockData.setCurrentFloor(DungeonFloor.NONE);
+        SkyblockData.setClearedPercentage(-1);
     }
 
 }

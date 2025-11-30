@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -7,12 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.S2FPacketSetSlot;
 import net.minecraft.network.play.server.S30PacketWindowItems;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 @RegisterEvents
 public class DrillFix {
@@ -25,8 +24,8 @@ public class DrillFix {
     @SubscribeEvent
     public void onPacketRead(PacketReadEvent event) {
         if (!Config.feature.mining.miningDrillFix) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!TablistParser.currentLocation.equals(Location.DWARVEN) && !TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
+        if (!SkyblockData.getCurrentLocation().equals(Location.DWARVEN) && !SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayer player = mc.thePlayer;

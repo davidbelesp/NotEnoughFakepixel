@@ -1,9 +1,8 @@
 package com.nef.notenoughfakepixel.alerts;
 
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
 import org.apache.commons.lang3.text.WordUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 
 public enum Variables {
 
@@ -18,7 +17,7 @@ public enum Variables {
     LOCATION("location","The current Island Location of the player") {
         @Override
         public String getValue() {
-            return TablistParser.currentLocation != null ? WordUtils.capitalizeFully(TablistParser.currentLocation.name()).replace("_"," ") : "Unknown Location";
+            return SkyblockData.getCurrentLocation() != null ? WordUtils.capitalizeFully(SkyblockData.getCurrentLocation().name()).replace("_"," ") : "Unknown Location";
         }
     },
     PING("ping", "Your current ping to the server") {
@@ -36,9 +35,8 @@ public enum Variables {
         }
     },
     AREA("area"," The current area on island of the player") {
-        @Override
-        public String getValue() {
-            return ScoreboardUtils.currentArea.getArea() != null ? ScoreboardUtils.currentArea.getArea() : "Unknown Area";
+        @Override public String getValue() {
+            return SkyblockData.getCurrentArea().getArea() != null ? SkyblockData.getCurrentArea().getArea() : "Unknown Area";
         }
     };
 

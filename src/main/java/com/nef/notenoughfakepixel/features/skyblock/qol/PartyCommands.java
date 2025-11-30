@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
+import com.nef.notenoughfakepixel.utils.RandomUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.server.S03PacketTimeUpdate;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.utils.RandomUtils;
 
 import java.util.Random;
 import java.util.concurrent.Executors;

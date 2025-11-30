@@ -1,5 +1,12 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.inventory.equipment;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.CustomConfigFiles;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.variables.Resources;
 import net.minecraft.block.BlockStainedGlassPane;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -20,13 +27,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;
-import com.nef.notenoughfakepixel.utils.CustomConfigFiles;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
-import com.nef.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.nef.notenoughfakepixel.utils.CustomConfigFiles.EQUIPMENTS;
 import static com.nef.notenoughfakepixel.utils.ConfigHandler.GSON;
+import static com.nef.notenoughfakepixel.utils.CustomConfigFiles.EQUIPMENTS;
 
 @RegisterEvents
 public class EquipmentOverlay {
@@ -56,7 +56,7 @@ public class EquipmentOverlay {
 
     @SubscribeEvent
     public void onDraw(GuiScreenEvent.DrawScreenEvent.Post e) throws NBTException {
-        if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK || !Config.feature.overlays.equipment) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock() || !Config.feature.overlays.equipment) return;
         RenderHelper.enableGUIStandardItemLighting();
         if (e.gui instanceof GuiInventory) {
             GuiInventory inventory = (GuiInventory) e.gui;
@@ -140,7 +140,7 @@ public class EquipmentOverlay {
             String json = GSON.toJson(data);
             writer.write(json);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.logErrorPlayers("Couldn't save equipment data to file");
         }
     }
 
@@ -152,7 +152,9 @@ public class EquipmentOverlay {
         try (FileReader reader = new FileReader(file)) {
             data = GSON.fromJson(reader, EquipmentData.class); // Convert JSON back to StorageData
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.logErrorPlayers("Couldn't load equipment data from file " + file.getAbsolutePath());
+            // Delete file
+            file.delete();
         }
     }
 

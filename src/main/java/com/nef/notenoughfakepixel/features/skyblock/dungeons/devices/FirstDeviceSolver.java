@@ -1,5 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.devices;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketWriteEvent;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockButton;
 import net.minecraft.block.BlockButtonStone;
@@ -14,12 +20,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketWriteEvent;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
 
 import java.awt.*;
 import java.util.Objects;

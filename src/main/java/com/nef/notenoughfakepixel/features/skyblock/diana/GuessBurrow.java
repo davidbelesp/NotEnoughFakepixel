@@ -1,5 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.diana;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
@@ -15,12 +21,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -57,7 +57,7 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onPacketRead(PacketReadEvent event) {
-        if (!TablistParser.currentLocation.isHub()) return;
+        if (!SkyblockData.getCurrentLocation().isHub()) return;
 
         if (event.packet instanceof S29PacketSoundEffect) {
             S29PacketSoundEffect soundPacket = (S29PacketSoundEffect) event.packet;
@@ -130,7 +130,7 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.phase != TickEvent.Phase.START || !TablistParser.currentLocation.isHub()) return;
+        if (event.phase != TickEvent.Phase.START || !SkyblockData.getCurrentLocation().isHub()) return;
 
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.theWorld == null || mc.thePlayer == null || lastSoundPoint == null) return;
@@ -204,7 +204,7 @@ public class GuessBurrow {
         }
 
         if (guessPoint != null && Config.feature.diana.dianaWarpHelper
-                && TablistParser.currentLocation.isHub()
+                && SkyblockData.getCurrentLocation().isHub()
                 && mc.theWorld != null
                 && mc.thePlayer != null) {
             Vec3 playerPos = new Vec3(mc.thePlayer.posX, mc.thePlayer.posY, mc.thePlayer.posZ);

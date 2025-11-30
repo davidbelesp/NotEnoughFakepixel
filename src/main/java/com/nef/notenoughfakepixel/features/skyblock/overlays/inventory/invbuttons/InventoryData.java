@@ -1,9 +1,5 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.inventory.invbuttons;
 
-import net.minecraft.nbt.NBTException;
-
-import java.util.ArrayList;
-
 @Deprecated
 public class InventoryData {
 //

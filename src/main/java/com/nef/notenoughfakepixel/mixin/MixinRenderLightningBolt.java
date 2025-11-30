@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.mixin;
 
-import net.minecraft.client.renderer.entity.RenderLightningBolt;
 import com.nef.notenoughfakepixel.config.gui.Config;
+import net.minecraft.client.renderer.entity.RenderLightningBolt;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

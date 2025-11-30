@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.state.IBlockState;
@@ -18,10 +22,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -201,7 +201,7 @@ public class WitherDoors {
     private List<BlockPos> findWitherDoors() {
         Set<BlockPos> doorBases = new HashSet<>();
         foundCoalBlocks.clear();
-        if (yLvl == -1 || !TablistParser.currentLocation.isDungeon()) return new ArrayList<>();
+        if (yLvl == -1 || !SkyblockData.getCurrentLocation().isDungeon()) return new ArrayList<>();
 
         World w = mc.theWorld;
         if (w == null) return new ArrayList<>();
@@ -259,7 +259,7 @@ public class WitherDoors {
         if (event.phase != TickEvent.Phase.END) return;
 
         if (System.currentTimeMillis() - lastUpdateTime > UPDATE_INTERVAL) {
-            if (TablistParser.currentLocation.isDungeon()) {
+            if (SkyblockData.getCurrentLocation().isDungeon()) {
                 checkYLVL();
                 detectRoomBoundaries();
                 currentDoors = findWitherDoors();
@@ -291,7 +291,7 @@ public class WitherDoors {
     @SubscribeEvent
     public void onClientChatReceived(ClientChatReceivedEvent event) {
         if (!Config.feature.dungeons.dungeonsWitherDoors) return;
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         String msg = event.message.getUnformattedText();
         if (msg.startsWith("RIGHT CLICK on the WITHER DOOR to open it") ||
@@ -313,7 +313,7 @@ public class WitherDoors {
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
         if (!Config.feature.dungeons.dungeonsWitherDoors) return;
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         if (persistentDoors.isEmpty()) return;
 

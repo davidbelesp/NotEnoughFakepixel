@@ -1,5 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -28,12 +34,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -59,7 +59,7 @@ public class MiscFeatures {
 
     @SubscribeEvent
     public void onInteract(PlayerInteractEvent event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock() || mc.thePlayer != event.entityPlayer) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock() || mc.thePlayer != event.entityPlayer) return;
         ItemStack item = event.entityPlayer.getHeldItem();
         if (item == null) return;
 
@@ -238,7 +238,7 @@ public class MiscFeatures {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)
     public void onRenderLivingSpecialsPre(RenderLivingEvent.Specials.Pre<EntityLivingBase> event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (Config.feature.qol.qolHideDyingMobs) {
             EntityLivingBase entity = event.entity;
             String name = entity.getDisplayName().getUnformattedText();
@@ -254,7 +254,7 @@ public class MiscFeatures {
 
     @SubscribeEvent
     public void onRenderLivingPre(RenderLivingEvent.Pre<EntityLivingBase> event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
 
         if (Config.feature.qol.qolHideDyingMobs) {
             EntityLivingBase entity = event.entity;
@@ -288,7 +288,7 @@ public class MiscFeatures {
 
     @SubscribeEvent
     public void onRenderLivingSpecials(RenderLivingEvent.Specials.Pre<EntityLivingBase> event) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
 
         if (Config.feature.qol.qolHideDyingMobs) {
             EntityLivingBase entity = event.entity;
@@ -533,7 +533,7 @@ public class MiscFeatures {
 
     @SubscribeEvent
     public void onRenderLivingPost(RenderLivingEvent.Post<EntityLivingBase> event) {
-        if (Config.feature.qol.qolHidePlayerArmor && ScoreboardUtils.currentGamemode.isSkyblock()) {
+        if (Config.feature.qol.qolHidePlayerArmor && SkyblockData.getCurrentGamemode().isSkyblock()) {
             if (event.entity instanceof EntityPlayer) {
                 EntityPlayer player = (EntityPlayer) event.entity;
 

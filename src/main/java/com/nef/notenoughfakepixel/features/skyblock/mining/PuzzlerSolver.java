@@ -1,8 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ColorUtils;
 import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -12,9 +15,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
 
@@ -71,7 +71,7 @@ public class PuzzlerSolver {
 
     @SubscribeEvent
     public void renderWorldLast(RenderWorldLastEvent event) {
-        if (TablistParser.currentLocation != Location.DWARVEN) return;
+        if (SkyblockData.getCurrentLocation() != Location.DWARVEN) return;
         if (overlayLoc == null) return;
 
         Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();

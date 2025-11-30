@@ -1,14 +1,14 @@
 package com.nef.notenoughfakepixel.features.duels;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Gamemode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
 
 @RegisterEvents
 public class KDCounter {
@@ -20,7 +20,7 @@ public class KDCounter {
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent e) {
-        if (ScoreboardUtils.currentGamemode != Gamemode.DUELS) return;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.DUELS) return;
         String msg = e.message.getUnformattedText();
 
         if (msg.contains("Opponents: ")) {
@@ -48,7 +48,7 @@ public class KDCounter {
     public void onRender(RenderGameOverlayEvent.Post event) {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
         if (!Config.feature.duels.kdCounterEnabled) return;
-        if (ScoreboardUtils.currentGamemode != Gamemode.DUELS) return;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.DUELS) return;
 
         draw(Config.feature.duels.kdCounterOffsetX, Config.feature.duels.kdCounterOffsetY, Config.feature.duels.kdCounterScale, false);
     }

@@ -3,7 +3,8 @@ package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypo
 import net.minecraft.command.ICommandSender;
 import net.minecraft.event.ClickEvent;
 import net.minecraft.event.HoverEvent;
-import net.minecraft.util.*;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;

@@ -1,10 +1,10 @@
 package com.nef.notenoughfakepixel.utils;
 
+import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.EntityLivingBase;
-import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;

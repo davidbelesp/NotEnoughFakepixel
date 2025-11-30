@@ -1,5 +1,7 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
@@ -7,8 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ import java.util.UUID;
 public class ScaleDungeonSecrets {
     public static void scaleItemDrop(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks, CallbackInfo ci) {
         if (!Config.feature.dungeons.dungeonsItemSecretsBig) return;
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         ItemStack stack = entity.getEntityItem();
         if (stack == null) return;

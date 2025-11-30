@@ -1,5 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.accessories;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.AccessoriesData;
+import com.nef.notenoughfakepixel.utils.ItemUtils;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.utils.ReflectionUtils;
+import com.nef.notenoughfakepixel.utils.StringUtils;
+import com.nef.notenoughfakepixel.variables.Rarity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -15,14 +23,6 @@ import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.serverdata.AccessoriesData;
-import com.nef.notenoughfakepixel.utils.ItemUtils;
-import com.nef.notenoughfakepixel.utils.Logger;
-import com.nef.notenoughfakepixel.utils.ReflectionUtils;
-import com.nef.notenoughfakepixel.utils.StringUtils;
-import com.nef.notenoughfakepixel.variables.Rarity;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -151,10 +151,10 @@ public class MissingAccessories {
         if (!org.lwjgl.input.Keyboard.getEventKeyState()) return;
 
         int step = mc.fontRendererObj.FONT_HEIGHT + 2;
-        if (key == org.lwjgl.input.Keyboard.KEY_UP) {
+        if (key == Config.feature.accessories.accessoriesDataScrollUpKey) {
             accScroll = clamp(accScroll - step, 0, accMaxScroll);
             e.setCanceled(true);
-        } else if (key == org.lwjgl.input.Keyboard.KEY_DOWN) {
+        } else if (key == Config.feature.accessories.accessoriesDataScrollDownKey) {
             accScroll = clamp(accScroll + step, 0, accMaxScroll);
             e.setCanceled(true);
         }

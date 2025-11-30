@@ -1,9 +1,9 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.features.skyblock.qol.ItemAnimations;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.item.ItemStack;
-import com.nef.notenoughfakepixel.features.skyblock.qol.ItemAnimations;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

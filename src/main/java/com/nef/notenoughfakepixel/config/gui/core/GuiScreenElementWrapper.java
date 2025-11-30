@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.config.gui.core;
 
-import net.minecraft.client.gui.GuiScreen;
 import com.nef.notenoughfakepixel.config.gui.Config;
+import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;

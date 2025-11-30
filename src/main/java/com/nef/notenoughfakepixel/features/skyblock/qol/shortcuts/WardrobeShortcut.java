@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -8,10 +12,6 @@ import net.minecraft.inventory.ContainerChest;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 import org.lwjgl.input.Keyboard;
 
 import java.util.HashSet;
@@ -25,7 +25,7 @@ public class WardrobeShortcut {
     @SubscribeEvent
     public void onKeyPress(InputEvent.KeyInputEvent event) {
         if (!Config.feature.qol.qolShortcutWardrobe) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
 
         boolean keyPressed = KeybindHelper.isKeyDown(Config.feature.qol.qolWardrobeKey);
@@ -44,7 +44,7 @@ public class WardrobeShortcut {
     @SubscribeEvent
     public void onKeyPressOnGui(GuiScreenEvent.KeyboardInputEvent event) {
         if (!Config.feature.qol.qolShortcutWardrobe) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!(event.gui instanceof GuiChest)) return;
         GuiChest chest = (GuiChest) event.gui;
         Container container = chest.inventorySlots;
@@ -93,7 +93,7 @@ public class WardrobeShortcut {
     }
 
     private void handleWardrobeInput(GuiChest chestGui) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock() ||
+        if (!SkyblockData.getCurrentGamemode().isSkyblock() ||
                 !Config.feature.qol.qolShortcutSlotsWardrobe) {
             return;
         }

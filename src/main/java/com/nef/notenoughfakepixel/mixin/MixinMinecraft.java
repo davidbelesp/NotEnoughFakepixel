@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.mixin;
 
-import net.minecraft.client.Minecraft;
 import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import net.minecraft.client.Minecraft;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

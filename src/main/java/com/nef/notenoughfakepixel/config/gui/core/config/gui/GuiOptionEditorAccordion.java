@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.config.gui.core.config.gui;
 
+import com.nef.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import com.nef.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 

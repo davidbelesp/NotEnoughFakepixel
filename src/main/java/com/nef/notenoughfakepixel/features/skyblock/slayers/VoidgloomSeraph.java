@@ -1,24 +1,27 @@
 package com.nef.notenoughfakepixel.features.skyblock.slayers;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.NefPacketBlockChange;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.variables.Slayer;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAir;
 import net.minecraft.block.BlockBeacon;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.util.*;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StringUtils;
+import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.NefPacketBlockChange;
-import com.nef.notenoughfakepixel.variables.Slayer;
 
-import java.util.*;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 @RegisterEvents
@@ -28,7 +31,7 @@ public class VoidgloomSeraph {
 
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
-        if (event.side == net.minecraftforge.fml.relauncher.Side.CLIENT && !ScoreboardUtils.isSlayerActive){
+        if (event.side == net.minecraftforge.fml.relauncher.Side.CLIENT && !SkyblockData.isSlayerActive()){
             clearWaypointsSafe();
         }
     }
@@ -37,11 +40,11 @@ public class VoidgloomSeraph {
     public void onRenderLast(RenderWorldLastEvent event) {
         if (checkEssentials()
                 || !Config.feature.slayer.slayerShowBeaconPath
-                || ScoreboardUtils.currentSlayer != Slayer.VOIDGLOOM) {
+                || !SkyblockData.getCurrentSlayer().equals(Slayer.VOIDGLOOM)) {
             return;
         }
 
-        if (!ScoreboardUtils.isSlayerActive) return;
+        if (!SkyblockData.isSlayerActive()) return;
         final long now = System.currentTimeMillis();
 
         removeExpiredWaypoints(now, 20_000L);
@@ -123,7 +126,7 @@ public class VoidgloomSeraph {
         BlockPos position = packetIn.getPacket().getBlockPosition();
 
         // Check if the block is a beacon and add a waypoint
-        if (block instanceof BlockBeacon && block.getLocalizedName().contains("Beacon") && ScoreboardUtils.isSlayerActive) {
+        if (block instanceof BlockBeacon && block.getLocalizedName().contains("Beacon") && SkyblockData.isBossActive()) {
             EntityPlayerSP player = mc.thePlayer;
             if (player == null || player.getPosition() == null) return;
 
@@ -145,16 +148,16 @@ public class VoidgloomSeraph {
 
     private static boolean checkEssentials() {
         return (mc.thePlayer == null) ||
-                (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                (!TablistParser.currentLocation.isEnd());
+                (!SkyblockData.getCurrentGamemode().isSkyblock()) ||
+                (!SkyblockData.getCurrentLocation().isEnd());
     }
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event) {
-        if (Config.feature.slayer.slayerShowBeaconPath && ScoreboardUtils.currentGamemode.isSkyblock() && TablistParser.currentLocation.isEnd()) {
+        if (Config.feature.slayer.slayerShowBeaconPath && SkyblockData.getCurrentGamemode().isSkyblock() && SkyblockData.getCurrentLocation().isEnd()) {
             String message = StringUtils.stripControlCodes(event.message.getUnformattedText());
             if (message.contains("SLAYER QUEST COMPLETE!") || message.contains("SLAYER QUEST FAILED!")) {
-                ScoreboardUtils.isSlayerActive = false;
+                SkyblockData.setSlayerActive(false);
                 clearWaypointsSafe();
             }
         }

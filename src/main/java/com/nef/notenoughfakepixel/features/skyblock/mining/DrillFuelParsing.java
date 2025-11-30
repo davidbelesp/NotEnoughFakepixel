@@ -1,16 +1,15 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ItemUtils;
+import com.nef.notenoughfakepixel.variables.Colors;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ItemUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Colors;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,8 +33,8 @@ public class DrillFuelParsing {
             return;
         }
         if (Minecraft.getMinecraft().thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!TablistParser.currentLocation.equals(Location.DWARVEN) && !TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
+        if (!SkyblockData.getCurrentLocation().equals(Location.DWARVEN) && !SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) return;
 
         ItemStack heldItem = Minecraft.getMinecraft().thePlayer.getHeldItem();
         if (heldItem == null) return;

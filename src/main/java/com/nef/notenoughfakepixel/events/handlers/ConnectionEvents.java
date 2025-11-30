@@ -1,8 +1,8 @@
 package com.nef.notenoughfakepixel.events.handlers;
 
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 
 import java.util.Collections;
 

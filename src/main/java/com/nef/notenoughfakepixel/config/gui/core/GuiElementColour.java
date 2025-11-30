@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.config.gui.core;
 
+import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;

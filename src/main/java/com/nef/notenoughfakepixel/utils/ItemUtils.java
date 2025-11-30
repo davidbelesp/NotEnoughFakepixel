@@ -1,5 +1,7 @@
 package com.nef.notenoughfakepixel.utils;
 
+import com.nef.notenoughfakepixel.variables.Rarity;
+import com.nef.notenoughfakepixel.variables.Skins;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -7,8 +9,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import com.nef.notenoughfakepixel.variables.Rarity;
-import com.nef.notenoughfakepixel.variables.Skins;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;

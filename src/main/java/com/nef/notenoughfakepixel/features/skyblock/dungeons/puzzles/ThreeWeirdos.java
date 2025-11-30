@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.puzzles;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -14,11 +18,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -51,8 +50,8 @@ public class ThreeWeirdos {
     public void onChatReceive(ClientChatReceivedEvent e) {
         if (!Config.feature.dungeons.dungeonsThreeWeirdos) return;
         if (mc.thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
 
         if (e.message.getFormattedText().startsWith("§c")) return;
 

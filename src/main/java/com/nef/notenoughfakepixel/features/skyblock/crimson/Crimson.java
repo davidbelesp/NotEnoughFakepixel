@@ -1,8 +1,7 @@
 package com.nef.notenoughfakepixel.features.skyblock.crimson;
 
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 
 public class Crimson {
 
@@ -10,8 +9,8 @@ public class Crimson {
 
     public static boolean checkEssentials() {
         return (Minecraft.getMinecraft().thePlayer == null) ||
-                (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                (!TablistParser.currentLocation.isCrimson());
+                (!SkyblockData.getCurrentGamemode().isSkyblock()) ||
+                (!SkyblockData.getCurrentLocation().isCrimson());
     }
 
     public static boolean checkAshfangArea(int[] coords) {

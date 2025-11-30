@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
 
 import java.util.UUID;
 

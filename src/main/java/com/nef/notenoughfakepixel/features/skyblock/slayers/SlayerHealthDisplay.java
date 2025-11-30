@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.slayers;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.config.gui.core.config.Position;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
@@ -8,10 +13,6 @@ import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.config.gui.core.config.Position;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class SlayerHealthDisplay {
 
         if (Config.feature.slayer.slayerBossHP) {
             List<String> sidebarLines = ScoreboardUtils.getScoreboardLines();
-            isBoss = ScoreboardUtils.isSlayerActive;
+            isBoss = SkyblockData.isBossActive();
 
             // Find closest Slayer boss
             if (isBoss && mc.thePlayer != null) {

@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import com.nef.notenoughfakepixel.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.EnumChatFormatting;
-import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
-import com.nef.notenoughfakepixel.utils.ChatUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

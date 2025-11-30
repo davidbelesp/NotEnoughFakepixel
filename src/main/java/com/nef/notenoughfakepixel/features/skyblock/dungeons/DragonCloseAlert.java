@@ -1,6 +1,14 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.Configuration;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.variables.DungeonFloor;
+import com.nef.notenoughfakepixel.variables.Location;
+import com.nef.notenoughfakepixel.variables.Skins;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,17 +22,12 @@ import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.Configuration;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
-import com.nef.notenoughfakepixel.variables.DungeonFloor;
-import com.nef.notenoughfakepixel.variables.Location;
-import com.nef.notenoughfakepixel.variables.Skins;
 
 import java.awt.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RegisterEvents
@@ -85,8 +88,8 @@ public class DragonCloseAlert {
 
     @SubscribeEvent
     public void onRender(RenderWorldLastEvent e) {
-        if (TablistParser.currentLocation != Location.DUNGEON ||
-                ScoreboardUtils.currentFloor != DungeonFloor.M7 || !M7RelicWaypoints.isFinalPhase) return;
+        if (SkyblockData.getCurrentLocation() != Location.DUNGEON ||
+                SkyblockData.getCurrentFloor() != DungeonFloor.M7 || !M7RelicWaypoints.isFinalPhase) return;
 
         DRAGON_COLOR_MAP.keySet().removeIf(this::isDying);
         DRAGON_HEALTH_MAP.keySet().removeIf(this::isDying);

@@ -1,16 +1,16 @@
 package com.nef.notenoughfakepixel.config.gui.core.config.gui;
 
+import com.nef.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
+import com.nef.notenoughfakepixel.config.gui.core.util.lerp.LerpUtils;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
+import com.nef.notenoughfakepixel.config.gui.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumChatFormatting;
-import com.nef.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
-import com.nef.notenoughfakepixel.config.gui.core.util.lerp.LerpUtils;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
-import com.nef.notenoughfakepixel.config.gui.utils.Utils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 

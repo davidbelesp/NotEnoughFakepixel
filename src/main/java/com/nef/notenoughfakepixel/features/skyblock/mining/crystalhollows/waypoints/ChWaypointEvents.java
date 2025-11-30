@@ -1,19 +1,19 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.NumberUtils;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.NumberUtils;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
 import java.util.regex.Matcher;
@@ -50,7 +50,7 @@ public class ChWaypointEvents {
     // Render waypoints
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS) || !Config.feature.mining.crystalWaypoints) return;
+        if (!SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS) || !Config.feature.mining.crystalWaypoints) return;
 
         if (Config.feature.mining.crystalWaypointsBeacons) {
             Color color = ColorUtils.getColor(Config.feature.mining.crystalWaypointColor);

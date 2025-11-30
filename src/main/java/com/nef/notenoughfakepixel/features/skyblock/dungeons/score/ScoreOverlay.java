@@ -1,5 +1,12 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.score;
 
+import com.nef.notenoughfakepixel.Configuration;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ChatUtils;
+import com.nef.notenoughfakepixel.variables.DungeonFloor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -10,13 +17,6 @@ import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.Configuration;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.ChatUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.DungeonFloor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -198,7 +198,7 @@ public class ScoreOverlay {
         StringBuilder returnString = new StringBuilder("\u00a77Secrets: ");
         int secretPercentage = ScoreManager.getSecretPercentage();
         int requiredSecretNeeded = ScoreManager.getRequiredSecretNeeded();
-        int secretRequirement = DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getSecretPercentage();
+        int secretRequirement = DungeonFloor.getFloor(SkyblockData.getCurrentFloor().name()).getSecretPercentage();
 
         returnString.append(secretPercentage == 0 ? "\u00a7c0% \u00a77/ " :
                 (secretPercentage >= requiredSecretNeeded && requiredSecretNeeded != -1 ? "\u00a7a" : "\u00a7c") + secretPercentage + "% \u00a77/ ");

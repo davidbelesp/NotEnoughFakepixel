@@ -1,16 +1,16 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.overlays.Overlay;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ListUtils;
+import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiChat;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.overlays.Overlay;
-import com.nef.notenoughfakepixel.utils.ListUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +37,8 @@ public class MiningOverlay extends Overlay {
 
     @Override
     public boolean shouldShow() {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return false;
-        if (!TablistParser.currentLocation.equals(Location.DWARVEN) && !TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS))  return false;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return false;
+        if (!SkyblockData.getCurrentLocation().equals(Location.DWARVEN) && !SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS))  return false;
         if (Minecraft.getMinecraft().gameSettings.keyBindPlayerList.isKeyDown()) return false;
         if (Minecraft.getMinecraft().gameSettings.showDebugInfo) return false;
         if (Config.feature.mining.miningOverlayHideOnChat && mc.currentScreen instanceof GuiChat) return false;
@@ -53,8 +53,8 @@ public class MiningOverlay extends Overlay {
 
         if (Config.feature.mining.miningAbilityCooldown)
             lines.add("\u00a77Ability Cooldown: \u00a7r" + AbilityNotifier.cdSecondsRemaining());
-        if (Config.feature.mining.miningMithrilPowder && TablistParser.currentLocation.equals(Location.DWARVEN)) lines.add(formatMithrilPowder(TablistParser.mithrilPowder));
-        if (Config.feature.mining.miningGemstonePowder && TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) lines.add(formatGemstonePowder(TablistParser.gemstonePowder));
+        if (Config.feature.mining.miningMithrilPowder && SkyblockData.getCurrentLocation().equals(Location.DWARVEN)) lines.add(formatMithrilPowder(SkyblockData.getMithrilPowder()));
+        if (Config.feature.mining.miningGemstonePowder && SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) lines.add(formatGemstonePowder(SkyblockData.getGemstonePowder()));
         if (Config.feature.mining.miningDrillFuel) lines.add(DrillFuelParsing.getString());
         if (Config.feature.mining.miningCommissions){
             for (String commission : TablistParser.commissions) {

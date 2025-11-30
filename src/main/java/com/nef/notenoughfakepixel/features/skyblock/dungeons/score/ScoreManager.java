@@ -1,19 +1,19 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.score;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
+import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.utils.TitleUtils;
+import com.nef.notenoughfakepixel.variables.DungeonFloor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.utils.TitleUtils;
-import com.nef.notenoughfakepixel.variables.DungeonFloor;
 
 @RegisterEvents
 public class ScoreManager {
@@ -55,7 +55,7 @@ public class ScoreManager {
 
         int currentScore = getSkillScore() + getExplorationClearScore() + getSpeedScore() + getBonusScore();
         int virtualSecretScore = Math.min(40, getSecretPercentage() * 40 /
-                DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getSecretPercentage());
+                DungeonFloor.getFloor(SkyblockData.getCurrentFloor().name()).getSecretPercentage());
         int virtualTotalScore = currentScore + virtualSecretScore;
 
         if (virtualTotalScore >= 270 && !hasNotified270 & Config.feature.dungeons.dungeonsSNotifier) {
@@ -84,7 +84,7 @@ public class ScoreManager {
     }
 
     public static int getExplorationClearScore() {
-        int clearedPercentage = ScoreboardUtils.clearedPercentage;
+        int clearedPercentage = SkyblockData.getClearedPercentage();
         if (isBloodOpen) {
             clearedPercentage = Math.min(clearedPercentage + 9, 100);
         }
@@ -94,7 +94,7 @@ public class ScoreManager {
 
     public static int getExplorationSecretScore() {
         int secretPercentage = getSecretPercentage();
-        int secretNeeded = DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getSecretPercentage();
+        int secretNeeded = DungeonFloor.getFloor(SkyblockData.getCurrentFloor().name()).getSecretPercentage();
         return (int) Math.max(Math.min(Math.floor(40f * secretPercentage / secretNeeded), 40f), 0);
     }
 
@@ -108,7 +108,7 @@ public class ScoreManager {
         if (currentSeconds == -1) {
             return 100;
         }
-        int t = currentSeconds + DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getT();
+        int t = currentSeconds + DungeonFloor.getFloor(SkyblockData.getCurrentFloor().name()).getT();
         if (t < 480) return 100;
         if (t < 600) return 140 - (int) Math.ceil(t * (1f / 12f));
         if (t < 840) return 115 - (int) Math.ceil(t * (1f / 24f));
@@ -132,7 +132,7 @@ public class ScoreManager {
             // cannot reach
             return -1;
         }
-        return (int) Math.ceil(secretScoreNeeded * DungeonFloor.getFloor(ScoreboardUtils.currentFloor.name()).getSecretPercentage() / 40f);
+        return (int) Math.ceil(secretScoreNeeded * DungeonFloor.getFloor(SkyblockData.getCurrentFloor().name()).getSecretPercentage() / 40f);
     }
 
     public static int convertToSeconds(String time) {

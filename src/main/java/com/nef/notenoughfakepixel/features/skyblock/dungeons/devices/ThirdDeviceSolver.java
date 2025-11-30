@@ -1,5 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.devices;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.PacketWriteEvent;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.BlockSeaLantern;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
@@ -12,12 +18,6 @@ import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.PacketWriteEvent;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
 
 import java.awt.*;
 import java.util.HashMap;

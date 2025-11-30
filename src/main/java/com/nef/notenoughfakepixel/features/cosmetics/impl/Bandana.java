@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.features.cosmetics.impl;
 
+import com.nef.notenoughfakepixel.NotEnoughFakepixel;
+import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsHandler;
+import com.nef.notenoughfakepixel.features.cosmetics.loader.Obj;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.NotEnoughFakepixel;
-import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsHandler;
-import com.nef.notenoughfakepixel.features.cosmetics.loader.Obj;
 
 import java.io.IOException;
 

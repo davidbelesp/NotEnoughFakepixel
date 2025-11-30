@@ -1,16 +1,8 @@
 package com.nef.notenoughfakepixel;
 
 import com.google.gson.annotations.Expose;
-import com.nef.notenoughfakepixel.config.features.*;
-import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
-import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.PrecursorItemsOverlay;
-import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.ScavengedToolsOverlay;
-import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.WormSpawnTimer;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.item.ItemStack;
 import com.nef.notenoughfakepixel.alerts.AlertManagementGui;
+import com.nef.notenoughfakepixel.config.features.*;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.config.ConfigEditor;
 import com.nef.notenoughfakepixel.config.gui.core.GuiElement;
@@ -25,13 +17,20 @@ import com.nef.notenoughfakepixel.features.duels.KDCounter;
 import com.nef.notenoughfakepixel.features.mlf.Info;
 import com.nef.notenoughfakepixel.features.mlf.Map;
 import com.nef.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
+import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.CrystalHollowsMap;
+import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.PrecursorItemsOverlay;
+import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.ScavengedToolsOverlay;
+import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.WormSpawnTimer;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import com.nef.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
 import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.item.ItemStack;
 
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
@@ -152,13 +151,13 @@ public class Configuration {
         }
         // Debug runnables
         if ("logLocation".equals(runnableId)) {
-            Logger.log(TablistParser.currentLocation);
+            Logger.log(SkyblockData.getCurrentLocation());
         }
         if ("logScoreboard".equals(runnableId)) {
             ScoreboardUtils.getScoreboardLines().forEach(Logger::log);
         }
         if ("logIsInSkyblock".equals(runnableId)) {
-            Logger.log("Current Gamemode: " + ScoreboardUtils.currentGamemode + " | Is in Skyblock: " + ScoreboardUtils.currentGamemode.isSkyblock());
+            Logger.log("Current Gamemode: " + SkyblockData.getCurrentGamemode() + " | Is in Skyblock: " +  SkyblockData.getCurrentGamemode().isSkyblock());
         }
         if("statEditor".equals(runnableId)){
             Minecraft.getMinecraft().displayGuiScreen(new PositionEditorScreen());
@@ -189,8 +188,27 @@ public class Configuration {
             WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
             Logger.log("Set worm spawn to 30 seconds from now");
         }
-        if ("logSeason".equals(runnableId)) {
-            Logger.log("Current Season: " + SkyblockData.getSeason());
+        if ("logSbData".equals(runnableId)) {
+            Logger.log("\u00a7c=============================");
+            Logger.log("Gamemode: \u00a7f" + SkyblockData.getCurrentGamemode().toString());
+            Logger.log("Using Profile: \u00a7f" + SkyblockData.getCurrentProfile());
+            Logger.log("\u00a72Location\u00a7f:");
+            Logger.log(" - Current Location: \u00a7f" + SkyblockData.getCurrentLocation());
+            Logger.log(" - Current Area: \u00a7f" + SkyblockData.getCurrentArea());
+            Logger.log("\u00a74Slayer\u00a7f:");
+            Logger.log(" - Has Slayer Active: \u00a7f" + SkyblockData.isSlayerActive());
+            Logger.log(" - Current Slayer: \u00a7f" + SkyblockData.getCurrentSlayer());
+            Logger.log("\u00a73Mining\u00a7f:");
+            Logger.log(" - Mithril Powder: \u00a7f" + SkyblockData.getMithrilPowder());
+            Logger.log(" - Gemstone Powder: \u00a7f" + SkyblockData.getGemstonePowder());
+            Logger.log(" - Heat: \u00a7f" + SkyblockData.getHeat());
+            Logger.log("\u00a7dTime\u00a7f:");
+            Logger.log(" - Skyblock Hour: \u00a7f" + SkyblockData.getSbHour());
+            Logger.log(" - Skyblock Minutes: \u00a7f" + SkyblockData.getSbMinute());
+            Logger.log(" - AM/PM: \u00a7f" + (SkyblockData.isAm() ? "AM" : "PM"));
+            Logger.log(" - Current Season: \u00a7f" + SkyblockData.getSeason());
+            Logger.log("\u00a7c=============================");
+
         }
     }
 

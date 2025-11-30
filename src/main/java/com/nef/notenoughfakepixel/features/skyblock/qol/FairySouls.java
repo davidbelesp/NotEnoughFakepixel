@@ -1,7 +1,15 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
 import com.google.gson.Gson;
-import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.ConfigHandler;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
+import com.nef.notenoughfakepixel.variables.Gamemode;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -11,11 +19,6 @@ import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
-import com.nef.notenoughfakepixel.variables.Gamemode;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
 import java.io.File;
@@ -38,10 +41,10 @@ public class FairySouls {
         List<String> souls = Collections.emptyList();
         island = null;
 
-        if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.SKYBLOCK) return;
         if (!Config.feature.qol.fairySoulWaypoints) return;
 
-        Location currentIsland = TablistParser.currentLocation;
+        Location currentIsland = SkyblockData.getCurrentLocation();
         if (locs != null && currentIsland != null) {
             switch (currentIsland) {
                 case HUB:         souls = locs.getOrDefault("hub", Collections.emptyList());           island = "hub"; break;

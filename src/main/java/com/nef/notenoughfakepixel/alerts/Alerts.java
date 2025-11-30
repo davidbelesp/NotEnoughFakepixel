@@ -2,6 +2,10 @@ package com.nef.notenoughfakepixel.alerts;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,11 +15,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -50,10 +49,10 @@ public class Alerts {
             boolean location;
             switch (alert.location) {
                 case "Skyblock":
-                    location = ScoreboardUtils.currentGamemode.isSkyblock();
+                    location = SkyblockData.getCurrentGamemode().isSkyblock();
                     break;
                 case "Dungeons":
-                    location = TablistParser.currentLocation.isDungeon();
+                    location = SkyblockData.getCurrentLocation().isDungeon();
                     break;
                 default:
                     location = true;

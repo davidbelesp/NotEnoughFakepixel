@@ -1,5 +1,12 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ItemUtils;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
+import com.nef.notenoughfakepixel.variables.DungeonFloor;
+import com.nef.notenoughfakepixel.variables.Skins;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -8,13 +15,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ItemUtils;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.DungeonFloor;
-import com.nef.notenoughfakepixel.variables.Skins;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -51,7 +51,7 @@ public class M7RelicWaypoints {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (ScoreboardUtils.currentFloor != DungeonFloor.M7) return;
+        if (SkyblockData.getCurrentFloor() != DungeonFloor.M7) return;
         if (!isFinalPhase) return;
         if (!Config.feature.dungeons.m7Relics) return;
         float partialTicks = event.partialTicks;

@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.Utils;
+import com.nef.notenoughfakepixel.variables.Gamemode;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.Utils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
 
 import java.util.WeakHashMap;
 import java.util.regex.Matcher;
@@ -38,7 +38,7 @@ public class DamageCommas {
         IChatComponent name = entity.getDisplayName();
 
         if (!entity.hasCustomName()) return name;
-        if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return name;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.SKYBLOCK) return name;
 
         if (false) return replaceForCommas(entity, name);
         else return name;

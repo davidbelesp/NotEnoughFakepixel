@@ -1,15 +1,15 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.overlays.Timer;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.TimeUtils;
+import com.nef.notenoughfakepixel.variables.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.overlays.Timer;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TimeUtils;
-import com.nef.notenoughfakepixel.variables.Resources;
 
 @RegisterEvents
 public class DarkAhTimer extends Timer {
@@ -18,7 +18,7 @@ public class DarkAhTimer extends Timer {
 
     @Override
     public boolean shouldShow() {
-        return Config.feature.qol.qolDAtimer && ScoreboardUtils.currentGamemode.isSkyblock();
+        return Config.feature.qol.qolDAtimer && SkyblockData.getCurrentGamemode().isSkyblock();
     }
 
     @Override

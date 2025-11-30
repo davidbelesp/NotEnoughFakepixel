@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.slayers;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Gamemode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiChat;
@@ -10,10 +14,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;
@@ -29,7 +29,7 @@ public class AutoOpenMaddox {
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent e) {
         if (Config.feature.slayer.slayerMaddoxCalling == 2) return;
-        if (ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.SKYBLOCK) return;
         List<IChatComponent> siblings = e.message.getSiblings();
         for (IChatComponent sibling : siblings) {
             if (sibling.getUnformattedText().contains("[OPEN MENU]")) {
@@ -56,7 +56,7 @@ public class AutoOpenMaddox {
 
     @SubscribeEvent
     public void onMouseInputPost(GuiScreenEvent.MouseInputEvent.Post event) {
-        if (opened || ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK) return;
+        if (opened || !SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (Mouse.getEventButton() == 0 && event.gui instanceof GuiChat
                 && Config.feature.slayer.slayerMaddoxCalling == 1
                 && System.currentTimeMillis() / 1000 - lastMaddoxTime < 10) {

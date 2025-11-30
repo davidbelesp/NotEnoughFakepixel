@@ -1,10 +1,10 @@
 package com.nef.notenoughfakepixel.utils;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.variables.Constants;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ChatComponentText;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.variables.Constants;
 
 import java.util.logging.Level;
 
@@ -153,6 +153,14 @@ public class Logger {
         } catch (Throwable __) {
             return false;
         }
+    }
+
+    // Log error to players
+    public static void logErrorPlayers(String message) {
+        if (!isClientChatReady()) return;
+        try {
+            Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText(Constants.ERROR_PREFIX + message));
+        } catch (Throwable ignored) {}
     }
 
 }

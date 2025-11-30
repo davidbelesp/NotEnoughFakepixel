@@ -1,15 +1,14 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.util.ResourceLocation;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.Timer;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.variables.Location;
 import com.nef.notenoughfakepixel.variables.Resources;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.util.ResourceLocation;
 
 @RegisterEvents
 public class WormSpawnTimer extends Timer {
@@ -18,7 +17,7 @@ public class WormSpawnTimer extends Timer {
 
     @Override
     public boolean shouldShow() {
-        return Config.feature.mining.wormTimerCooldown && ScoreboardUtils.currentGamemode.isSkyblock() && TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS);
+        return Config.feature.mining.wormTimerCooldown && SkyblockData.getCurrentGamemode().isSkyblock() && SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS);
     }
 
     @Override

@@ -1,16 +1,16 @@
 package com.nef.notenoughfakepixel.envcheck;
 
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
+import com.nef.notenoughfakepixel.utils.ChatUtils;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.utils.NumberUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
-import com.nef.notenoughfakepixel.utils.ChatUtils;
-import com.nef.notenoughfakepixel.utils.Logger;
-import com.nef.notenoughfakepixel.utils.NumberUtils;
 
 @RegisterEvents
 public class VersionChecker {
@@ -29,10 +29,6 @@ public class VersionChecker {
             UpdateData update = getCachedUpdateData();
             String currentVersion = normalizeVersion(getModVersion());
             String latestVersion  = normalizeVersion(update.getVersion());
-
-            Logger.log(currentVersion);
-            Logger.log(latestVersion);
-            Logger.log(isNewerVersion(currentVersion, latestVersion));
 
             if (update.isHas_warning()
                     && update.getWarning_msg() != null

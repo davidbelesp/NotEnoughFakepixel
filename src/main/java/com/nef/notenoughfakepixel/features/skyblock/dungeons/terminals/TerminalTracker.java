@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.terminals;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
@@ -9,12 +14,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,7 +77,7 @@ public class TerminalTracker {
             }
         }
 
-        if (player == null || TablistParser.currentLocation != Location.DUNGEON) {
+        if (player == null || !SkyblockData.getCurrentLocation().isDungeon()) {
             return;
         }
 
@@ -128,7 +127,7 @@ public class TerminalTracker {
 
         Minecraft mc = Minecraft.getMinecraft();
         EntityPlayerSP player = mc.thePlayer;
-        if (player == null || TablistParser.currentLocation != Location.DUNGEON) {
+        if (player == null || !SkyblockData.getCurrentLocation().isDungeon()) {
             return;
         }
 

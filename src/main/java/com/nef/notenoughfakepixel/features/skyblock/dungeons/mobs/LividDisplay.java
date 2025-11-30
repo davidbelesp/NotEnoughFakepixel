@@ -1,9 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.mobs;
 
+import com.nef.notenoughfakepixel.Configuration;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.EntityHighlightUtils;
 import com.nef.notenoughfakepixel.utils.OutlineUtils;
 import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,10 +27,6 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.Configuration;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -75,7 +75,7 @@ public class LividDisplay {
         if (Minecraft.getMinecraft().theWorld == null || Minecraft.getMinecraft().theWorld.getTotalWorldTime() % 20 != 0)
             return;
 
-        if (TablistParser.currentLocation.isDungeon()) {
+        if (SkyblockData.getCurrentLocation().isDungeon()) {
             Minecraft mc = Minecraft.getMinecraft();
             World world = mc.theWorld;
             if (world == null) return;

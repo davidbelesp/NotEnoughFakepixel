@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 
 @RegisterEvents
 public class AutoCloseChests {
@@ -17,7 +17,7 @@ public class AutoCloseChests {
     @SubscribeEvent
     public void onGuiBackgroundRender(GuiScreenEvent.BackgroundDrawnEvent event) {
         if (!Config.feature.dungeons.dungeonsAutoCloseChests) return; // Check if the feature is enabled
-        if (!TablistParser.currentLocation.isDungeon()) return; // Check if the player is in a dungeon
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return; // Check if the player is in a dungeon
         if (event.gui == null) return;
 
         // Check if the GUI is a chest

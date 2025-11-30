@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.config.gui.core.config.gui;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
 import com.nef.notenoughfakepixel.config.gui.core.ChromaColour;
 import com.nef.notenoughfakepixel.config.gui.core.GuiElementColour;
 import com.nef.notenoughfakepixel.config.gui.core.config.struct.ConfigProcessor;
 import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.input.Mouse;
 
 import static com.nef.notenoughfakepixel.config.gui.GuiTextures.button_white;

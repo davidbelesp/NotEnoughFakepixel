@@ -2,7 +2,6 @@ package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.treas
 
 
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;

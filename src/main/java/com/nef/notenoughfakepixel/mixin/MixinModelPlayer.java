@@ -1,12 +1,12 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsHandler;
+import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.model.ModelPlayer;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsHandler;
-import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

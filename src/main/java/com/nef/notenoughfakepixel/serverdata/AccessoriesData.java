@@ -1,13 +1,24 @@
 package com.nef.notenoughfakepixel.serverdata;
 
+import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
+import com.nef.notenoughfakepixel.utils.Logger;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data public class AccessoriesData {
+
+    @Data private static class RepoWrapper {
+        private Set<Accessory> accessories = Collections.emptySet();
+        private int bonuses = 0;
+    }
+
+    private static final RepoWrapper STUB = new RepoWrapper();
 
     public static AccessoriesData INSTANCE = new AccessoriesData();
 
@@ -28,18 +39,22 @@ import java.util.stream.Collectors;
     private Set<Accessory> repoAccessories;
     private Set<Accessory> currentAccessories;
 
-    @Data private static class RepoWrapper {
-        private Set<Accessory> accessories = Collections.emptySet();
-        private int bonuses = 0;
-    }
-
-    private static final RepoWrapper STUB = new RepoWrapper();
-
     public AccessoriesData() {
-        RepoWrapper wrapper = RepoHandler.getData("accessories", RepoWrapper.class, STUB);
+        RepoWrapper wrapper = null;
+        try {
+            wrapper = RepoHandler.getData("accessories", RepoWrapper.class, STUB);
+        } catch (Exception e) {
+            Logger.logErrorPlayers("Failed to load accessories data: " + e.getMessage());
+        }
+
+        if (wrapper == null) {
+            wrapper = STUB;
+        }
+
         this.repoAccessories = wrapper.getAccessories() != null
                 ? wrapper.getAccessories()
                 : Collections.emptySet();
+
         this.currentAccessories = new HashSet<>();
         bonuses = wrapper.getBonuses();
     }

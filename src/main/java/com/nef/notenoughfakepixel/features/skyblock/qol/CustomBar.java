@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
@@ -7,10 +11,6 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.Utils;
 
 import java.awt.*;
 
@@ -21,7 +21,7 @@ public class CustomBar {
     @SubscribeEvent
     public void onRender(RenderGameOverlayEvent e) {
         if (e.type == RenderGameOverlayEvent.ElementType.HEALTH || e.type == RenderGameOverlayEvent.ElementType.ARMOR || e.type == RenderGameOverlayEvent.ElementType.FOOD) {
-            if (ScoreboardUtils.currentGamemode.isSkyblock() && Config.feature.overlays.statOverlay) {
+            if (SkyblockData.getCurrentGamemode().isSkyblock() && Config.feature.overlays.statOverlay) {
                 renderCustomHealth(e.resolution);
                 renderCustomMana(e.resolution);
                 e.setCanceled(true);

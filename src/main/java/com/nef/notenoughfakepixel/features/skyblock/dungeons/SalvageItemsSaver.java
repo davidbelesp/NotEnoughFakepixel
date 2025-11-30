@@ -1,6 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
-import com.nef.notenoughfakepixel.utils.*;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ChatUtils;
+import com.nef.notenoughfakepixel.utils.ItemUtils;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
+import com.nef.notenoughfakepixel.utils.StringUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -12,9 +19,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.variables.Location;
 import org.lwjgl.input.Mouse;
 
 @RegisterEvents
@@ -33,7 +37,7 @@ public class SalvageItemsSaver {
 
     @SubscribeEvent
     public void onGuiRender(GuiScreenEvent.BackgroundDrawnEvent event) {
-        if (TablistParser.currentLocation != Location.DUNGEON_HUB) return;
+        if (SkyblockData.getCurrentLocation() != Location.DUNGEON_HUB) return;
         if (!Config.feature.dungeons.dungeonsSalvageItemsPrevention) return;
         if (event.gui instanceof GuiChest) {
             GuiChest chest = (GuiChest) event.gui;
@@ -53,7 +57,7 @@ public class SalvageItemsSaver {
 
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
-        if (TablistParser.currentLocation != Location.DUNGEON_HUB) return;
+        if (SkyblockData.getCurrentLocation() != Location.DUNGEON_HUB) return;
         if (!Config.feature.dungeons.dungeonsSalvageItemsPrevention) return;
         if (!Mouse.getEventButtonState()) return;
         if (!(Minecraft.getMinecraft().currentScreen instanceof GuiChest))

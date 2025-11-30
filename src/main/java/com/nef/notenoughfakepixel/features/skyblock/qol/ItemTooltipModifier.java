@@ -1,10 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 
 public class ItemTooltipModifier {
 
@@ -13,7 +13,7 @@ public class ItemTooltipModifier {
         ItemStack hoveredItem = e.itemStack;
         if (e.toolTip == null) return;
 
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (hoveredItem == null) {
         }
 

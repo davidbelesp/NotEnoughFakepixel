@@ -1,6 +1,8 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.gui;
 
 
+import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.ChWaypoint;
+import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.CrystalWaypoints;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -10,8 +12,6 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.EnumChatFormatting;
-import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.ChWaypoint;
-import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.CrystalWaypoints;
 import org.lwjgl.input.Mouse;
 
 import java.io.IOException;

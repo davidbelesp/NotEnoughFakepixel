@@ -1,9 +1,9 @@
 package com.nef.notenoughfakepixel.utils;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.config.gui.Config;
 
 public class SoundUtils {
 

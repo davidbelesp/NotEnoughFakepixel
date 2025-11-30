@@ -1,12 +1,12 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.events.SpawnedParticleEvent;
+import com.nef.notenoughfakepixel.features.skyblock.qol.DisableHyperionExplosions;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldInfo;
 import net.minecraftforge.common.MinecraftForge;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.events.SpawnedParticleEvent;
-import com.nef.notenoughfakepixel.features.skyblock.qol.DisableHyperionExplosions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

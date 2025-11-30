@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.config.gui.core;
 
+import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
+import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
-import com.nef.notenoughfakepixel.config.gui.core.util.render.TextRenderUtils;
 
 import java.awt.*;
 import java.util.regex.Matcher;

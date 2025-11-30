@@ -1,5 +1,8 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.slothighlight;
 
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.InventoryUtils;
+import com.nef.notenoughfakepixel.utils.ItemUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
@@ -8,10 +11,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.utils.InventoryUtils;
-import com.nef.notenoughfakepixel.utils.ItemUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
 
 import java.awt.*;
 
@@ -47,7 +46,7 @@ public abstract class HightlightSlot {
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e) {
         if (!getConfigOption()
-                || (onlyInSkyblock() && ScoreboardUtils.currentGamemode != Gamemode.SKYBLOCK)
+                || (onlyInSkyblock() && !SkyblockData.getCurrentGamemode().isSkyblock())
                 || !(e.gui instanceof GuiChest)
                 || !checkForEssentials()) return;
 

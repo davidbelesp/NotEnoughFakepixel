@@ -1,15 +1,16 @@
 package com.nef.notenoughfakepixel.features.mlf;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
+import com.nef.notenoughfakepixel.variables.Gamemode;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.StringUtils;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Gamemode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class Map {
     public void onRender(RenderGameOverlayEvent.Post event) {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
         if (!Config.feature.mlf.mlfInfoHud) return;
-        if (ScoreboardUtils.currentGamemode != Gamemode.MLF) return;
+        if (SkyblockData.getCurrentGamemode() != Gamemode.MLF) return;
 
         ScaledResolution sr = new ScaledResolution(mc);
         int x = (int) Config.feature.mlf.mlfInfoOffsetX;

@@ -1,12 +1,12 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ChatUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ChatUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.util.regex.Pattern;
 
@@ -24,7 +24,7 @@ public class ChatCleaner {
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent event) {
         if (Minecraft.getMinecraft().thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (ChatUtils.middleBar.matcher(event.message.getFormattedText()).matches()) return;
         cancelMessage(Config.feature.qol.qolDisableSellingRanks, event, sellingRankPattern);
         cancelMessage(Config.feature.qol.qolDisableWatchdogInfo, event, watchdogPattern, true);

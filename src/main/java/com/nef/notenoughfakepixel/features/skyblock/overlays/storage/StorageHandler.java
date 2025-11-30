@@ -1,6 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.storage;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.storage.config.StorageData;
+import com.nef.notenoughfakepixel.utils.ConfigHandler;
+import com.nef.notenoughfakepixel.variables.Resources;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -13,10 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ConfigHandler;
-import com.nef.notenoughfakepixel.variables.Resources;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 

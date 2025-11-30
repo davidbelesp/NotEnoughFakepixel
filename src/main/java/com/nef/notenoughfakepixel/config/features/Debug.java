@@ -67,8 +67,8 @@ public class Debug {
     public String triggerTimers = "";
 
     @Expose
-    @ConfigOption(name = "Log Skyblock season", desc = "Logs NEF saved skyblock season.")
-    @ConfigEditorButton(runnableId = "logSeason", buttonText = "Show")
+    @ConfigOption(name = "Log Skyblock Data", desc = "Logs NEF saved skyblock data.")
+    @ConfigEditorButton(runnableId = "logSbData", buttonText = "Show")
     @ConfigAccordionId(id = 0)
-    public String logSkyblockSeason = "";
+    public String logSkyblockData = "";
 }

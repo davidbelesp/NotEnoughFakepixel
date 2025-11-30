@@ -1,5 +1,9 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.ParticlePacketEvent;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -13,10 +17,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.ParticlePacketEvent;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +52,7 @@ public class LockedTreasureHelper {
 
     @SubscribeEvent
     public void onParticlePacket(ParticlePacketEvent e) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!Config.feature.mining.lockedTreasureChest) return;
         if (MC.theWorld == null) return;
 
@@ -80,7 +80,7 @@ public class LockedTreasureHelper {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent evt) {
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!Config.feature.mining.lockedTreasureChest) return;
         if (MC.theWorld == null || MC.thePlayer == null) return;
 

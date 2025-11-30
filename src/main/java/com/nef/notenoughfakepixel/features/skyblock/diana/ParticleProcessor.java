@@ -1,19 +1,19 @@
 package com.nef.notenoughfakepixel.features.skyblock.diana;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.utils.SoundUtils;
+import com.nef.notenoughfakepixel.utils.Waypoint;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.network.play.server.S2APacketParticles;
 import net.minecraft.util.BlockPos;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.utils.SoundUtils;
-import com.nef.notenoughfakepixel.utils.Waypoint;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ParticleProcessor {
     private final String waypointSound = "random.pop";

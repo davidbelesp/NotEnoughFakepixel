@@ -1,16 +1,16 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import net.minecraft.util.BlockPos;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 @RegisterEvents
 public class DwarvenWaypoints {
@@ -34,7 +34,7 @@ public class DwarvenWaypoints {
 
     @SubscribeEvent
     public void onRenderWorldLast(RenderWorldLastEvent event) {
-        if (TablistParser.currentLocation != Location.DWARVEN) return;
+        if (SkyblockData.getCurrentLocation() != Location.DWARVEN) return;
         if (!Config.feature.mining.miningDwarvenWaypoints) return;
         boolean renderBeacon = Config.feature.mining.miningDwarvenBeacons;
         for (DwarvenWaypoint waypoint : WAYPOINTS) {

@@ -1,9 +1,9 @@
 package com.nef.notenoughfakepixel.mixin;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
 import com.nef.notenoughfakepixel.events.ReplaceItemEvent;
 import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

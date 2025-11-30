@@ -1,13 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.storage.config;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.features.skyblock.overlays.storage.StorageHandler;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTException;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.features.skyblock.overlays.storage.StorageHandler;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
 import org.lwjgl.input.Mouse;
 
 import java.awt.*;

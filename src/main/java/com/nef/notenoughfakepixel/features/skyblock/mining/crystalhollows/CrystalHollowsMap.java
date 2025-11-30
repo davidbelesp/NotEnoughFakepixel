@@ -1,4 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows;
+
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.variables.Location;
+import com.nef.notenoughfakepixel.variables.Resources;
 import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -8,12 +15,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.Logger;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
-import com.nef.notenoughfakepixel.variables.Resources;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
@@ -43,14 +44,14 @@ public class CrystalHollowsMap extends Gui {
         if (!Config.feature.mining.miningCrystalMap) return;
         if (!(event instanceof RenderGameOverlayEvent.Post)) return;
         if (event.type == RenderGameOverlayEvent.ElementType.ALL) return;
-        if (TablistParser.currentLocation != Location.CRYSTAL_HOLLOWS) return;
+        if (SkyblockData.getCurrentLocation() != Location.CRYSTAL_HOLLOWS) return;
         if (Config.feature.mining.miningOverlayHideOnChat && mc.currentScreen instanceof GuiChat) return;
         if (mc.thePlayer == null || mc.gameSettings.keyBindPlayerList.isKeyDown() || mc.gameSettings.showDebugInfo) return;
 
         ScaledResolution sr = new ScaledResolution(mc);
 
-        final int x = (Config.feature.mining.crystalMapPos.getAbsX(sr, Config.feature.mining.miningCrystalMapWidth)) - (Config.feature.mining.miningCrystalMapWidth/2);
-        final int y = (Config.feature.mining.crystalMapPos.getAbsY(sr, Config.feature.mining.miningCrystalMapWidth)) - (Config.feature.mining.miningCrystalMapWidth/2);
+        final int x = (Config.feature.mining.crystalMapPos.getAbsX(sr, (Config.feature.mining.miningCrystalMapWidth)))  + 6;
+        final int y = (Config.feature.mining.crystalMapPos.getAbsY(sr, (Config.feature.mining.miningCrystalMapWidth)))  + 6;
 
         final int w = Config.feature.mining.miningCrystalMapWidth;
 

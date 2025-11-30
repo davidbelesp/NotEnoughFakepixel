@@ -1,16 +1,15 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.StringUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityOtherPlayerMP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.StringUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.Map;
 import java.util.UUID;
@@ -60,9 +59,9 @@ public class HidePlayersNearNpcs {
     @SubscribeEvent
     public void onRenderPlayerPre(net.minecraftforge.client.event.RenderPlayerEvent.Pre e) {
         if (mc.theWorld == null || mc.thePlayer == null) return;
-        if (!ScoreboardUtils.currentGamemode.isSkyblock()) return;
+        if (!SkyblockData.getCurrentGamemode().isSkyblock()) return;
         if (!Config.feature.qol.qolHidePlayerNearNpcs) return;
-        if (TablistParser.currentLocation == Location.PRIVATE_ISLAND || TablistParser.currentLocation == Location.DUNGEON) return;
+        if (SkyblockData.getCurrentLocation() == Location.PRIVATE_ISLAND || SkyblockData.getCurrentLocation() == Location.DUNGEON) return;
 
         final Entity entity = e.entity;
         if (!(entity instanceof EntityOtherPlayerMP)) return;

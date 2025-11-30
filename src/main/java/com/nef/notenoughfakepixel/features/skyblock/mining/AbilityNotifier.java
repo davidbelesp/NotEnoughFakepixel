@@ -1,15 +1,14 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
@@ -63,8 +62,8 @@ public class AbilityNotifier {
 
     private static boolean checkEssentials() {
         return (Minecraft.getMinecraft().thePlayer == null) ||
-                (!ScoreboardUtils.currentGamemode.isSkyblock()) ||
-                ((!TablistParser.currentLocation.equals(Location.DWARVEN) && (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS))));
+                (!SkyblockData.getCurrentGamemode().isSkyblock()) ||
+                ((!SkyblockData.getCurrentLocation().equals(Location.DWARVEN) && (!SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS))));
     }
 
 

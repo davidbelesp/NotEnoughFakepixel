@@ -1,5 +1,13 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.events.SpawnedParticleEvent;
+import com.nef.notenoughfakepixel.features.skyblock.qol.highlighters.BlockHighlighter;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
+import com.nef.notenoughfakepixel.utils.NumberUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -7,14 +15,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.events.SpawnedParticleEvent;
-import com.nef.notenoughfakepixel.features.skyblock.qol.highlighters.BlockHighlighter;
-import com.nef.notenoughfakepixel.utils.ColorUtils;
-import com.nef.notenoughfakepixel.utils.NumberUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.awt.*;
 
@@ -62,7 +62,7 @@ public class EnderNodesHighlighter extends BlockHighlighter {
 
     @Override
     protected boolean isEnabled() {
-        return TablistParser.currentLocation.equals(Location.THE_END)
+        return SkyblockData.getCurrentLocation().equals(Location.THE_END)
                 && Config.feature.qol.qolEndNodeHighlighter;
     }
 

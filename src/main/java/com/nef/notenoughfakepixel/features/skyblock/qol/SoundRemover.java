@@ -1,12 +1,12 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S29PacketSoundEffect;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.PacketReadEvent;
 import com.nef.notenoughfakepixel.utils.InventoryUtils;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S29PacketSoundEffect;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @RegisterEvents
 public class SoundRemover {

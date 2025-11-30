@@ -1,14 +1,14 @@
 package com.nef.notenoughfakepixel.features.capes.gui;
 
+import com.nef.notenoughfakepixel.features.capes.Cape;
+import com.nef.notenoughfakepixel.features.capes.CapeManager;
+import com.nef.notenoughfakepixel.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.features.capes.Cape;
-import com.nef.notenoughfakepixel.features.capes.CapeManager;
-import com.nef.notenoughfakepixel.utils.Utils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;

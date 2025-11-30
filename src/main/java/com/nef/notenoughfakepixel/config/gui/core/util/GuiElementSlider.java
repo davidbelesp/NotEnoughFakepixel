@@ -1,10 +1,10 @@
 package com.nef.notenoughfakepixel.config.gui.core.util;
 
+import com.nef.notenoughfakepixel.config.gui.core.GuiElement;
+import com.nef.notenoughfakepixel.config.gui.utils.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
-import com.nef.notenoughfakepixel.config.gui.core.GuiElement;
-import com.nef.notenoughfakepixel.config.gui.utils.Utils;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 

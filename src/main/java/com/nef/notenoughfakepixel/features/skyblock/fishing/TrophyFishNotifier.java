@@ -1,11 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.fishing;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Area;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Area;
 
 public class TrophyFishNotifier {
 
@@ -14,11 +14,13 @@ public class TrophyFishNotifier {
         if (e.type != 1) return;
         if (!Config.feature.fishing.fishingTrophyFish) return;
 
-        if (ScoreboardUtils.currentArea != Area.CRIMSON &&
-                ScoreboardUtils.currentArea != Area.CRIMSON_FIELDS &&
-                ScoreboardUtils.currentArea != Area.SCARELTON &&
-                ScoreboardUtils.currentArea != Area.ASHFANG &&
-                ScoreboardUtils.currentArea != Area.VOLCANO) {
+        Area area = SkyblockData.getCurrentArea();
+
+        if (area != Area.CRIMSON &&
+                area != Area.CRIMSON_FIELDS &&
+                area != Area.SCARELTON &&
+                area != Area.ASHFANG &&
+                area != Area.VOLCANO) {
             return;
         }
 

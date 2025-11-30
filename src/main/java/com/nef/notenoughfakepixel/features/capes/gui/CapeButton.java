@@ -1,12 +1,12 @@
 package com.nef.notenoughfakepixel.features.capes.gui;
 
+import com.nef.notenoughfakepixel.features.capes.Cape;
+import com.nef.notenoughfakepixel.features.capes.CapeManager;
+import com.nef.notenoughfakepixel.features.capes.CapePreviewRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.ResourceLocation;
-import com.nef.notenoughfakepixel.features.capes.Cape;
-import com.nef.notenoughfakepixel.features.capes.CapeManager;
-import com.nef.notenoughfakepixel.features.capes.CapePreviewRenderer;
 
 public class CapeButton extends GuiButton {
 

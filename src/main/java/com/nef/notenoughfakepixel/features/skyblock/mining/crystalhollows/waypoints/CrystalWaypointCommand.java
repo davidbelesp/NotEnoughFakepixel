@@ -1,5 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints;
 
+import com.nef.notenoughfakepixel.config.gui.commands.SimpleCommand;
+import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.NumberUtils;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiScreen;
@@ -8,12 +14,6 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
-import com.nef.notenoughfakepixel.config.gui.commands.SimpleCommand;
-import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
-import com.nef.notenoughfakepixel.utils.NumberUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class CrystalWaypointCommand extends SimpleCommand {
     private final String PREFIX = "§6[§eChWaypoints§6] §r";
 
     public void processCommand(ICommandSender sender, String[] args) throws CommandException {
-        if (!TablistParser.currentLocation.equals(Location.CRYSTAL_HOLLOWS)) throw new WrongUsageException("You can only use waypoints in Crystal Hollows");
+        if (!SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) throw new WrongUsageException("You can only use waypoints in Crystal Hollows");
         if (args.length >= 1 && "new".equalsIgnoreCase(args[0])) {
             if (args.length < 2) throw new WrongUsageException("Usage: " + getCommandUsage(sender));
 

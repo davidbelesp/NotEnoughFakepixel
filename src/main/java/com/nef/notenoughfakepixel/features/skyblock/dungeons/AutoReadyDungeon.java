@@ -1,5 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.TablistParser;
+import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.Container;
@@ -11,10 +16,6 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.TablistParser;
-import com.nef.notenoughfakepixel.variables.Location;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class AutoReadyDungeon {
     public void onGuiOpen(GuiScreenEvent.BackgroundDrawnEvent event) {
         if (clicked) return;
         if (!Config.feature.dungeons.dungeonsAutoReady) return;
-        if (!TablistParser.currentLocation.isDungeon()) return;
+        if (!SkyblockData.getCurrentLocation().isDungeon()) return;
         if (event.gui == null) return;
         if (!(event.gui instanceof GuiChest)) return;
 
@@ -95,7 +96,7 @@ public class AutoReadyDungeon {
     public void onChatRecieve(ClientChatReceivedEvent e) {
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
-        if (TablistParser.currentLocation != Location.NONE) return;
+        if (SkyblockData.getCurrentLocation() != Location.NONE) return;
 
         Matcher matcher = nickedNamePattern.matcher(e.message.getFormattedText());
         if (matcher.matches()) {

@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.mixin;
 
-import net.minecraftforge.fml.client.config.GuiUtils;
 import com.nef.notenoughfakepixel.features.skyblock.qol.ScrollableTooltips;
+import net.minecraftforge.fml.client.config.GuiUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;

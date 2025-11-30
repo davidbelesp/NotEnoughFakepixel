@@ -1,17 +1,17 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ColorUtils;
 import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
+import com.nef.notenoughfakepixel.variables.Area;
+import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.variables.Area;
-import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
 
 import java.awt.*;
 
@@ -22,7 +22,7 @@ public class AutomatonShow {
     public void onRenderLast(RenderWorldLastEvent event) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.thePlayer == null || mc.theWorld == null) return;
-        if (!ScoreboardUtils.currentArea.equals(Area.CH_LOST_PRECURSOR) && !ScoreboardUtils.currentArea.equals(Area.CH_PRECURSOR)) return;
+        if (!SkyblockData.getCurrentArea().equals(Area.CH_LOST_PRECURSOR) && !SkyblockData.getCurrentArea().equals(Area.CH_PRECURSOR)) return;
         if (!Config.feature.mining.crystalShowAutomaton) return;
         onRender(event);
     }

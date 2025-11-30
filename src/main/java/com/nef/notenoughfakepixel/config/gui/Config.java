@@ -2,17 +2,17 @@ package com.nef.notenoughfakepixel.config.gui;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 import com.nef.notenoughfakepixel.Configuration;
 import com.nef.notenoughfakepixel.config.gui.config.ConfigEditor;
 import com.nef.notenoughfakepixel.config.gui.core.GuiScreenElementWrapper;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterKeybind;
 import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import org.lwjgl.input.Keyboard;
 
 import java.io.*;

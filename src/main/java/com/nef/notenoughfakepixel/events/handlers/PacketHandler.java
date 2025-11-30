@@ -1,12 +1,12 @@
 package com.nef.notenoughfakepixel.events.handlers;
 
+import com.nef.notenoughfakepixel.events.PacketReadEvent;
+import com.nef.notenoughfakepixel.events.PacketWriteEvent;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import net.minecraft.network.Packet;
 import net.minecraftforge.common.MinecraftForge;
-import com.nef.notenoughfakepixel.events.PacketReadEvent;
-import com.nef.notenoughfakepixel.events.PacketWriteEvent;
 
 public class PacketHandler extends ChannelDuplexHandler {
 

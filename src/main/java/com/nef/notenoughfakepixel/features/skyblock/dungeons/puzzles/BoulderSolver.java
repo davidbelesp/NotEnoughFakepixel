@@ -1,6 +1,10 @@
 package com.nef.notenoughfakepixel.features.skyblock.dungeons.puzzles;
 
 import com.google.common.collect.Lists;
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -14,10 +18,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.RenderUtils;
-import com.nef.notenoughfakepixel.utils.TablistParser;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -172,7 +172,7 @@ public class BoulderSolver {
         if (!Config.feature.dungeons.dungeonsBoulderSolver) return;
         EntityPlayerSP player = mc.thePlayer;
         World world = mc.theWorld;
-        if (TablistParser.currentLocation.isDungeon() && world != null && player != null) {
+        if (SkyblockData.getCurrentLocation().isDungeon() && world != null && player != null) {
             new Thread(() -> {
                 int quartzBlocksFound = 0;
                 int barriersFound = 0;

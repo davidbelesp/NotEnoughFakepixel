@@ -1,5 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
+import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ItemUtils;
+import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.variables.Rarity;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -9,12 +15,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
-import com.nef.notenoughfakepixel.utils.ItemUtils;
-import com.nef.notenoughfakepixel.utils.Logger;
-import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
-import com.nef.notenoughfakepixel.variables.Rarity;
 import org.lwjgl.input.Mouse;
 
 @RegisterEvents
@@ -30,7 +30,7 @@ public class SalvagePrevention {
     @SubscribeEvent
     public void onMouseClick(GuiScreenEvent.MouseInputEvent.Pre event) {
         if (Mouse.getEventButton() < 0
-                || !ScoreboardUtils.currentGamemode.isSkyblock()
+                || !SkyblockData.getCurrentGamemode().isSkyblock()
                 || !(mc.currentScreen instanceof GuiChest)
                 || (!Config.feature.qol.salvageLegendaryPrevention && !Config.feature.qol.salvageEpicPrevention)) return;
 
