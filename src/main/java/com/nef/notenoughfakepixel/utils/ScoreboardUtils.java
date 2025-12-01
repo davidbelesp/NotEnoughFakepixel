@@ -118,7 +118,7 @@ public class ScoreboardUtils {
                     List<String> seasons = Arrays.asList("Spring", "Summer", "Autumn", "Winter");
                     for (String season : seasons) {
                         if (clean.contains(season)) {
-                            SkyblockData.setSeason(SkyblockData.Season.valueOf(season.toUpperCase()));
+                            SkyblockData.setSeason(SkyblockData.Season.getByName(season.toUpperCase()));
                             break;
                         }
                     }

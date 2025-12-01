@@ -16,6 +16,8 @@ public class ChWaypointsGuiEvents {
 
     private final Minecraft mc = Minecraft.getMinecraft();
 
+    private static long lastExecuted = 0;
+
     @SubscribeEvent
     public void onClientTick(TickEvent.ClientTickEvent event) {
         handleWaypointGUI(Config.feature.mining.chWaypointsGUI, new GuiWaypointManager());
@@ -23,9 +25,17 @@ public class ChWaypointsGuiEvents {
     }
 
     private void handleWaypointGUI(int key, GuiScreen guiScreen) {
+        // ignore if Chat is open
+        if (lastExecuted == 0) lastExecuted = System.currentTimeMillis();
+        if (System.currentTimeMillis() - lastExecuted < 200) return;
+
+        if (mc.currentScreen != null && mc.currentScreen instanceof net.minecraft.client.gui.GuiChat) {
+            return;
+        }
         if (KeybindHelper.isKeyDown(key)) {
             if (!SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) {
                 mc.thePlayer.addChatMessage(new ChatComponentText("§cYou can only use waypoints in Crystal Hollows"));
+                lastExecuted = System.currentTimeMillis();
                 return;
             }
             if (mc.currentScreen == null) {
