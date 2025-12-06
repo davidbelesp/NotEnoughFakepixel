@@ -1,9 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.waypoints.gui;
 
+import com.nef.notenoughfakepixel.NotEnoughFakepixel;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
@@ -28,10 +30,9 @@ public class ChWaypointsGuiEvents {
         // ignore if Chat is open
         if (lastExecuted == 0) lastExecuted = System.currentTimeMillis();
         if (System.currentTimeMillis() - lastExecuted < 200) return;
+        // If another screen is open, do nothing
+        if (mc.currentScreen != null) return;
 
-        if (mc.currentScreen != null && mc.currentScreen instanceof net.minecraft.client.gui.GuiChat) {
-            return;
-        }
         if (KeybindHelper.isKeyDown(key)) {
             if (!SkyblockData.getCurrentLocation().equals(Location.CRYSTAL_HOLLOWS)) {
                 mc.thePlayer.addChatMessage(new ChatComponentText("§cYou can only use waypoints in Crystal Hollows"));

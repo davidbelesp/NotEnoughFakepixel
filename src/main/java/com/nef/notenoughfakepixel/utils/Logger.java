@@ -84,6 +84,7 @@ public class Logger {
      * @param object The object to log.
      */
     public static void log(Object object) {
+        if (object == null) return;
         log(object.toString());
     }
 

@@ -183,7 +183,8 @@ public class StorageRenderer {
         int width = (int) getXStatic(500);
         int height = (int) getYStatic(300);
         GlStateManager.resetColor();
-        Color ce = ColorUtils.getColor(Config.feature.overlays.invTint);
+        Color ce = Color.CYAN;
+                // = ColorUtils.getColor(Config.feature.overlays.invTint);
         GlStateManager.color(ce.getRed()/255f,ce.getGreen()/255f,ce.getBlue()/255f,ce.getAlpha()/255f);
         Gui.drawScaledCustomSizeModalRect(
                 xPos,

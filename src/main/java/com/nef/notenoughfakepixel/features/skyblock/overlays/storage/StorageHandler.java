@@ -22,7 +22,7 @@ import org.lwjgl.input.Mouse;
 
 import java.io.File;
 
-@RegisterEvents
+//@RegisterEvents
 public class StorageHandler {
 
     // LOGIC
@@ -30,7 +30,7 @@ public class StorageHandler {
     public StorageRenderer renderer;
     @SubscribeEvent
     public void onOpen(GuiScreenEvent.BackgroundDrawnEvent e){
-        if(!Config.feature.overlays.storageOverlay) return;
+//        if(!Config.feature.overlays.storageOverlay) return;
         if(e.gui instanceof GuiContainer){
             GuiContainer gc = (GuiContainer) e.gui;
 

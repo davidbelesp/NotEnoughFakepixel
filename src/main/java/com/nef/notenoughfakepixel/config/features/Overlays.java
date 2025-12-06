@@ -6,35 +6,35 @@ import com.nef.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Overlays {
 
-    @Expose
-    @ConfigOption(name = "Storage", desc = "Storage Overlay Settings")
-    @ConfigEditorAccordion(id = 0)
-    public boolean storage = false;
-
-    @Expose
-    @ConfigOption(name = "Storage Overlay", desc = "Redesign of Storage GUI")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 0)
-    public boolean storageOverlay = false;
-
-
-    @Expose
-    @ConfigOption(name = "Ender Chest Tint", desc = "Add a tint to the ender chest texture")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 0)
-    public String enderTint = "0:255:255:255:255";
-
-    @Expose
-    @ConfigOption(name = "Backpack Tint", desc = "Add a tint to the backpack texture")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 0)
-    public String bagTint = "0:255:255:255:255";
-
-    @Expose
-    @ConfigOption(name = "Inventory Tint", desc = "Add a tint to the inventory texture")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 0)
-    public String invTint = "0:255:255:255:255";
+//    @Expose
+//    @ConfigOption(name = "Storage", desc = "Storage Overlay Settings")
+//    @ConfigEditorAccordion(id = 0)
+//    public boolean storage = false;
+//
+//    @Expose
+//    @ConfigOption(name = "Storage Overlay", desc = "Redesign of Storage GUI")
+//    @ConfigEditorBoolean
+//    @ConfigAccordionId(id = 0)
+//    public boolean storageOverlay = false;
+//
+//
+//    @Expose
+//    @ConfigOption(name = "Ender Chest Tint", desc = "Add a tint to the ender chest texture")
+//    @ConfigEditorColour
+//    @ConfigAccordionId(id = 0)
+//    public String enderTint = "0:255:255:255:255";
+//
+//    @Expose
+//    @ConfigOption(name = "Backpack Tint", desc = "Add a tint to the backpack texture")
+//    @ConfigEditorColour
+//    @ConfigAccordionId(id = 0)
+//    public String bagTint = "0:255:255:255:255";
+//
+//    @Expose
+//    @ConfigOption(name = "Inventory Tint", desc = "Add a tint to the inventory texture")
+//    @ConfigEditorColour
+//    @ConfigAccordionId(id = 0)
+//    public String invTint = "0:255:255:255:255";
 
 
 //

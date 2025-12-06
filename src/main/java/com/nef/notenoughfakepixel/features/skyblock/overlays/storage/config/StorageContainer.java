@@ -61,9 +61,10 @@ public class StorageContainer {
         int width = (int) getXStatic(420);
         int height = (int) getYStatic(80 + (44 * this.size));
 
-        Color ce = ColorUtils.getColor(
-                this.type.equals("echest") ? Config.feature.overlays.enderTint : Config.feature.overlays.bagTint
-        );
+        Color ce = Color.CYAN;
+//        = ColorUtils.getColor(
+//                this.type.equals("echest") ? Config.feature.overlays.enderTint : Config.feature.overlays.bagTint
+//        );
 
         GlStateManager.disableLighting();
 
