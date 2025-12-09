@@ -382,6 +382,12 @@ public class QualityOfLife {
     public boolean itemSalvagingAccordion = false;
 
     @Expose
+    @ConfigOption(name = "Mythic Prevention", desc = "Prevent salvaging MYTHIC items.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 8)
+    public boolean salvageMythicPrevention = true;
+
+    @Expose
     @ConfigOption(name = "Legendary Prevention", desc = "Prevent salvaging LEGENDARY items.")
     @ConfigEditorBoolean
     @ConfigAccordionId(id = 8)
