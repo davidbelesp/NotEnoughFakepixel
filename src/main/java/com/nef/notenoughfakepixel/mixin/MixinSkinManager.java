@@ -4,7 +4,6 @@ import com.google.common.cache.LoadingCache;
 import com.google.common.util.concurrent.UncheckedExecutionException;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.nef.notenoughfakepixel.utils.Logger;
 import net.minecraft.client.resources.SkinManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -28,7 +27,6 @@ public class MixinSkinManager {
         try {
             return cache.getUnchecked((GameProfile) key);
         } catch (UncheckedExecutionException | NullPointerException e) {
-            Logger.logErrorPlayers("Failed to load skin for player: " + ((GameProfile) key).getName() + ". Avoiding crash.");
             return new HashMap<>();
         }
     }

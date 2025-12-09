@@ -101,16 +101,34 @@ public class QualityOfLife {
     public boolean etherwarpAccordion = false;
 
     @Expose
+    @ConfigOption(name = "Etherwarp Zoom", desc = "Zooms in when using etherwarp.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean qolEtherwarpZoom = true;
+
+    @Expose
     @ConfigOption(name = "Etherwarp Overlay", desc = "Show etherwarp overlay.")
     @ConfigEditorBoolean
     @ConfigAccordionId(id = 3)
     public boolean qolEtherwarpOverlay = true;
 
     @Expose
+    @ConfigOption(name = "Etherwarp Text Helper", desc = "Shows text helper when etherwarping.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean qolEtherwarpText = true;
+
+    @Expose
     @ConfigOption(name = "Etherwarp Overlay Color", desc = "Color of the etherwarp overlay.")
     @ConfigEditorColour
     @ConfigAccordionId(id = 3)
     public String qolEtherwarpOverlayColor = "0:100:0:255:0";
+
+    @Expose
+    @ConfigOption(name = "Etherwarp Overlay Failed Color", desc = "Color of the failed etherwarp overlay.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 3)
+    public String qolEtherwarpFailedOverlayColor = "0:100:0:255:0";
 
     @Expose
     @ConfigOption(name = "Etherwarp Sound", desc = "Sound played on etherwarp.")

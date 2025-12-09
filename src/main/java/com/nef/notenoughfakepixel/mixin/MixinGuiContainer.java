@@ -5,12 +5,16 @@ import com.nef.notenoughfakepixel.NotEnoughFakepixel;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.events.GuiContainerBackgroundDrawnEvent;
 import com.nef.notenoughfakepixel.events.SlotClickEvent;
+import com.nef.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
 import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
 import com.nef.notenoughfakepixel.utils.ReforgePair;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -40,6 +44,55 @@ public class MixinGuiContainer extends GuiScreen {
         SlotLocking.getInstance().drawSlot(slotIn);
     }
 
+    @Redirect(method = "drawSlot", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Slot;getStack()Lnet/minecraft/item/ItemStack;"))
+    public ItemStack drawSlot_getStack(Slot slot) {
+
+        ItemStack stack = slot.getStack();
+
+        if (stack != null) {
+            ItemStack newStack = EnchantingSolvers.overrideStack(slot.inventory, slot.getSlotIndex(), stack);
+            if (newStack != null) {
+                stack = newStack;
+            }
+        }
+        return stack;
+    }
+
+    @Inject(method = "drawSlot", at = @At("HEAD"), cancellable = true)
+    public void drawSlot(Slot slot, CallbackInfo ci) {
+        if (slot == null) return;
+        ItemStack stack = slot.getStack();
+
+        if (stack != null) {
+            if (EnchantingSolvers.onStackRender(
+                    stack,
+                    slot.inventory,
+                    slot.getSlotIndex(),
+                    slot.xDisplayPosition,
+                    slot.yDisplayPosition
+            )) {
+                ci.cancel();
+                return;
+            }
+        }
+
+        RenderHelper.enableGUIStandardItemLighting();
+    }
+
+    @Redirect(method = "drawScreen", at = @At(value = "INVOKE", target = "Lnet/minecraft/inventory/Slot;getStack()Lnet/minecraft/item/ItemStack;"))
+    public ItemStack drawScreen_getStack(Slot slot) {
+        if (theSlot != null && theSlot == slot && theSlot.getStack() != null) {
+            ItemStack newStack = EnchantingSolvers.overrideStack(
+                    theSlot.inventory,
+                    theSlot.getSlotIndex(),
+                    theSlot.getStack()
+            );
+            if (newStack != null) {
+                return newStack;
+            }
+        }
+        return slot.getStack();
+    }
 
     @Shadow
     private Slot theSlot;

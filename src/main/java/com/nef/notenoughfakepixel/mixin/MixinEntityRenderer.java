@@ -1,12 +1,17 @@
 package com.nef.notenoughfakepixel.mixin;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.features.skyblock.qol.EtherwarpZoom;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.client.settings.GameSettings;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityRenderer.class)
 public abstract class MixinEntityRenderer implements IResourceManagerReloadListener {
@@ -21,6 +26,20 @@ public abstract class MixinEntityRenderer implements IResourceManagerReloadListe
         if (Config.feature.qol.qolDisableRain) {
             ci.cancel();
         }
+    }
+
+    @Redirect(method = "updateCameraAndRender", at = @At(
+            value = "FIELD",
+            target = "Lnet/minecraft/client/settings/GameSettings;mouseSensitivity:F",
+            opcode = Opcodes.GETFIELD
+    ))
+    public float updateCameraAndRender_mouseSensitivity(GameSettings gameSettings) {
+        return gameSettings.mouseSensitivity * EtherwarpZoom.getSensMultiplier();
+    }
+
+    @Inject(method = "getFOVModifier", at = @At("RETURN"), cancellable = true)
+    public void getFOVModifier_mult(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> cir) {
+        cir.setReturnValue(cir.getReturnValueF() * EtherwarpZoom.getFovMultiplier(partialTicks));
     }
 
 }

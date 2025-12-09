@@ -1,7 +1,6 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.storage;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.storage.config.StorageData;
 import com.nef.notenoughfakepixel.utils.ConfigHandler;
 import com.nef.notenoughfakepixel.variables.Resources;

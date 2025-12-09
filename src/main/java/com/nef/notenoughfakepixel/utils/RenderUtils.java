@@ -9,13 +9,12 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderGlobal;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
@@ -66,6 +65,23 @@ public class RenderUtils {
             GlStateManager.enableLighting();
             GlStateManager.popMatrix();
         }
+    }
+
+    public static void drawItemStack(ItemStack stack, int x, int y) {
+        drawItemStackWithText(stack, x, y, null);
+    }
+
+    public static void drawItemStackWithText(ItemStack stack, int x, int y, String text) {
+        if (stack == null) return;
+
+        RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+
+        RenderHelper.enableGUIStandardItemLighting();
+        itemRender.zLevel = -145;
+        itemRender.renderItemAndEffectIntoGUI(stack, x, y);
+        itemRender.renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRendererObj, stack, x, y, text);
+        itemRender.zLevel = 0;
+        RenderHelper.disableStandardItemLighting();
     }
 
     private static final ResourceLocation beaconBeam = Resources.BEACON.getResource();
