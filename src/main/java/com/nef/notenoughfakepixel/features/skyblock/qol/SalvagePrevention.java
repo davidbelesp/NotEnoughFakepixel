@@ -46,7 +46,7 @@ public class SalvagePrevention {
             Rarity rarity = ItemUtils.getRarity(item);
             if ((rarity == Rarity.LEGENDARY && Config.feature.qol.salvageLegendaryPrevention)
                     || (rarity == Rarity.EPIC && Config.feature.qol.salvageEpicPrevention)
-                    || (rarity == Rarity.MYTHIC && Config.feature.qol.salvageEpicPrevention)
+                    || (rarity == Rarity.MYTHIC && Config.feature.qol.salvageMythicPrevention)
             ) {
                 cancelEvents(event, (rarity == Rarity.LEGENDARY ? " Legendary item, " : "n Epic item, ") + item.getDisplayName());
                 return;

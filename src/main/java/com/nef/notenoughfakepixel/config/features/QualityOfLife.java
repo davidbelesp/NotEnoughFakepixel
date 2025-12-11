@@ -206,6 +206,19 @@ public class QualityOfLife {
     @ConfigAccordionId(id = 4)
     public int qolWardrobeKey9 = Keyboard.KEY_9;
 
+    public void resetWardrobeSlotKeybinds() {
+        qolWardrobeKey = Keyboard.KEY_R;
+        qolWardrobeKey1 = Keyboard.KEY_1;
+        qolWardrobeKey2 = Keyboard.KEY_2;
+        qolWardrobeKey3 = Keyboard.KEY_3;
+        qolWardrobeKey4 = Keyboard.KEY_4;
+        qolWardrobeKey5 = Keyboard.KEY_5;
+        qolWardrobeKey6 = Keyboard.KEY_6;
+        qolWardrobeKey7 = Keyboard.KEY_7;
+        qolWardrobeKey8 = Keyboard.KEY_8;
+        qolWardrobeKey9 = Keyboard.KEY_9;
+    }
+
     @Expose
     @ConfigOption(name = "Pets Shortcut", desc = "Enable pets shortcut.")
     @ConfigEditorBoolean

@@ -2,11 +2,13 @@ package com.nef.notenoughfakepixel.mixin;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.features.skyblock.qol.EtherwarpZoom;
+import jdk.internal.org.objectweb.asm.Opcodes;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.EntityRenderer;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
 import net.minecraft.client.settings.GameSettings;
-import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -28,6 +30,8 @@ public abstract class MixinEntityRenderer implements IResourceManagerReloadListe
         }
     }
 
+    @Shadow private Minecraft mc;
+
     @Redirect(method = "updateCameraAndRender", at = @At(
             value = "FIELD",
             target = "Lnet/minecraft/client/settings/GameSettings;mouseSensitivity:F",
@@ -37,9 +41,14 @@ public abstract class MixinEntityRenderer implements IResourceManagerReloadListe
         return gameSettings.mouseSensitivity * EtherwarpZoom.getSensMultiplier();
     }
 
-    @Inject(method = "getFOVModifier", at = @At("RETURN"), cancellable = true)
-    public void getFOVModifier_mult(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> cir) {
-        cir.setReturnValue(cir.getReturnValueF() * EtherwarpZoom.getFovMultiplier(partialTicks));
+    @Inject(
+            method = "getFOVModifier",
+            at = @At("RETURN"),
+            cancellable = true
+    )
+    public void getFOVModifier_override(float partialTicks, boolean useFOVSetting, CallbackInfoReturnable<Float> cir) {
+        float currentFov = cir.getReturnValueF();
+        cir.setReturnValue(currentFov * EtherwarpZoom.getFovMultiplier(partialTicks));
     }
 
 }

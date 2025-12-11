@@ -1,9 +1,11 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
+import com.nef.notenoughfakepixel.NotEnoughFakepixel;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.Logger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.inventory.GuiChest;
@@ -102,7 +104,15 @@ public class WardrobeShortcut {
 
         for (int slot = 0; slot < 9; slot++) {
             int keyCode = getKeyCode(slot + 1);
-            boolean keyDown = KeybindHelper.isKeyDown(keyCode);
+            boolean keyDown = false;
+            try {
+                keyDown = KeybindHelper.isKeyDown(keyCode);
+            } catch (Exception e) {
+                Logger.logErrorPlayers("Error checking key state for wardrobe slot " + (slot + 1) + ". Resetting Wardrobe keys to default.");
+                Config.feature.qol.resetWardrobeSlotKeybinds();
+                continue;
+            }
+
 
             if (keyDown && !keyStates[slot] && (now - lastClickTime) > 100) {
                 clickSlot(chestGui, slot);
