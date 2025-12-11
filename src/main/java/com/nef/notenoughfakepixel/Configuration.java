@@ -242,6 +242,10 @@ public class Configuration {
     public Misc misc = new Misc();
 
     @Expose
+    @Category(name = "Waypoints", desc = "Waypoints settings.")
+    public Waypoints waypoints = new Waypoints();
+
+    @Expose
     @Category(name = "Overlays", desc = "GUI Overlays")
     public Overlays overlays = new Overlays();
 

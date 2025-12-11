@@ -76,24 +76,6 @@ public class QualityOfLife {
     @ConfigAccordionId(id = 1)
     public boolean qolHidePlayerNearNpcs = false;
 
-    // Fairy Soul Subcategory
-    @Expose
-    @ConfigOption(name = "Fairy Soul Waypoints", desc = "Settings for fairy soul waypoints.")
-    @ConfigEditorAccordion(id = 2)
-    public boolean fairySoulAccordion = false;
-
-    @Expose
-    @ConfigOption(name = "Enable Fairy Soul Waypoints", desc = "Enable fairy soul waypoints.")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 2)
-    public boolean fairySoulWaypoints = false;
-
-    @Expose
-    @ConfigOption(name = "Fairy Soul Waypoints Color", desc = "Color of fairy soul waypoints.")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 2)
-    public String fairySoulWaypointsColor = "0:100:255:255:255";
-
     // Etherwarp Subcategory
     @Expose
     @ConfigOption(name = "Etherwarp Settings", desc = "Settings for etherwarp features.")

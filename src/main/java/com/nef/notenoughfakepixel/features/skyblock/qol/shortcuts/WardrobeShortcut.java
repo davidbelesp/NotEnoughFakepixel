@@ -1,6 +1,5 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
-import com.nef.notenoughfakepixel.NotEnoughFakepixel;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
