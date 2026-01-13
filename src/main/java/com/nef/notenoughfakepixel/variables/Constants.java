@@ -6,6 +6,18 @@ public class Constants {
     public static final String PREFIX = "\u00a7f[\u00a79NEF DEBUG\u00a7f] \u00a7a";
     public static final String ERROR_PREFIX = "\u00a7f[\u00a7cNEF\u00a7f] \u00a7c";
 
+    public static final String[] RARITIES = {
+            "COMMON",
+            "UNCOMMON",
+            "RARE",
+            "EPIC",
+            "LEGENDARY",
+            "MYTHIC",
+            "DIVINE",
+            "SPECIAL",
+            "VERY SPECIAL"
+    };
+
     public static final String[] EVENT_PACKAGES = {
             "dungeons",
             "fishing",

@@ -52,4 +52,8 @@ public class SkyblockData {
         }
     }
 
+    public static boolean isSkyblock() {
+        return currentGamemode.isSkyblock();
+    }
+
 }

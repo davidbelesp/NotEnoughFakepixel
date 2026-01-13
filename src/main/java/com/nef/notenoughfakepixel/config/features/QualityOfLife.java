@@ -452,6 +452,23 @@ public class QualityOfLife {
     public boolean qolBlockPlacingItems = true;
 
     @Expose
+    @ConfigOption(name = "Item Data", desc = "Adds up item data to item tooltips.")
+    @ConfigEditorAccordion(id = 12)
+    public boolean qolItemTooltipAccordion = false;
+
+    @Expose
+    @ConfigOption(name = "Show Admin Tag on Admin Items", desc = "Shows §cADMIN §7tag on admin items description.")
+    @ConfigAccordionId(id = 12)
+    @ConfigEditorBoolean
+    public boolean qolShowAdminTag = true;
+
+    @Expose
+    @ConfigOption(name = "Shows Stacking Counter", desc = "Shows stacking counter in the item description.")
+    @ConfigAccordionId(id = 12)
+    @ConfigEditorBoolean
+    public boolean qolShowStackingCounter = true;
+
+    @Expose
     @ConfigOption(name = "Show Pet Equipped", desc = "Show equipped pet.")
     @ConfigEditorBoolean
     public boolean qolShowPetEquipped = true;

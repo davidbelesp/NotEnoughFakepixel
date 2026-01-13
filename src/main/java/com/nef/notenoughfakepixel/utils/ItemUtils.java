@@ -2,6 +2,7 @@ package com.nef.notenoughfakepixel.utils;
 
 import com.nef.notenoughfakepixel.variables.Rarity;
 import com.nef.notenoughfakepixel.variables.Skins;
+import com.nef.notenoughfakepixel.variables.StackingEnchant;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -43,6 +44,24 @@ public class ItemUtils {
         return extraAttributes.getString("id");
     }
 
+    public static String getItemUUID(ItemStack item) {
+        if (!item.hasTagCompound()) return "";
+        if (!item.getTagCompound().hasKey("ExtraAttributes")) return "";
+
+        NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
+        if (!extraAttributes.hasKey("uuid")) return "";
+
+        return extraAttributes.getString("uuid");
+    }
+
+    public static void renameItem(ItemStack item, String newName) {
+        NBTTagCompound tag = getOrCreateTag(item);
+        NBTTagCompound displayTag = tag.getCompoundTag("display");
+        displayTag.setString("Name", newName);
+        tag.setTag("display", displayTag);
+        item.setTagCompound(tag);
+    }
+
     public static @NotNull NBTTagCompound getExtraAttributes(ItemStack itemStack) {
         NBTTagCompound tag = getOrCreateTag(itemStack);
         NBTTagCompound extraAttributes = tag.getCompoundTag("ExtraAttributes");
@@ -54,22 +73,6 @@ public class ItemUtils {
         NBTTagCompound extraAttributes = getExtraAttributes(item);
         if (!extraAttributes.hasKey(tag)) return -1;
         return extraAttributes.getInteger(tag);
-    }
-
-    public static String getExtraAttributesStringTag(ItemStack item, String tag) {
-        NBTTagCompound extraAttributes = getExtraAttributes(item);
-        if (!extraAttributes.hasKey(tag)) return "";
-        return extraAttributes.getString(tag);
-    }
-
-    public static List<ItemStack> getAllCustomSkulls(Map<String, String> skullIcons) {
-        List<ItemStack> skulls = new ArrayList<>();
-        for (Map.Entry<String, String> entry : skullIcons.entrySet()) {
-            String name = entry.getKey();
-            String value = entry.getValue().replace("skull:", "").trim();
-            skulls.add(createSkullWithTexture(name, value));
-        }
-        return skulls;
     }
 
     public static String getSkullTexture(ItemStack itemStack) {
@@ -191,22 +194,6 @@ public class ItemUtils {
                 .orElse(null);
     }
 
-    public static boolean hasSkinValue(String value, ItemStack item) {
-        if (item == null) return false;
-        if (!item.hasTagCompound()) return false;
-        if (!item.getTagCompound().hasKey("SkullOwner")) return false;
-        NBTTagCompound skullOwner = item.getTagCompound().getCompoundTag("SkullOwner");
-        if (!skullOwner.hasKey("Properties")) return false;
-        NBTTagCompound properties = skullOwner.getCompoundTag("Properties");
-        if (!properties.hasKey("textures")) return false;
-        NBTTagList textures = properties.getTagList("textures", 10);
-        for (int i = 0; i < textures.tagCount(); i++) {
-            NBTTagCompound texture = textures.getCompoundTagAt(i);
-            if (texture.hasKey("Value") && texture.getString("Value").equals(value)) return true;
-        }
-        return false;
-    }
-
     public static boolean hasSkinValue(Skins skin, ItemStack item) {
         if (item == null) return false;
         if (!item.hasTagCompound()) return false;
@@ -238,4 +225,88 @@ public class ItemUtils {
     public static boolean isMenuItem(ItemStack item) {
         return item.getDisplayName().trim().isEmpty() && Item.getItemFromBlock(Blocks.stained_glass_pane) == item.getItem() && item.getItemDamage() == 15;
     }
+
+    public static boolean isAdminItem(ItemStack item) {
+        if (item == null) return false;
+        // Checking if custom item / custom pet
+        if (getInternalName(item).trim().equals("CUSTOM_ITEM")) return true;
+        if (getInternalName(item).trim().contains("PET_CUSTOM")) return true;
+
+        if (!item.hasTagCompound()) return false;
+        if (!item.getTagCompound().hasKey("ExtraAttributes")) return false;
+        NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
+
+
+        if (extraAttributes.hasKey("candy")) {
+            if (extraAttributes.getInteger("candy") < 0) return true;
+            if (extraAttributes.getInteger("candy") > 10) return true;
+        }
+
+        // Checking origin
+        if (extraAttributes.hasKey("origin") && extraAttributes.getString("origin").contains("ALL_ITEMS_GUI_ACTOR")) return true;
+
+        // Checking abnormal stats
+        if (extraAttributes.hasKey("stars")) {
+           if (extraAttributes.getInteger("stars") > 5) return true;
+           if (extraAttributes.getInteger("stars") < 0) return true;
+        }
+
+        if (extraAttributes.hasKey("master_stars")) {
+            if (extraAttributes.getInteger("master_stars") > 5) return true;
+            return extraAttributes.getInteger("master_stars") < 0;
+        }
+
+        if (extraAttributes.hasKey("exp")) {
+            double xp = extraAttributes.getDouble("exp");
+            if (xp > 1.5E9) return true;
+        }
+
+        return false;
+    }
+
+    public static String getAdminName(ItemStack item) {
+        if (!item.hasTagCompound()) return "";
+        if (!item.getTagCompound().hasKey("ExtraAttributes")) return "";
+        NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
+
+        if (extraAttributes.hasKey("origin")) {
+            if (extraAttributes.getString("origin").contains("ALL_ITEMS_GUI_ACTOR")) {
+                return extraAttributes.getString("origin").replace("ALL_ITEMS_GUI_ACTOR_", "");
+            }
+        }
+
+        return "";
+    }
+
+    public static boolean hasStackingCounter(ItemStack item) {
+        if (item == null) return false;
+        if (!item.hasTagCompound()) return false;
+        if (!item.getTagCompound().hasKey("ExtraAttributes")) return false;
+        NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
+        return extraAttributes.hasKey("stacking_enchant_counter");
+    }
+
+    public static int getStackingCounter(ItemStack item) {
+        NBTTagCompound extraAttributes = getExtraAttributes(item);
+        return extraAttributes.getInteger("stacking_enchant_counter");
+    }
+
+    public static StackingEnchant getStackingEnchant(ItemStack item) {
+        List<String> loreLines = getLoreLines(item);
+        for (String line : loreLines) {
+            if (line.trim().contains("Cultivating")) {
+                return StackingEnchant.CULTIVATING;
+            } else if (line.trim().contains("Compact")) {
+                return StackingEnchant.COMPACT;
+            } else if (line.trim().contains("Expertise")) {
+                return StackingEnchant.EXPERTISE;
+            } else if (line.trim().contains("Champion")) {
+                return StackingEnchant.CHAMPION;
+            } else if (line.trim().contains("Toxophilite")) {
+                return StackingEnchant.TOXOPHILITE;
+            }
+        }
+        return StackingEnchant.NONE;
+    }
+
 }
