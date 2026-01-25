@@ -1,6 +1,7 @@
 package com.nef.notenoughfakepixel.utils;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
+import com.nef.notenoughfakepixel.variables.Colors;
 import com.nef.notenoughfakepixel.variables.Constants;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
@@ -41,6 +42,10 @@ public class Logger {
             // If chat logging fails (e.g., headless), fall back to console
             logConsole(message);
         }
+    }
+
+    public static void log(Colors color, String message) {
+        log(color + message + Colors.RESET);
     }
 
     /**

@@ -24,7 +24,7 @@ public class RepoHandler {
     private static final long TTL_MS = TimeUnit.DAYS.toMillis(1);
     private static final int CONNECTION_TIMEOUT = 5000;
     private static final int READ_TIMEOUT = 5000;
-    private static final String USER_AGENT   = "YourModName/1.0 (Minecraft 1.8.9)";
+    private static final String USER_AGENT   = "NEF/1.0 (Minecraft 1.8.9)";
 
     // Mini-pool for IO
     private static final ExecutorService IO_POOL = new ThreadPoolExecutor(
