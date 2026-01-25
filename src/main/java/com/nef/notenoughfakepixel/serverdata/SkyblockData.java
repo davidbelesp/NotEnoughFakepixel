@@ -11,7 +11,19 @@ public class SkyblockData {
     // Slayer/Boss data
     @Getter @Setter private static boolean isSlayerActive = false;
     @Getter @Setter private static boolean isBossActive = false;
-    @Getter @Setter private static Slayer currentSlayer = Slayer.NONE;
+    @Getter private static Slayer currentSlayer = Slayer.NONE;
+    public static void setCurrentSlayer(Slayer newSlayer) {
+        if (currentSlayer == newSlayer) return;
+        currentSlayer = newSlayer;
+        resetSlayerData();
+    }
+    @Getter @Setter private static int slayerLevel = 0;
+    @Getter @Setter private static int slayerXp = 0;
+    @Getter @Setter private static int nextLevelXp = 0;
+    @Getter @Setter private static int xpToNextLevel = 0;
+    @Getter @Setter private static int sessionBosses = 0;
+    @Getter @Setter private static float RNGesusMeter = 0;
+    @Getter @Setter private static double totalSeconds = 0;
     // Location data
     @Getter @Setter private static Location currentLocation = Location.NONE;
     @Getter @Setter private static Gamemode currentGamemode = Gamemode.LOBBY;
@@ -54,6 +66,16 @@ public class SkyblockData {
 
     public static boolean isSkyblock() {
         return currentGamemode.isSkyblock();
+    }
+
+    public static void resetSlayerData() {
+        setSlayerLevel(0);
+        setSlayerXp(0);
+        setNextLevelXp(0);
+        setXpToNextLevel(0);
+        setSessionBosses(0);
+        setRNGesusMeter(0);
+        setTotalSeconds(0);
     }
 
 }

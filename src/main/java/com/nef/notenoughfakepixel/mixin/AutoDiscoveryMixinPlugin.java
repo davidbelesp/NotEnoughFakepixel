@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+@SuppressWarnings("InvalidMixinException")
 /**
  * A mixin plugin to automatically discover all mixins in the current JAR.
  * <p>

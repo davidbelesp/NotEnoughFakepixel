@@ -179,6 +179,11 @@ public class Configuration {
             Logger.log("\u00a74Slayer\u00a7f:");
             Logger.log(" - Has Slayer Active: \u00a7f" + SkyblockData.isSlayerActive());
             Logger.log(" - Current Slayer: \u00a7f" + SkyblockData.getCurrentSlayer());
+            Logger.log(" - Slayer Level: \u00a7f" + SkyblockData.getSlayerLevel());
+            Logger.log(" - Slayer XP: \u00a7f" + SkyblockData.getSlayerXp());
+            Logger.log(" - Next Level XP: \u00a7f" + SkyblockData.getNextLevelXp());
+            Logger.log(" - Session Bosses: \u00a7f" + SkyblockData.getSessionBosses());
+            Logger.log(" - RNGesus Meter: \u00a7f" + SkyblockData.getRNGesusMeter());
             Logger.log("\u00a73Mining\u00a7f:");
             Logger.log(" - Mithril Powder: \u00a7f" + SkyblockData.getMithrilPowder());
             Logger.log(" - Gemstone Powder: \u00a7f" + SkyblockData.getGemstonePowder());

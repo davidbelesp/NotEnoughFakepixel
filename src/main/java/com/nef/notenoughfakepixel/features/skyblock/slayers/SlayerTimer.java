@@ -49,6 +49,7 @@ public class SlayerTimer {
                     long duration = endTime - startTime;
 
                     double seconds = duration / 1000.0;
+                    SkyblockData.setTotalSeconds(SkyblockData.getTotalSeconds() + seconds);
 
                     String chatMessage = String.format("[NEF] Boss took %.3f seconds!", seconds);
                     ChatComponentText formattedMessage = new ChatComponentText(chatMessage);
