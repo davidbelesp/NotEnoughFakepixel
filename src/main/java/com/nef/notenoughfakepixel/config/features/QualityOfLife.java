@@ -588,7 +588,7 @@ public class QualityOfLife {
     public String editDarkAHTimerPos = "";
 
     @Expose
-    public Position darkAhTimerPos = new Position(0, 0, true, true);
+    public Position darkAhTimerPos = new Position(0, 0, false, false);
 
     // Method to handle the reset button functionality
     public void resetItemValues() {

@@ -190,41 +190,6 @@ public class Overlays {
     public int barLengthD = 2;
 
     @Expose
-    @ConfigOption(name = "Slayer Overlay", desc = "Slayer Overlay Settings")
-    @ConfigEditorAccordion(id = 6)
-    @ConfigEditorBoolean
-    public boolean slayerAccordion = true;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay", desc = "Enable/Disable slayers overlay")
-    @ConfigEditorBoolean
-    public boolean slayerOverlay = true;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay Offset X", desc = "Horizontal offset of the slayer overlay.")
-    @ConfigEditorSlider(minValue = 0.0f, maxValue = 1800.0f, minStep = 1.0f)
-    @ConfigAccordionId(id = 6)
-    public float slayerOverlayOffsetX = 10.0f;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay Offset Y", desc = "Vertical offset of the slayer overlay.")
-    @ConfigEditorSlider(minValue = 0.0f, maxValue = 1250.0f, minStep = 1.0f)
-    @ConfigAccordionId(id = 6)
-    public float slayerOverlayOffsetY = 10.0f;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay Scale", desc = "Scale of the slayer overlay text.")
-    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
-    @ConfigAccordionId(id = 6)
-    public float slayerOverlayScale = 1.0f;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay Background Color", desc = "Background color of the slayer overlay.")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 6)
-    public String slayerOverlayBackgroundColor = "0:150:0:0:0";
-
-    @Expose
     public Position posHealth = new Position(100,100);
     @Expose
     public Position posMana = new Position(200,100);

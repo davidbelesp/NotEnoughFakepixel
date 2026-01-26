@@ -126,4 +126,37 @@ public class Slayer {
     @ConfigOption(name = "Blaze Attunements Display", desc = "Display blaze attunements.")
     @ConfigEditorBoolean
     public boolean slayerBlazeAttunements = true;
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay", desc = "Slayer Overlay Settings")
+    @ConfigEditorAccordion(id = 3)
+    @ConfigEditorBoolean
+    public boolean slayerAccordion = true;
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay", desc = "Enable/Disable slayers overlay")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean slayerOverlay = true;
+
+    @Expose
+    @ConfigOption(name = "Position", desc = "Edit slayer overlay position.")
+    @ConfigEditorButton(runnableId = "editSlayerOverlayPos", buttonText = "Edit")
+    @ConfigAccordionId(id = 3)
+    public String editSlayerOverlayPos = "";
+
+    @Expose
+    public Position slayerOverlayPos = new Position(0, 0, false, false);
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay Scale", desc = "Scale of the slayer overlay text.")
+    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
+    @ConfigAccordionId(id = 3)
+    public float slayerOverlayScale = 1.0f;
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay Background Color", desc = "Background color of the slayer overlay.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 3)
+    public String slayerOverlayBackgroundColor = "0:150:0:0:0";
 }

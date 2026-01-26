@@ -2,6 +2,7 @@ package com.nef.notenoughfakepixel;
 
 import com.google.gson.annotations.Expose;
 import com.nef.notenoughfakepixel.alerts.AlertManagementGui;
+import com.nef.notenoughfakepixel.config.ConfigRunnables;
 import com.nef.notenoughfakepixel.config.features.*;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.config.ConfigEditor;
@@ -21,6 +22,7 @@ import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.Scaven
 import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.WormSpawnTimer;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.PositionEditorScreen;
 import com.nef.notenoughfakepixel.features.skyblock.qol.customaliases.AliasManagementGui;
+import com.nef.notenoughfakepixel.features.skyblock.slayers.SlayerOverlay;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
 import com.nef.notenoughfakepixel.utils.Logger;
@@ -42,6 +44,8 @@ public class Configuration {
     }
 
     public void executeRunnable(String runnableId) {
+
+
         String activeConfigCategory = null;
         if (Minecraft.getMinecraft().currentScreen instanceof GuiScreenElementWrapper) {
             GuiScreenElementWrapper wrapper = (GuiScreenElementWrapper) Minecraft.getMinecraft().currentScreen;
@@ -50,6 +54,11 @@ public class Configuration {
                 activeConfigCategory = ((ConfigEditor) element).getSelectedCategoryName();
             }
         }
+
+        if (runnableId.startsWith("debug_")) {
+            ConfigRunnables.runDebugRunnable(runnableId);
+        }
+
         if ("editAshfangPosition".equals(runnableId)) {
             editOverlay(activeConfigCategory, 100, 20, Config.feature.crimson.ashfangOverlayPos);
         }
@@ -130,71 +139,13 @@ public class Configuration {
         if ("editDarkAHTimerPos".equals(runnableId)) {
             editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.qol.darkAHTimerScale), (int) Math.abs(9 * Config.feature.qol.darkAHTimerScale), Config.feature.qol.darkAhTimerPos);
         }
-        // Debug runnables
-        if ("logLocation".equals(runnableId)) {
-            Logger.log(SkyblockData.getCurrentLocation());
-        }
-        if ("logScoreboard".equals(runnableId)) {
-            ScoreboardUtils.getScoreboardLines().forEach(Logger::log);
-        }
-        if ("logIsInSkyblock".equals(runnableId)) {
-            Logger.log("Current Gamemode: " + SkyblockData.getCurrentGamemode() + " | Is in Skyblock: " +  SkyblockData.getCurrentGamemode().isSkyblock());
+        if ("editSlayerOverlayPos".equals(runnableId)) {
+            int width = (int)Math.abs((SlayerOverlay.MINIMUM_WIDTH + (15*8)) * Config.feature.slayer.slayerOverlayScale);
+            int height = (int)Math.abs((SlayerOverlay.LINE_HEIGHT * 6) * Config.feature.slayer.slayerOverlayScale);
+            editOverlay(activeConfigCategory, width, height, Config.feature.slayer.slayerOverlayPos);
         }
         if("statEditor".equals(runnableId)){
             Minecraft.getMinecraft().displayGuiScreen(new PositionEditorScreen());
-        }
-        if ("showAPI".equals(runnableId)) {
-            String data = RepoHandler.getJson("fairysouls");
-            if (data != null) {
-                // copy to clipboard
-                Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clip.setContents(new java.awt.datatransfer.StringSelection(data), null);
-                Logger.log("Copied API to clipboard! Length: " + data.length());
-            }
-        }
-        if ("showSBID".equals(runnableId)) {
-            EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
-            if (player != null) {
-                ItemStack item = player.getHeldItem();
-                if (item != null) {
-                    Logger.log(ItemUtils.getInternalName(item));
-                } else {
-                    Logger.logError("No Held Item");
-                }
-            } else {
-                Logger.logError("No Player");
-            }
-        }
-        if ("triggerTimers".equals(runnableId)) {
-            WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
-            Logger.log("Set worm spawn to 30 seconds from now");
-        }
-        if ("logSbData".equals(runnableId)) {
-            Logger.log("\u00a7c=============================");
-            Logger.log("Gamemode: \u00a7f" + SkyblockData.getCurrentGamemode().toString());
-            Logger.log("Using Profile: \u00a7f" + SkyblockData.getCurrentProfile());
-            Logger.log("\u00a72Location\u00a7f:");
-            Logger.log(" - Current Location: \u00a7f" + SkyblockData.getCurrentLocation());
-            Logger.log(" - Current Area: \u00a7f" + SkyblockData.getCurrentArea());
-            Logger.log("\u00a74Slayer\u00a7f:");
-            Logger.log(" - Has Slayer Active: \u00a7f" + SkyblockData.isSlayerActive());
-            Logger.log(" - Current Slayer: \u00a7f" + SkyblockData.getCurrentSlayer());
-            Logger.log(" - Slayer Level: \u00a7f" + SkyblockData.getSlayerLevel());
-            Logger.log(" - Slayer XP: \u00a7f" + SkyblockData.getSlayerXp());
-            Logger.log(" - Next Level XP: \u00a7f" + SkyblockData.getNextLevelXp());
-            Logger.log(" - Session Bosses: \u00a7f" + SkyblockData.getSessionBosses());
-            Logger.log(" - RNGesus Meter: \u00a7f" + SkyblockData.getRNGesusMeter());
-            Logger.log("\u00a73Mining\u00a7f:");
-            Logger.log(" - Mithril Powder: \u00a7f" + SkyblockData.getMithrilPowder());
-            Logger.log(" - Gemstone Powder: \u00a7f" + SkyblockData.getGemstonePowder());
-            Logger.log(" - Heat: \u00a7f" + SkyblockData.getHeat());
-            Logger.log("\u00a7dTime\u00a7f:");
-            Logger.log(" - Skyblock Hour: \u00a7f" + SkyblockData.getSbHour());
-            Logger.log(" - Skyblock Minutes: \u00a7f" + SkyblockData.getSbMinute());
-            Logger.log(" - AM/PM: \u00a7f" + (SkyblockData.isAm() ? "AM" : "PM"));
-            Logger.log(" - Current Season: \u00a7f" + SkyblockData.getSeason());
-            Logger.log("\u00a7c=============================");
-
         }
     }
 

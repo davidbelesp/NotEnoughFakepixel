@@ -7,11 +7,14 @@ import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.variables.Location;
 import com.nef.notenoughfakepixel.variables.Slayer;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RegisterEvents
@@ -22,7 +25,7 @@ public class SlayerOverlay extends Overlay {
         if (!SkyblockData.isSkyblock()) return false;
         if (!SkyblockData.isSlayerActive()) return false;
         if (!isValidLocation()) return false;
-        return Config.feature.overlays.slayerOverlay;
+        return Config.feature.slayer.slayerOverlay;
     }
 
     private boolean isValidLocation() {
@@ -33,12 +36,19 @@ public class SlayerOverlay extends Overlay {
     public void onRender(RenderGameOverlayEvent.Post event) {
         if (event.type != RenderGameOverlayEvent.ElementType.ALL) return;
         if (!shouldShow()) return;
+        if (getLines().isEmpty()) return;
 
+        float scale = Config.feature.slayer.slayerOverlayScale;
+        float width = getWidth(scale, getLines());
+        float height = getHeight(scale, getLines());
+
+        float x = Config.feature.slayer.slayerOverlayPos.getAbsX(new ScaledResolution(Minecraft.getMinecraft()), (int) width) - width/2;
+        float y = Config.feature.slayer.slayerOverlayPos.getAbsY(new ScaledResolution(Minecraft.getMinecraft()), (int) height ) - height/2;
         draw(
-                Config.feature.overlays.slayerOverlayOffsetX,
-                Config.feature.overlays.slayerOverlayOffsetY,
-                Config.feature.overlays.slayerOverlayScale,
-                Config.feature.overlays.slayerOverlayBackgroundColor
+                x,
+                y,
+                Config.feature.slayer.slayerOverlayScale,
+                Config.feature.slayer.slayerOverlayBackgroundColor
         );
     }
 
@@ -80,7 +90,7 @@ public class SlayerOverlay extends Overlay {
         }
 
         if (itemCount < 1) {
-            lines.add("\u00a77No Slayer Data, kill some bosses!");
+            return Collections.emptyList();
         }
 
 

@@ -32,43 +32,48 @@ public class Debug {
 
     @Expose
     @ConfigOption(name = "Log location", desc = "Log current location.")
-    @ConfigEditorButton(buttonText = "Log", runnableId = "logLocation")
+    @ConfigEditorButton(buttonText = "Log", runnableId = "debug_logLocation")
     @ConfigAccordionId(id = 0)
     public String logLocationButton = "";
 
     @Expose
     @ConfigOption(name = "Log SKYBLOCK", desc = "Log if player is in Skyblock gamemode.")
-    @ConfigEditorButton(buttonText = "Log", runnableId = "logIsInSkyblock")
+    @ConfigEditorButton(buttonText = "Log", runnableId = "debug_logIsInSkyblock")
     @ConfigAccordionId(id = 0)
     public String logIsInSkyblock = "";
 
     @Expose
     @ConfigOption(name = "Log Scoreboard", desc = "Log current scoreboard data.")
-    @ConfigEditorButton(buttonText = "Log", runnableId = "logScoreboard")
+    @ConfigEditorButton(buttonText = "Log", runnableId = "debug_logScoreboard")
     @ConfigAccordionId(id = 0)
     public String logScoreboardButton = "";
 
     @Expose
     @ConfigOption(name = "Copy API data", desc = "Copy API data to clipboard.")
-    @ConfigEditorButton(runnableId = "showAPI", buttonText = "Copy")
+    @ConfigEditorButton(runnableId = "debug_showAPI", buttonText = "Copy")
     @ConfigAccordionId(id = 0)
     public String showAPIButton = "";
 
     @Expose
     @ConfigOption(name = "Show held item SBID", desc = "Shows Skyblock ID of the item held.")
-    @ConfigEditorButton(runnableId = "showSBID", buttonText = "Show")
+    @ConfigEditorButton(runnableId = "debug_showSBID", buttonText = "Show")
     @ConfigAccordionId(id = 0)
     public String showSBIDButton = "";
 
     @Expose
     @ConfigOption(name = "Trigger all timers", desc = "trigger all timers event.")
-    @ConfigEditorButton(runnableId = "triggerTimers", buttonText = "Show")
+    @ConfigEditorButton(runnableId = "debug_triggerTimers", buttonText = "Show")
     @ConfigAccordionId(id = 0)
     public String triggerTimers = "";
 
     @Expose
     @ConfigOption(name = "Log Skyblock Data", desc = "Logs NEF saved skyblock data.")
-    @ConfigEditorButton(runnableId = "logSbData", buttonText = "Show")
+    @ConfigEditorButton(runnableId = "debug_logSbData", buttonText = "Show")
     @ConfigAccordionId(id = 0)
     public String logSkyblockData = "";
+
+    @Expose
+    @ConfigOption(name = "Copy NBT", desc = "Allows copying mouse item NBT into clipboard \u00a7c[R CTRL]\u00a77.")
+    @ConfigEditorBoolean
+    public boolean debugCopyNbt = false;
 }
