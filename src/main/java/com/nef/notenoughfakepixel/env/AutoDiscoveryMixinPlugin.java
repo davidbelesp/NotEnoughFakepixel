@@ -1,4 +1,4 @@
-package com.nef.notenoughfakepixel.mixin;
+package com.nef.notenoughfakepixel.env;
 
 import lombok.Getter;
 import org.spongepowered.asm.lib.tree.ClassNode;
@@ -17,7 +17,6 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-@SuppressWarnings("InvalidMixinException")
 /**
  * A mixin plugin to automatically discover all mixins in the current JAR.
  * <p>

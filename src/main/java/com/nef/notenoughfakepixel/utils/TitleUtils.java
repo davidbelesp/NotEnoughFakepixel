@@ -1,6 +1,6 @@
 package com.nef.notenoughfakepixel.utils;
 
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;

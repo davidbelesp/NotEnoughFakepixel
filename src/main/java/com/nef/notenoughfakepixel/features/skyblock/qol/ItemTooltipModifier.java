@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel.features.skyblock.qol;
 
 import com.nef.notenoughfakepixel.commands.RenameCommand;
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
 import com.nef.notenoughfakepixel.utils.StringUtils;

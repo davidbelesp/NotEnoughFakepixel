@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.commands;
 
 import com.nef.notenoughfakepixel.config.gui.commands.SimpleCommand;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import com.nef.notenoughfakepixel.env.registers.RegisterCommand;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
 import com.nef.notenoughfakepixel.utils.Logger;

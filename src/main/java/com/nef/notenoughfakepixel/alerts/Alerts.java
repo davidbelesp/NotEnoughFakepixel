@@ -3,7 +3,7 @@ package com.nef.notenoughfakepixel.alerts;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.SoundUtils;
 import net.minecraft.client.Minecraft;

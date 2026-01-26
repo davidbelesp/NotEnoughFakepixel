@@ -1,6 +1,6 @@
 package com.nef.notenoughfakepixel.config.gui.commands;
 
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import com.nef.notenoughfakepixel.env.registers.RegisterCommand;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

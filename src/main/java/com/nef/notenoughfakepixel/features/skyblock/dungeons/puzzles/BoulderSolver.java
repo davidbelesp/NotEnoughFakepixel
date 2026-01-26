@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel.features.skyblock.dungeons.puzzles;
 
 import com.google.common.collect.Lists;
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.state.IBlockState;

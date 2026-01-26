@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.commands;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import com.nef.notenoughfakepixel.env.registers.RegisterCommand;
 import com.nef.notenoughfakepixel.features.skyblock.dungeons.terminals.TerminalSimulator;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;

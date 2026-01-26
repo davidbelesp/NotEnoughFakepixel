@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.features.skyblock.mining;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.variables.Location;
 import net.minecraft.client.Minecraft;

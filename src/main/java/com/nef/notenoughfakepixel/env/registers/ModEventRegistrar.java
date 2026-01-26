@@ -1,4 +1,4 @@
-package com.nef.notenoughfakepixel.envcheck.registers;
+package com.nef.notenoughfakepixel.env.registers;
 
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.command.ICommand;

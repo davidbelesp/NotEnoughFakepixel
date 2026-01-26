@@ -1,6 +1,6 @@
 package com.nef.notenoughfakepixel.events.handlers;
 
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.NEFClientConnectedToServerEvent;
 import com.nef.notenoughfakepixel.utils.Logger;
 import net.minecraftforge.event.world.WorldEvent;

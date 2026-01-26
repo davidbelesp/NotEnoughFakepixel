@@ -1,6 +1,6 @@
-package com.nef.notenoughfakepixel.envcheck;
+package com.nef.notenoughfakepixel.env;
 
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 import com.nef.notenoughfakepixel.utils.ChatUtils;
 import com.nef.notenoughfakepixel.utils.NumberUtils;

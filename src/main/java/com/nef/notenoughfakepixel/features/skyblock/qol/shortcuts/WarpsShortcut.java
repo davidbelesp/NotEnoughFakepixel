@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel.features.skyblock.qol.shortcuts;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;

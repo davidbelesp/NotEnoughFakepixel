@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel.utils;
 
 import com.google.common.collect.ComparisonChain;
 import com.google.common.collect.Ordering;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.variables.Area;

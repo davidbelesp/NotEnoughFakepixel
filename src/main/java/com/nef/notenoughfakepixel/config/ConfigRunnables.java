@@ -2,10 +2,12 @@ package com.nef.notenoughfakepixel.config;
 
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 import com.nef.notenoughfakepixel.features.skyblock.mining.crystalhollows.WormSpawnTimer;
+import com.nef.notenoughfakepixel.features.skyblock.qol.FairySouls;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ItemUtils;
 import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
+import com.nef.notenoughfakepixel.variables.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.item.ItemStack;
@@ -16,16 +18,16 @@ import java.awt.datatransfer.Clipboard;
 public class ConfigRunnables {
 
     public static void runDebugRunnable(String runnableId) {
-        if (equalsRunnableId(runnableId, "triggerTimers")) {
+        if (equalsDebugId(runnableId, "triggerTimers")) {
             WormSpawnTimer.setGoalEpochMs(System.currentTimeMillis() + 30000);
             Logger.log("Set worm spawn to 30 seconds from now");
         }
 
-        if (equalsRunnableId(runnableId, "logLocation")) {
+        if (equalsDebugId(runnableId, "logLocation")) {
             Logger.log(SkyblockData.getCurrentLocation());
         }
 
-        if ("showAPI".equals(runnableId)) {
+        if (equalsDebugId(runnableId, "showAPI")) {
             String data = RepoHandler.getJson("fairysouls");
             if (data != null) {
                 // copy to clipboard
@@ -35,7 +37,7 @@ public class ConfigRunnables {
             }
         }
 
-        if ("showSBID".equals(runnableId)) {
+        if (equalsDebugId(runnableId, "showSBID")) {
             EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
             if (player != null) {
                 ItemStack item = player.getHeldItem();
@@ -49,15 +51,15 @@ public class ConfigRunnables {
             }
         }
 
-        if (equalsRunnableId(runnableId, "logScoreboard")) {
+        if (equalsDebugId(runnableId, "logScoreboard")) {
             ScoreboardUtils.getScoreboardLines().forEach(Logger::log);
         }
 
-        if (equalsRunnableId(runnableId, "logIsInSkyblock")) {
+        if (equalsDebugId(runnableId, "logIsInSkyblock")) {
             Logger.log("Current Gamemode: " + SkyblockData.getCurrentGamemode() + " | Is in Skyblock: " +  SkyblockData.getCurrentGamemode().isSkyblock());
         }
 
-        if (equalsRunnableId(runnableId, "logSbData")) {
+        if (equalsDebugId(runnableId, "logSbData")) {
             Logger.log("\u00a7c=============================");
             Logger.log("Gamemode: \u00a7f" + SkyblockData.getCurrentGamemode().toString());
             Logger.log("Using Profile: \u00a7f" + SkyblockData.getCurrentProfile());
@@ -85,8 +87,22 @@ public class ConfigRunnables {
         }
     }
 
-    private static boolean equalsRunnableId(String id, String targetId) {
-        return id != null && id.equals("debug_" + targetId);
+    public static void runExecutableRunnable(String runnableId) {
+        if (equalsExecutableId(runnableId, "fairySoulsReset")) {
+            FairySouls.resetSoulData();
+            Logger.log(Colors.GREEN, "Fairy Souls data has been reset.");
+        }
+    }
+
+    // Helpers
+    private static boolean equalsExecutableId(String id, String targetId) {
+        return equalsRunnableId(id, targetId, "exec_");
+    }
+    private static boolean equalsDebugId(String id, String targetId) {
+        return equalsRunnableId(id, targetId, "debug_");
+    }
+    private static boolean equalsRunnableId(String id, String targetId, String prefix) {
+        return id != null && id.equals(prefix + targetId);
     }
 
 }

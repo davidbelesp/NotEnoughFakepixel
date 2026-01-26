@@ -1,6 +1,6 @@
 package com.nef.notenoughfakepixel.utils;
 
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.dungeons.DragonCloseAlert;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.stats.StatBars;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;

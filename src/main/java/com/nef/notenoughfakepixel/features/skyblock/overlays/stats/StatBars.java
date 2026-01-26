@@ -1,7 +1,7 @@
 package com.nef.notenoughfakepixel.features.skyblock.overlays.stats;
 
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;

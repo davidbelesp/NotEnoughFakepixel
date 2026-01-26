@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel;
 
 import com.nef.notenoughfakepixel.alerts.Alerts;
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.ModEventRegistrar;
+import com.nef.notenoughfakepixel.env.registers.ModEventRegistrar;
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import com.nef.notenoughfakepixel.features.cosmetics.impl.Bandana;

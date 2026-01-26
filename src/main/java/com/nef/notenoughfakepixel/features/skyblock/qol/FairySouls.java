@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel.features.skyblock.qol;
 
 import com.google.gson.Gson;
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ColorUtils;
@@ -206,6 +206,12 @@ public class FairySouls {
             gson.toJson(soulData, writer);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void resetSoulData() {
+        if (Files.exists(SOULS_FILE.toPath())) {
+            SOULS_FILE.delete();
         }
     }
 

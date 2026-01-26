@@ -3,7 +3,7 @@ package com.nef.notenoughfakepixel.config.gui.commands;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.config.ConfigEditor;
 import com.nef.notenoughfakepixel.config.gui.core.GuiScreenElementWrapper;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterCommand;
+import com.nef.notenoughfakepixel.env.registers.RegisterCommand;
 import com.nef.notenoughfakepixel.utils.ListUtils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;

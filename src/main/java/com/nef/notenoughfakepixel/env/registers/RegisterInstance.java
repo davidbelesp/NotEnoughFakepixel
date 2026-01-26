@@ -1,4 +1,4 @@
-package com.nef.notenoughfakepixel.envcheck.registers;
+package com.nef.notenoughfakepixel.env.registers;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface RegisterEvents {
-    // This is a marker annotation for classes that should be registered as events
+@Target(ElementType.FIELD)
+public @interface RegisterInstance {
+    // Marker annotation to register an already instantiated class
 }

@@ -1,6 +1,6 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol;
 
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.PacketReadEvent;
 import com.nef.notenoughfakepixel.utils.RandomUtils;
 import net.minecraft.client.Minecraft;

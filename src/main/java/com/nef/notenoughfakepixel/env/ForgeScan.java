@@ -1,4 +1,4 @@
-package com.nef.notenoughfakepixel.envcheck;
+package com.nef.notenoughfakepixel.env;
 
 import javax.swing.*;
 import java.lang.reflect.Field;

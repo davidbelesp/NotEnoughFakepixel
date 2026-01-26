@@ -4,7 +4,7 @@ import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import com.nef.notenoughfakepixel.config.gui.core.util.StringUtils;
 import com.nef.notenoughfakepixel.config.gui.core.util.render.RenderUtils;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterInstance;
+import com.nef.notenoughfakepixel.env.registers.RegisterInstance;
 import com.nef.notenoughfakepixel.events.ReplaceItemEvent;
 import com.nef.notenoughfakepixel.events.SlotClickEvent;
 import com.nef.notenoughfakepixel.mixin.accesors.AccessorGuiContainer;

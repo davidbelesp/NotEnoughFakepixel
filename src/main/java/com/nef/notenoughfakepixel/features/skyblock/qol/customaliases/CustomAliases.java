@@ -2,7 +2,7 @@ package com.nef.notenoughfakepixel.features.skyblock.qol.customaliases;
 
 import com.google.gson.GsonBuilder;
 import com.nef.notenoughfakepixel.config.gui.Config;
-import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.qol.Aliases;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.ClientCommandHandler;

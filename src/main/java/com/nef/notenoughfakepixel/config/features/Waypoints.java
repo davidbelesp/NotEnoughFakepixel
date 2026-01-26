@@ -23,6 +23,12 @@ public class Waypoints {
     @ConfigAccordionId(id = 1)
     public String fairySoulWaypointsColor = "0:100:255:255:255";
 
+    @Expose
+    @ConfigOption(name = "Fairy Souls Reset", desc = "Resets fairy soul waypoints.")
+    @ConfigEditorButton(runnableId = "exec_fairySoulsReset", buttonText = "Reset")
+    @ConfigAccordionId(id = 1)
+    public String fairySoulsReset = "";
+
     // Gift Waypoints Subcategory
 
     @Expose
