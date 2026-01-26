@@ -3,6 +3,7 @@ package com.nef.notenoughfakepixel.utils;
 import com.nef.notenoughfakepixel.variables.Rarity;
 import com.nef.notenoughfakepixel.variables.Skins;
 import com.nef.notenoughfakepixel.variables.StackingEnchant;
+import lombok.Data;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -226,42 +227,87 @@ public class ItemUtils {
         return item.getDisplayName().trim().isEmpty() && Item.getItemFromBlock(Blocks.stained_glass_pane) == item.getItem() && item.getItemDamage() == 15;
     }
 
-    public static boolean isAdminItem(ItemStack item) {
-        if (item == null) return false;
-        // Checking if custom item / custom pet
-        if (getInternalName(item).trim().equals("CUSTOM_ITEM")) return true;
-        if (getInternalName(item).trim().contains("PET_CUSTOM")) return true;
+    @Data public static class AdminStatus {
+        boolean isAdmin;
+        String reason;
+        String detail;
 
-        if (!item.hasTagCompound()) return false;
-        if (!item.getTagCompound().hasKey("ExtraAttributes")) return false;
-        NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
-
-
-        if (extraAttributes.hasKey("candy")) {
-            if (extraAttributes.getInteger("candy") < 0) return true;
-            if (extraAttributes.getInteger("candy") > 10) return true;
+        public AdminStatus(String reason, String detail) {
+            this.reason = reason;
+            this.detail = detail;
+            this.isAdmin = true;
         }
 
+        public AdminStatus() {
+            this.isAdmin = false;
+            this.reason = "";
+            this.detail = "";
+        }
+    }
+
+    public static AdminStatus isAdminItem(ItemStack item) {
+        if (item == null) return new AdminStatus();
+        // Checking if custom item / custom pet
+        if (getInternalName(item).trim().equals("CUSTOM_ITEM")) return new AdminStatus("Custom Item", "");
+        if (getInternalName(item).trim().contains("PET_CUSTOM")) return new AdminStatus("Custom Pet", "");
+
+        if (!item.hasTagCompound()) return new AdminStatus();
+        if (!item.getTagCompound().hasKey("ExtraAttributes")) return new AdminStatus();
+        NBTTagCompound extraAttributes = item.getTagCompound().getCompoundTag("ExtraAttributes");
+
         // Checking origin
-        if (extraAttributes.hasKey("origin") && extraAttributes.getString("origin").contains("ALL_ITEMS_GUI_ACTOR")) return true;
+        if (extraAttributes.hasKey("origin")) {
+            if (extraAttributes.getString("origin").contains("ALL_ITEMS_GUI_ACTOR")) return new AdminStatus("", "");
+            if (extraAttributes.getString("origin").contains("random")) return new AdminStatus("Gambled item", "");
+        }
+
+        // Checking candy count
+        if (extraAttributes.hasKey("candy")) {
+            if (extraAttributes.getInteger("candy") < 0) return new AdminStatus("Candies", "");
+            if (extraAttributes.getInteger("candy") > 10) return new AdminStatus("Candies", "");
+        }
 
         // Checking abnormal stats
         if (extraAttributes.hasKey("stars")) {
-           if (extraAttributes.getInteger("stars") > 5) return true;
-           if (extraAttributes.getInteger("stars") < 0) return true;
+           if (extraAttributes.getInteger("stars") > 5) return new AdminStatus("Stars", "");
+           if (extraAttributes.getInteger("stars") < 0) return new AdminStatus("Stars", "");
         }
 
         if (extraAttributes.hasKey("master_stars")) {
-            if (extraAttributes.getInteger("master_stars") > 5) return true;
-            return extraAttributes.getInteger("master_stars") < 0;
+            if (extraAttributes.getInteger("master_stars") > 5) return new AdminStatus("Master Stars", "");
+            if (extraAttributes.getInteger("master_stars") < 0) return new AdminStatus("Master Stars", "");;
         }
 
+        // Checking abnormal bids
+        if (extraAttributes.hasKey("bid")) {
+            if (extraAttributes.getInteger("bid") > 10) return new AdminStatus("Edited tags", "");
+            if (extraAttributes.getInteger("bid") < 0) return new AdminStatus("Edited tags", "");;
+        }
+
+        // Checking abnormal dates
+        if (extraAttributes.hasKey("timestamp")) {
+            long timestamp = extraAttributes.getLong("timestamp");
+            if (timestamp < 1640995200L) return new AdminStatus("Invalid date", "");;
+        }
+
+        // Checking invalid level enchantments
+        if (extraAttributes.hasKey("enchantments")) {
+            NBTTagCompound enchantments = extraAttributes.getCompoundTag("enchantments");
+            for (String key : enchantments.getKeySet()) {
+                int level = enchantments.getInteger(key);
+                if (level < 0 || level > 10) {
+                    return new AdminStatus(StringUtils.capitalizeName(key), String.format("%d", level));
+                }
+            }
+        }
+
+        // Checking abnormal xp amount
         if (extraAttributes.hasKey("exp")) {
             double xp = extraAttributes.getDouble("exp");
-            if (xp > 1.5E9) return true;
+            if (xp > 1.5E9) return new AdminStatus("Leveled up", "");;
         }
 
-        return false;
+        return new AdminStatus();
     }
 
     public static String getAdminName(ItemStack item) {

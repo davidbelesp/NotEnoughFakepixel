@@ -60,12 +60,18 @@ public class ItemTooltipModifier {
 
         // Admin Item Tag
         if (Config.feature.qol.qolShowAdminTag) {
-            if (ItemUtils.isAdminItem(hoveredItem)) {
+            ItemUtils.AdminStatus adminStatus = ItemUtils.isAdminItem(hoveredItem);
+            if (adminStatus.isAdmin()) {
                 String adminName = ItemUtils.getAdminName(hoveredItem);
                 String insertText = "§c§l⚠ ADMIN ITEM ⚠";
                 if (!adminName.isEmpty()) {
                     insertText += " §7(§c" + adminName + "§7)";
                 }
+                if (!adminStatus.getReason().isEmpty()) {
+                    String detail = adminStatus.getDetail().isEmpty() ? "" : " " + adminStatus.getDetail();
+                    insertText += " §8- (" + adminStatus.getReason() + detail + ")";
+                }
+
                 e.toolTip.add(insertAt, insertText);
             }
         }

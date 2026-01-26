@@ -5,6 +5,7 @@ import com.nef.notenoughfakepixel.envcheck.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.overlays.Overlay;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.Logger;
+import com.nef.notenoughfakepixel.variables.Location;
 import com.nef.notenoughfakepixel.variables.Slayer;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -19,7 +20,13 @@ public class SlayerOverlay extends Overlay {
     @Override
     public boolean shouldShow() {
         if (!SkyblockData.isSkyblock()) return false;
+        if (!SkyblockData.isSlayerActive()) return false;
+        if (!isValidLocation()) return false;
         return Config.feature.overlays.slayerOverlay;
+    }
+
+    private boolean isValidLocation() {
+        return SkyblockData.getCurrentLocation() != Location.PRIVATE_ISLAND;
     }
 
     @SubscribeEvent
