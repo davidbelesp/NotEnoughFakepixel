@@ -5,6 +5,11 @@ import com.nef.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Waypoints {
 
+    @Expose
+    @ConfigOption(name = "Enable Waypoints", desc = "Enable/Disable Waypoints")
+    @ConfigEditorBoolean
+    public boolean generalWaypointToggle = true;
+
     // Fairy Soul Subcategory
     @Expose
     @ConfigOption(name = "Fairy Soul Waypoints", desc = "Settings for fairy soul waypoints.")
@@ -55,6 +60,54 @@ public class Waypoints {
     @ConfigAccordionId(id = 2)
     public boolean stJerryLocation = false;
 
+    // Dwarven Waypoints Subcategory
 
+    @Expose
+    @ConfigOption(name = "Dwarven Waypoints Settings", desc = "Settings for dwarven waypoints.")
+    @ConfigEditorAccordion(id = 3)
+    public boolean dwarvenSubcategory = false;
+
+    @Expose
+    @ConfigOption(name = "Enable Dwarven Waypoints", desc = "Enable Area Waypoints in the Dwarven Mines.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean miningDwarvenWaypoints = true;
+
+    @Expose
+    @ConfigOption(name = "Enable Dwarven Waypoint beacons", desc = "Enable beacons on every waypoint (waypoint must be enabled).")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean miningDwarvenBeacons = true;
+
+    @Expose
+    @ConfigOption(name = "Beacons Color", desc = "Color of waypoint beacons.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 3)
+    public String miningDwarvenBeaconsColor = "0:190:0:255:0";
+
+    // Crimson Isle Waypoints Subcategory
+
+    @Expose
+    @ConfigOption(name = "Crimson Waypoints Settings", desc = "Settings for crimson waypoints.")
+    @ConfigEditorAccordion(id = 4)
+    public boolean crimsonSubcategory = false;
+
+    @Expose
+    @ConfigOption(name = "Enable Crimson Waypoints", desc = "Enable Area Waypoints in the Crimson Isle.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 4)
+    public boolean crimsonWaypoints = true;
+
+    @Expose
+    @ConfigOption(name = "Enable Crimson Waypoint beacons", desc = "Enable beacons on every waypoint (waypoint must be enabled).")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 4)
+    public boolean crimsonBeacons = true;
+
+    @Expose
+    @ConfigOption(name = "Beacons Color", desc = "Color of waypoint beacons.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 4)
+    public String crimsonBeaconsColor = "0:190:0:255:0";
 
 }

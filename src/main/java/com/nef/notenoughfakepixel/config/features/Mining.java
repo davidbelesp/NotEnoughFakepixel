@@ -55,30 +55,6 @@ public class Mining {
     public boolean miningDisableDonEspresso = true;
 
     @Expose
-    @ConfigOption(name = "Dwarven Waypoints Settings", desc = "Settings for dwarven waypoints.")
-    @ConfigAccordionId(id = 1)
-    @ConfigEditorAccordion(id = 1_1)
-    public boolean waypointsSubcategory = false;
-
-    @Expose
-    @ConfigOption(name = "Enable Dwarven Waypoints", desc = "Enable Area Waypoints in the Dwarven Mines.")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 1_1)
-    public boolean miningDwarvenWaypoints = true;
-
-    @Expose
-    @ConfigOption(name = "Enable Dwarven Waypoint beacons", desc = "Enable beacons on every waypoint (waypoint must be enabled).")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 1_1)
-    public boolean miningDwarvenBeacons = true;
-
-    @Expose
-    @ConfigOption(name = "Beacons Color", desc = "Color of waypoint beacons.")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 1_1)
-    public String miningDwarvenBeaconsColor = "0:190:0:255:0";
-
-    @Expose
     @ConfigOption(name = "Mining Overlay Settings", desc = "Settings for the mining overlay.")
     @ConfigEditorAccordion(id = 3)
     public boolean overlayAccordion = false;
