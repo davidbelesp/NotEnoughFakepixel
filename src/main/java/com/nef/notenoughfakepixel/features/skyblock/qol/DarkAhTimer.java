@@ -58,7 +58,7 @@ public class DarkAhTimer extends Timer {
 
     private static void notifyDA() {
         if (!Config.feature.qol.qolDarkAhNotifier) return;
-        Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "Mining Ability Ready", "", 2, 70, 2);
+        Minecraft.getMinecraft().ingameGUI.displayTitle(EnumChatFormatting.GOLD + "Dark Auction is about to start!", "", 2, 70, 2);
     }
 
 }

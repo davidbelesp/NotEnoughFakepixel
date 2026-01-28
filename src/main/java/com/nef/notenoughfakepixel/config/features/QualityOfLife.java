@@ -590,6 +590,11 @@ public class QualityOfLife {
     @Expose
     public Position darkAhTimerPos = new Position(0, 0, false, false);
 
+    @Expose
+    @ConfigOption(name = "Enable Smooth AOTE", desc = "Enables smooth AOTE teleport animation.")
+    @ConfigEditorBoolean
+    public boolean enableSmoothAote = false;
+
     // Method to handle the reset button functionality
     public void resetItemValues() {
         customSize = 0f;

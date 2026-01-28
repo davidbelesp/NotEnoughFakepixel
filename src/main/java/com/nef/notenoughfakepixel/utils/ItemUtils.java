@@ -36,6 +36,7 @@ public class ItemUtils {
     }
 
     public static String getInternalName(ItemStack item) {
+        if (item == null) return "";
         if (!item.hasTagCompound()) return "";
         if (!item.getTagCompound().hasKey("ExtraAttributes")) return "";
 
@@ -46,6 +47,7 @@ public class ItemUtils {
     }
 
     public static String getItemUUID(ItemStack item) {
+        if (item == null) return "";
         if (!item.hasTagCompound()) return "";
         if (!item.getTagCompound().hasKey("ExtraAttributes")) return "";
 
@@ -56,6 +58,7 @@ public class ItemUtils {
     }
 
     public static void renameItem(ItemStack item, String newName) {
+        if (item == null) return;
         NBTTagCompound tag = getOrCreateTag(item);
         NBTTagCompound displayTag = tag.getCompoundTag("display");
         displayTag.setString("Name", newName);

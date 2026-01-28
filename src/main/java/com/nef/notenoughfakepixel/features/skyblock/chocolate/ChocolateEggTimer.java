@@ -16,7 +16,7 @@ public class ChocolateEggTimer extends Timer {
 
     @Override
     public boolean shouldShow() {
-        return Config.feature.chocolateFactory.chocolateEggTimer && SkyblockData.getSeason().equals(SkyblockData.Season.SPRING);
+        return SkyblockData.isSkyblock() && Config.feature.chocolateFactory.chocolateEggTimer && SkyblockData.getSeason().equals(SkyblockData.Season.SPRING);
     }
 
     @Override
