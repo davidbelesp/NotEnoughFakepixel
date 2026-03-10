@@ -210,8 +210,9 @@ public class ParticleProcessor {
                 .orElse(null);
     }
 
-    private boolean isDevPetClose(int[] coords) {
-        return Minecraft.getMinecraft().theWorld.loadedEntityList.stream()
+   private boolean isDevPetClose(int[] coords) {
+        List<net.minecraft.entity.Entity> entities = new ArrayList<>(Minecraft.getMinecraft().theWorld.loadedEntityList);
+        return entities.stream()
                 .filter(EntityArmorStand.class::isInstance)
                 .filter(entity -> entity.getName() != null && entity.getName().contains("Developer's Pet"))
                 .map(entity -> new int[]{
@@ -221,4 +222,5 @@ public class ParticleProcessor {
                 })
                 .anyMatch(entityCoords -> getDistance(coords, entityCoords) <= 5);
     }
+}
 }
