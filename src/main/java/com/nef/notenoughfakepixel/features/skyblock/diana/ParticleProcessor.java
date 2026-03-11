@@ -223,4 +223,3 @@ public class ParticleProcessor {
                 .anyMatch(entityCoords -> getDistance(coords, entityCoords) <= 5);
     }
 }
-}

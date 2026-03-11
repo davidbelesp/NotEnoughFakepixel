@@ -275,11 +275,16 @@ public class GuessBurrow {
     }
 
     private Vec3 findNearestDirtWithAirAbove(Minecraft mc, Vec3 point) {
+        if (mc == null || mc.theWorld == null || mc.thePlayer == null || point == null) {
+            return new Vec3(0, 0, 0);
+        }
+
         int x = (int) Math.floor(point.xCoord);
         int z = (int) Math.floor(point.zCoord);
         int yStart = Math.max(1, Math.min(255, (int) Math.floor(point.yCoord)));
 
         for (int y = yStart; y > 0; y--) {
+            if (mc.theWorld == null) return new Vec3(x + 0.5, yStart, z + 0.5);
             BlockPos pos = new BlockPos(x, y, z);
             Block block = mc.theWorld.getBlockState(pos).getBlock();
             Block blockAbove = mc.theWorld.getBlockState(pos.up()).getBlock();
@@ -290,6 +295,7 @@ public class GuessBurrow {
 
         for (int y = yStart + 1; y < 255; y++) {
             BlockPos pos = new BlockPos(x, y, z);
+            if (mc.theWorld == null) return new Vec3(x + 0.5, yStart, z + 0.5);
             Block block = mc.theWorld.getBlockState(pos).getBlock();
             Block blockAbove = mc.theWorld.getBlockState(pos.up()).getBlock();
             if ((block == Blocks.dirt || block == Blocks.grass) && blockAbove == Blocks.air) {
@@ -300,10 +306,13 @@ public class GuessBurrow {
         double playerY = mc.thePlayer.posY;
         int yFallback = Math.max(1, Math.min(255, (int) Math.floor(playerY)));
         BlockPos pos = new BlockPos(x, yFallback, z);
-        Block block = mc.theWorld.getBlockState(pos).getBlock();
-        Block blockAbove = mc.theWorld.getBlockState(pos.up()).getBlock();
-        if ((block == Blocks.dirt || block == Blocks.grass) && blockAbove == Blocks.air) {
-            return new Vec3(x + 0.5, yFallback, z + 0.5);
+
+        if (mc.theWorld != null) {
+            Block block = mc.theWorld.getBlockState(pos).getBlock();
+            Block blockAbove = mc.theWorld.getBlockState(pos.up()).getBlock();
+            if ((block == Blocks.dirt || block == Blocks.grass) && blockAbove == Blocks.air) {
+                return new Vec3(x + 0.5, yFallback, z + 0.5);
+            }
         }
 
         return new Vec3(x + 0.5, yFallback, z + 0.5);
