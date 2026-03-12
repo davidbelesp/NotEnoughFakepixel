@@ -321,8 +321,9 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if (guessPoint != null && Config.feature.diana.dianaBurrowGuess) {
-            BlockPos loc = new BlockPos(guessPoint.xCoord, guessPoint.yCoord + 1, guessPoint.zCoord);
+        Vec3 guess = guessPoint; // capture once
+        if (guess != null && Config.feature.diana.dianaBurrowGuess) {
+            BlockPos loc = new BlockPos(guess.xCoord, guess.yCoord + 1, guess.zCoord);
             AxisAlignedBB aabb = new AxisAlignedBB(
                     loc.getX(), loc.getY(), loc.getZ(),
                     loc.getX() + 1, loc.getY() + 1, loc.getZ() + 1
@@ -330,12 +331,12 @@ public class GuessBurrow {
             RenderUtils.renderWaypointText("Burrow Guess", loc, event.partialTicks);
             RenderUtils.drawOutlinedBoundingBox(aabb, Color.GREEN, 2.0f, event.partialTicks);
         }
-        if (guessPoint != null && Config.feature.diana.dianaTracerBurrowGuess) {
-            drawGuessTracer(event.partialTicks);
+        if (guess != null && Config.feature.diana.dianaTracerBurrowGuess) {
+            drawGuessTracer(guess, event.partialTicks);
         }
     }
 
-    private void drawGuessTracer(float partialTicks) {
+    private void drawGuessTracer(Vec3 guess, float partialTicks) {
         Minecraft mc = Minecraft.getMinecraft();
         if (mc.thePlayer == null) return;
 
@@ -343,12 +344,9 @@ public class GuessBurrow {
         Color color = new Color(base.getRed(), base.getGreen(), base.getBlue(), 255);
 
         RenderUtils.draw3DLine(
-                new Vec3(guessPoint.xCoord, guessPoint.yCoord, guessPoint.zCoord),
+                new Vec3(guess.xCoord, guess.yCoord, guess.zCoord),
                 mc.thePlayer.getPositionEyes(partialTicks),
-                color,
-                4,
-                true,
-                partialTicks
+                color, 4, true, partialTicks
         );
     }
 
