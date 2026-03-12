@@ -161,13 +161,25 @@ public class FishingCountdown {
     }
 
     private boolean isValidParticlePath(Vec3 bobberPos) {
+        if (bobberPos == null) return false;
+
         if (particleHistory.size() < MIN_PARTICLES_FOR_PATH) return false;
 
         for (int i = 1; i < particleHistory.size(); i++) {
+            if (particleHistory.get(i) == null || particleHistory.get(i).position == null ||
+                    particleHistory.get(i - 1) == null || particleHistory.get(i - 1).position == null) {
+                return false;
+            }
+
             double interParticleDistance = particleHistory.get(i).position.distanceTo(particleHistory.get(i - 1).position);
             if (interParticleDistance > MAX_INTER_PARTICLE_DISTANCE) {
                 return false;
             }
+        }
+
+        if (particleHistory.get(0) == null || particleHistory.get(0).position == null ||
+                particleHistory.get(particleHistory.size() - 1) == null || particleHistory.get(particleHistory.size() - 1).position == null) {
+            return false;
         }
 
         double firstDistance = particleHistory.get(0).position.distanceTo(bobberPos);

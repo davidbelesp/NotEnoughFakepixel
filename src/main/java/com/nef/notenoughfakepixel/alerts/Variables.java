@@ -20,14 +20,15 @@ public enum Variables {
             return SkyblockData.getCurrentLocation() != null ? WordUtils.capitalizeFully(SkyblockData.getCurrentLocation().name()).replace("_"," ") : "Unknown Location";
         }
     },
-    PING("ping", "Your current ping to the server") {
-        @Override
-        public String getValue() {
-            return Minecraft.getMinecraft().getNetHandler() != null
-                    ? Minecraft.getMinecraft().getNetHandler().getPlayerInfo(Minecraft.getMinecraft().thePlayer.getUniqueID()).getResponseTime() + "ms"
-                    : "Unknown Ping";
-        }
-    },
+  PING("ping", "Your current ping to the server") {
+    @Override
+    public String getValue() {
+        if (Minecraft.getMinecraft().getNetHandler() == null) return "Unknown Ping";
+        net.minecraft.client.network.NetworkPlayerInfo info = Minecraft.getMinecraft().getNetHandler()
+                .getPlayerInfo(Minecraft.getMinecraft().thePlayer.getUniqueID());
+        return info != null ? info.getResponseTime() + "ms" : "Unknown Ping";
+    }
+},
     TIME("time", "System time (HH:mm a)") {
         @Override
         public String getValue() {
