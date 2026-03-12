@@ -1,5 +1,5 @@
 package com.nef.notenoughfakepixel.features.skyblock.qol.highlighters;
-import com.nef.notenoughfakepixel.features.skyblock.qol.EtherwarpZoom;
+
 import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
@@ -29,21 +29,7 @@ public abstract class BlockHighlighter {
         World w = Minecraft.getMinecraft().theWorld;
         if (w == null) return;
         for (BlockPos blockPos : highlightedBlocks) {
-            Color color = getColor(blockPos);
-            double px = Minecraft.getMinecraft().thePlayer.lastTickPosX + (Minecraft.getMinecraft().thePlayer.posX - Minecraft.getMinecraft().thePlayer.lastTickPosX) * event.partialTicks;
-            double py = Minecraft.getMinecraft().thePlayer.lastTickPosY + (Minecraft.getMinecraft().thePlayer.posY - Minecraft.getMinecraft().thePlayer.lastTickPosY) * event.partialTicks;
-            double pz = Minecraft.getMinecraft().thePlayer.lastTickPosZ + (Minecraft.getMinecraft().thePlayer.posZ - Minecraft.getMinecraft().thePlayer.lastTickPosZ) * event.partialTicks;
-            net.minecraft.util.AxisAlignedBB bb = new net.minecraft.util.AxisAlignedBB(
-                    blockPos.getX() - px, blockPos.getY() - py, blockPos.getZ() - pz,
-                    blockPos.getX() + 1 - px, blockPos.getY() + 1 - py, blockPos.getZ() + 1 - pz
-            ).expand(0.01, 0.01, 0.01);
-            EtherwarpZoom.drawFilledBoundingBox(bb, 1f, color);
-            net.minecraft.client.renderer.GlStateManager.disableDepth();
-            EtherwarpZoom.drawOutlineBoundingBox(bb, 2f, color);
-            net.minecraft.client.renderer.GlStateManager.enableDepth();
-            net.minecraft.client.renderer.GlStateManager.depthMask(true);
-            net.minecraft.client.renderer.GlStateManager.enableTexture2D();
-            net.minecraft.client.renderer.GlStateManager.disableBlend();
+            RenderUtils.renderBlockHighlight(blockPos, getColor(blockPos), event.partialTicks);
         }
     }
 
