@@ -139,7 +139,7 @@ public class Diana {
                 final Instant now = Instant.now();
                 if (lastCaptureTime == null || now.isAfter(lastCaptureTime.plusSeconds(63))) {
                     // Evita subtítulo nulo
-                    mc.ingameGUI.displayTitle("¡Inquisidor detectado!", "", 10, 40, 20);
+                    mc.ingameGUI.displayTitle("Inquisitor Detected!", "", 10, 40, 20);
 
                     final int ex = event.entity.getPosition().getX();
                     final int ey = event.entity.getPosition().getY() - 2; // tu ajuste
