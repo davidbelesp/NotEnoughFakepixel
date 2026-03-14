@@ -20,13 +20,25 @@ public class DianaF {
     public boolean dianaBurrowGuess = true;
 
     @Expose
+    @ConfigOption(name = "Show Tracer to Burrow Guess", desc = "Draws tracer to burrow guess.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 0)
+    public boolean dianaTracerBurrowGuess = true;
+
+    @Expose
+    @ConfigOption(name = "Burrow Guess Tracer Color", desc = "Color of burrow guess tracer.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 0)
+    public String dianaGuessBurrowTracerColor = "0:100:0:255:255";
+
+    @Expose
     @ConfigOption(name = "Warp helper", desc = "Show the closest warp to the guess.")
     @ConfigEditorBoolean
     @ConfigAccordionId(id = 0)
     public boolean dianaWarpHelper = true;
 
     @Expose
-    @ConfigOption(name = "Warp Keybbind", desc = "Keybind to quickly warp to the nearest guess burrow.")
+    @ConfigOption(name = "Warp Keybind", desc = "Keybind to quickly warp to the nearest guess burrow.")
     @ConfigEditorKeybind(defaultKey = Keyboard.KEY_H)
     @ConfigAccordionId(id = 0)
     public int warpKeybind = Keyboard.KEY_H;

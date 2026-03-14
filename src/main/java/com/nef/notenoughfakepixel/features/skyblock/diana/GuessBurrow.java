@@ -5,6 +5,7 @@ import com.nef.notenoughfakepixel.config.gui.core.config.KeybindHelper;
 import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.events.PacketReadEvent;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.utils.ColorUtils;
 import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -320,16 +321,33 @@ public class GuessBurrow {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent event) {
-        if (guessPoint != null && Config.feature.diana.dianaBurrowGuess) {
-            BlockPos loc = new BlockPos(guessPoint.xCoord, guessPoint.yCoord + 1, guessPoint.zCoord);
+        Vec3 guess = guessPoint; // capture once
+        if (guess != null && Config.feature.diana.dianaBurrowGuess) {
+            BlockPos loc = new BlockPos(guess.xCoord, guess.yCoord + 1, guess.zCoord);
             AxisAlignedBB aabb = new AxisAlignedBB(
                     loc.getX(), loc.getY(), loc.getZ(),
                     loc.getX() + 1, loc.getY() + 1, loc.getZ() + 1
             );
-
             RenderUtils.renderWaypointText("Burrow Guess", loc, event.partialTicks);
             RenderUtils.drawOutlinedBoundingBox(aabb, Color.GREEN, 2.0f, event.partialTicks);
         }
+        if (guess != null && Config.feature.diana.dianaTracerBurrowGuess) {
+            drawGuessTracer(guess, event.partialTicks);
+        }
+    }
+
+    private void drawGuessTracer(Vec3 guess, float partialTicks) {
+        Minecraft mc = Minecraft.getMinecraft();
+        if (mc.thePlayer == null) return;
+
+        Color base = ColorUtils.getColor(Config.feature.diana.dianaGuessBurrowTracerColor);
+        Color color = new Color(base.getRed(), base.getGreen(), base.getBlue(), 255);
+
+        RenderUtils.draw3DLine(
+                new Vec3(guess.xCoord, guess.yCoord, guess.zCoord),
+                mc.thePlayer.getPositionEyes(partialTicks),
+                color, 4, true, partialTicks
+        );
     }
 
     public static double distance(Vec3 d1, Vec3 d2) {
