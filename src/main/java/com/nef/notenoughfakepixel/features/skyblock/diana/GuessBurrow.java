@@ -134,7 +134,8 @@ public class GuessBurrow {
         if (event.phase != TickEvent.Phase.START || !SkyblockData.getCurrentLocation().isHub()) return;
 
         Minecraft mc = Minecraft.getMinecraft();
-        if (mc.theWorld == null || mc.thePlayer == null || lastSoundPoint == null) return;
+        Vec3 soundPoint = lastSoundPoint;
+        if (mc.theWorld == null || mc.thePlayer == null || soundPoint == null) return;
 
         while (!particleDripLavaQueue.isEmpty()) {
             S2APacketParticles particle = particleDripLavaQueue.poll();
@@ -142,9 +143,9 @@ public class GuessBurrow {
             Vec3 currLoc = new Vec3(particle.getXCoordinate(), particle.getYCoordinate(), particle.getZCoordinate());
 
             if (currLoc == null || lastSoundPoint == null) continue;
-            if (Math.abs(currLoc.xCoord - lastSoundPoint.xCoord) < 2 &&
-                    Math.abs(currLoc.yCoord - lastSoundPoint.yCoord) < 0.5 &&
-                    Math.abs(currLoc.zCoord - lastSoundPoint.zCoord) < 2) {
+            if (Math.abs(currLoc.xCoord - soundPoint.xCoord) < 2 &&
+                    Math.abs(currLoc.yCoord - soundPoint.yCoord) < 0.5 &&
+                    Math.abs(currLoc.zCoord - soundPoint.zCoord) < 2) {
 
                 if (particleLocations.size() < 100 && (particleLocations.isEmpty() || distance(particleLocations.get(particleLocations.size() - 1), currLoc) != 0.0)) {
                     double distMultiplier = 1.0;
@@ -191,9 +192,9 @@ public class GuessBurrow {
                         while (distCovered < distance && i < 10000) {
                             double distStep = distMultiplier * (0.06507 * i + 0.259);
                             lastPos[0] += dx * distStep;
-                            lastPos[1] = lastSoundPoint.yCoord;
+                            lastPos[1] = soundPoint.yCoord;
                             lastPos[2] += dz * distStep;
-                            distCovered = Math.hypot(lastPos[0] - lastSoundPoint.xCoord, lastPos[2] - lastSoundPoint.zCoord);
+                            distCovered = Math.hypot(lastPos[0] - soundPoint.xCoord, lastPos[2] - soundPoint.zCoord);
                             i++;
                         }
 
