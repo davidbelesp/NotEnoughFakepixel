@@ -1,11 +1,13 @@
 package com.nef.notenoughfakepixel.mixin;
 
 import com.nef.notenoughfakepixel.events.ParticlePacketEvent;
+import com.nef.notenoughfakepixel.features.skyblock.qol.EnderNodesHighlighter;
 import com.nef.notenoughfakepixel.features.skyblock.qol.SmoothAote;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.play.server.S2APacketParticles;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraftforge.common.MinecraftForge;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,6 +41,20 @@ public abstract class MixinNetHandlerPlayClient {
     private void nef$postPacketEvent(S2APacketParticles packet, CallbackInfo ci) {
         ParticlePacketEvent evt = new ParticlePacketEvent(packet);
         MinecraftForge.EVENT_BUS.post(evt);
+    }
+
+    @Inject(
+            method = "handleParticles(Lnet/minecraft/network/play/server/S2APacketParticles;)V",
+            at = @At("HEAD")
+    )
+    private void nef$onHandleParticles_endNodes(S2APacketParticles packet, CallbackInfo ci) {
+        if (packet.getParticleType() == EnumParticleTypes.PORTAL) {
+            EnderNodesHighlighter.INSTANCE.onPortalParticle(
+                    packet.getXCoordinate(),
+                    packet.getYCoordinate(),
+                    packet.getZCoordinate()
+            );
+        }
     }
 
     @Redirect(method = "handlePlayerPosLook", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/EntityPlayer;setPositionAndRotation(DDDFF)V"))

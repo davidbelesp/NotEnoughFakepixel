@@ -1345,4 +1345,62 @@ public class RenderUtils {
         GlStateManager.popMatrix();
     }
 
+    public static void renderBlockHighlight(BlockPos pos, Color color, float partialTicks) {
+        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        double px = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
+        double py = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
+        double pz = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
+
+        AxisAlignedBB bb = new AxisAlignedBB(
+                pos.getX() - px, pos.getY() - py, pos.getZ() - pz,
+                pos.getX() + 1 - px, pos.getY() + 1 - py, pos.getZ() + 1 - pz
+        ).expand(0.01, 0.01, 0.01);
+
+        drawFilledBoundingBox(bb, color, 1f);
+
+        GlStateManager.disableDepth();
+        GlStateManager.enableBlend();
+        GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
+        GlStateManager.disableTexture2D();
+        GlStateManager.depthMask(false);
+        GL11.glLineWidth(3);
+        GlStateManager.color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, color.getAlpha() / 255f);
+
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer wr = tessellator.getWorldRenderer();
+
+        wr.begin(3, DefaultVertexFormats.POSITION);
+        wr.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+        wr.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+        wr.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+        tessellator.draw();
+
+        wr.begin(3, DefaultVertexFormats.POSITION);
+        wr.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+        wr.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
+        wr.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+        tessellator.draw();
+
+        wr.begin(1, DefaultVertexFormats.POSITION);
+        wr.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+        wr.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+        wr.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+        wr.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+        wr.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+        wr.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
+        tessellator.draw();
+
+        GL11.glLineWidth(1);
+        GlStateManager.depthMask(true);
+        GlStateManager.enableDepth();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+    }
+
 }
