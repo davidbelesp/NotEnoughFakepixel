@@ -13,15 +13,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.awt.*;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class BlockHighlighter {
 
     protected abstract boolean isEnabled();
     protected abstract boolean isValidHighlightSpot(BlockPos key);
     protected abstract Color getColor(BlockPos blockPos);
-    public final Set<BlockPos> highlightedBlocks = new HashSet<>();
+    public final Set<BlockPos> highlightedBlocks = ConcurrentHashMap.newKeySet();
 
     @SubscribeEvent
     public void onWorldRenderLast(RenderWorldLastEvent event) {
