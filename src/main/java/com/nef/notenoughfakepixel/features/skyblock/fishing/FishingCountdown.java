@@ -129,10 +129,12 @@ public class FishingCountdown {
         long currentTime = System.currentTimeMillis();
         particleHistory.add(new ParticleData(particlePos, currentTime));
 
-        if (particleHistory.size() >= MIN_PARTICLES_FOR_PATH) {
-            if (isValidParticlePath(new Vec3(playerBobber.posX, 0, playerBobber.posZ))) {
-                ParticleData firstParticle = particleHistory.get(0);
-                ParticleData lastParticle = particleHistory.get(particleHistory.size() - 1);
+        List<ParticleData> snapshot = new ArrayList<>(particleHistory);
+
+        if (snapshot.size() >= MIN_PARTICLES_FOR_PATH) {
+            if (isValidParticlePath(new Vec3(playerBobber.posX, 0, playerBobber.posZ), snapshot)) {
+                ParticleData firstParticle = snapshot.get(0);
+                ParticleData lastParticle = snapshot.get(snapshot.size() - 1);
 
                 double firstDistance = new Vec3(firstParticle.position.xCoord, 0, firstParticle.position.zCoord)
                         .distanceTo(new Vec3(playerBobber.posX, 0, playerBobber.posZ));
@@ -160,30 +162,28 @@ public class FishingCountdown {
         }
     }
 
-    private boolean isValidParticlePath(Vec3 bobberPos) {
+    private boolean isValidParticlePath(Vec3 bobberPos, List<ParticleData> history) {
         if (bobberPos == null) return false;
+        if (history.size() < MIN_PARTICLES_FOR_PATH) return false;
 
-        if (particleHistory.size() < MIN_PARTICLES_FOR_PATH) return false;
-
-        for (int i = 1; i < particleHistory.size(); i++) {
-            if (particleHistory.get(i) == null || particleHistory.get(i).position == null ||
-                    particleHistory.get(i - 1) == null || particleHistory.get(i - 1).position == null) {
+        for (int i = 1; i < history.size(); i++) {
+            if (history.get(i) == null || history.get(i).position == null ||
+                    history.get(i - 1) == null || history.get(i - 1).position == null) {
                 return false;
             }
-
-            double interParticleDistance = particleHistory.get(i).position.distanceTo(particleHistory.get(i - 1).position);
+            double interParticleDistance = history.get(i).position.distanceTo(history.get(i - 1).position);
             if (interParticleDistance > MAX_INTER_PARTICLE_DISTANCE) {
                 return false;
             }
         }
 
-        if (particleHistory.get(0) == null || particleHistory.get(0).position == null ||
-                particleHistory.get(particleHistory.size() - 1) == null || particleHistory.get(particleHistory.size() - 1).position == null) {
+        if (history.get(0) == null || history.get(0).position == null ||
+                history.get(history.size() - 1) == null || history.get(history.size() - 1).position == null) {
             return false;
         }
 
-        double firstDistance = particleHistory.get(0).position.distanceTo(bobberPos);
-        double lastDistance = particleHistory.get(particleHistory.size() - 1).position.distanceTo(bobberPos);
+        double firstDistance = history.get(0).position.distanceTo(bobberPos);
+        double lastDistance = history.get(history.size() - 1).position.distanceTo(bobberPos);
 
         return lastDistance < firstDistance;
     }
