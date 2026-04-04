@@ -48,7 +48,6 @@ public class NotEnoughFakepixel {
     public void init(FMLInitializationEvent event) {
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(new PetTracker()); // ADDED THIS REGISTRATION
         objLoader = new OBJLoader();
 
         //registerCosmetics();

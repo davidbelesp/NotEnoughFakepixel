@@ -1,9 +1,9 @@
 package com.nef.notenoughfakepixel.features;
 
+import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.utils.PetData;
+import com.nef.notenoughfakepixel.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.inventory.GuiChest;
 import net.minecraft.inventory.ContainerChest;
 import net.minecraft.inventory.IInventory;
@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@RegisterEvents
 public class PetTracker {
     private Map<String, Integer> ownedPets = new HashMap<>();
     private List<String> missingPets = new ArrayList<>();
@@ -49,7 +50,7 @@ public class PetTracker {
 
             if (lowerChestInventory.getDisplayName().getUnformattedText().contains("Pets")) {
                 scanPets(lowerChestInventory);
-                drawSidebar(chest);
+                RenderUtils.drawPetSidebar(chest, totalPetScore, missingPets, upgradeablePets, scrollIndexRight, scrollIndexLeft);
             }
         }
     }
@@ -98,7 +99,7 @@ public class PetTracker {
             cleanName = cleanName.replaceAll("\\[Lvl \\d+\\] ", "").trim();
             int rarityScore = getRarityScoreFromColor(rawDisplayName);
 
-            for (String petName : PetData.ALL_PETS) {
+            for (String petName : PetData.getAllPets()) {
                 if (cleanName.contains(petName)) {
                     int currentHighest = ownedPets.getOrDefault(petName, 0);
                     ownedPets.put(petName, Math.max(currentHighest, rarityScore));
@@ -115,7 +116,7 @@ public class PetTracker {
         missingPets.clear();
         upgradeablePets.clear();
 
-        for (String pet : PetData.ALL_PETS) {
+        for (String pet : PetData.getAllPets()) {
             if (!ownedPets.containsKey(pet)) {
                 missingPets.add("\u00A7c\u2718 " + pet); // Red X for missing
             } else {
@@ -165,61 +166,6 @@ public class PetTracker {
             case 3: return "\u00A79"; // Rare (Blue)
             case 2: return "\u00A7a"; // Uncommon (Green)
             default: return "\u00A7f"; // Common (White)
-        }
-    }
-
-    private void drawSidebar(GuiChest chest) {
-        FontRenderer fr = Minecraft.getMinecraft().fontRendererObj;
-
-        int guiLeft = (chest.width - 176) / 2;
-        int guiTop = (chest.height - 222) / 2;
-
-        // --- RIGHT TABLE (Missing Pets & Score) ---
-        int rightX = guiLeft + 182;
-        int rightY = guiTop + 15;
-
-        // Draw Gold Border and Dark Background for Right Table
-        Gui.drawRect(rightX - 6, rightY - 6, rightX + 136, rightY + 186, 0xFFFFAA00); // Gold Border
-        Gui.drawRect(rightX - 5, rightY - 5, rightX + 135, rightY + 185, 0xDD000000); // Dark Inner
-
-        fr.drawStringWithShadow("\u00A76\u2605 Total Pet Score: \u00A7e" + totalPetScore, rightX, rightY, 0xFFFFFF);
-        Gui.drawRect(rightX - 5, rightY + 12, rightX + 135, rightY + 13, 0x55FFAA00); // Separator Line
-        rightY += 18;
-
-        fr.drawStringWithShadow("\u00A7bMissing Pets:", rightX, rightY, 0xFFFFFF);
-        rightY += 12;
-
-        int itemsToShow = 15;
-        for (int i = 0; i < itemsToShow; i++) {
-            int listIndex = scrollIndexRight + i;
-            if (listIndex >= missingPets.size()) break;
-            fr.drawStringWithShadow(missingPets.get(listIndex), rightX, rightY, 0xFFFFFF);
-            rightY += 10;
-        }
-        if (missingPets.size() > itemsToShow) {
-            fr.drawStringWithShadow("\u00A78(Scroll for more)", rightX, rightY + 5, 0xFFFFFF);
-        }
-
-        // --- LEFT TABLE (Upgradeable Pets) ---
-        int leftX = guiLeft - 150;
-        int leftY = guiTop + 15;
-
-        // Draw Gold Border and Dark Background for Left Table
-        Gui.drawRect(leftX - 6, leftY - 6, leftX + 146, leftY + 186, 0xFFFFAA00); // Gold Border
-        Gui.drawRect(leftX - 5, leftY - 5, leftX + 145, leftY + 185, 0xDD000000); // Dark Inner
-
-        fr.drawStringWithShadow("\u00A7a\u2B06 Upgradeable Pets", leftX, leftY, 0xFFFFFF);
-        Gui.drawRect(leftX - 5, leftY + 12, leftX + 145, leftY + 13, 0x5555FF55); // Separator Line
-        leftY += 18;
-
-        for (int i = 0; i < itemsToShow; i++) {
-            int listIndex = scrollIndexLeft + i;
-            if (listIndex >= upgradeablePets.size()) break;
-            fr.drawStringWithShadow(upgradeablePets.get(listIndex), leftX, leftY, 0xFFFFFF);
-            leftY += 10;
-        }
-        if (upgradeablePets.size() > itemsToShow) {
-            fr.drawStringWithShadow("\u00A78(Scroll for more)", leftX, leftY + 5, 0xFFFFFF);
         }
     }
 }
