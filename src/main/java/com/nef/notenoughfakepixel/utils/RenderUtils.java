@@ -1403,4 +1403,59 @@ public class RenderUtils {
         GlStateManager.disableBlend();
     }
 
+    public static void drawPetSidebar(net.minecraft.client.gui.inventory.GuiChest chest, int totalPetScore,
+                                      java.util.List<String> missingPets, java.util.List<String> upgradeablePets,
+                                      int scrollIndexRight, int scrollIndexLeft) {
+        FontRenderer fr = mc.fontRendererObj;
+
+        int guiLeft = (chest.width - 176) / 2;
+        int guiTop = (chest.height - 222) / 2;
+
+        // --- RIGHT TABLE (Missing Pets & Score) ---
+        int rightX = guiLeft + 182;
+        int rightY = guiTop + 15;
+
+        Gui.drawRect(rightX - 6, rightY - 6, rightX + 136, rightY + 186, 0xFFFFAA00); // Gold Border
+        Gui.drawRect(rightX - 5, rightY - 5, rightX + 135, rightY + 185, 0xDD000000); // Dark Inner
+
+        fr.drawStringWithShadow("\u00A76\u2605 Total Pet Score: \u00A7e" + totalPetScore, rightX, rightY, 0xFFFFFF);
+        Gui.drawRect(rightX - 5, rightY + 12, rightX + 135, rightY + 13, 0x55FFAA00); // Separator Line
+        rightY += 18;
+
+        fr.drawStringWithShadow("\u00A7bMissing Pets:", rightX, rightY, 0xFFFFFF);
+        rightY += 12;
+
+        int itemsToShow = 15;
+        for (int i = 0; i < itemsToShow; i++) {
+            int listIndex = scrollIndexRight + i;
+            if (listIndex >= missingPets.size()) break;
+            fr.drawStringWithShadow(missingPets.get(listIndex), rightX, rightY, 0xFFFFFF);
+            rightY += 10;
+        }
+        if (missingPets.size() > itemsToShow) {
+            fr.drawStringWithShadow("\u00A78(Scroll for more)", rightX, rightY + 5, 0xFFFFFF);
+        }
+
+        // --- LEFT TABLE (Upgradeable Pets) ---
+        int leftX = guiLeft - 150;
+        int leftY = guiTop + 15;
+
+        Gui.drawRect(leftX - 6, leftY - 6, leftX + 146, leftY + 186, 0xFFFFAA00); // Gold Border
+        Gui.drawRect(leftX - 5, leftY - 5, leftX + 145, leftY + 185, 0xDD000000); // Dark Inner
+
+        fr.drawStringWithShadow("\u00A7a\u2B06 Upgradeable Pets", leftX, leftY, 0xFFFFFF);
+        Gui.drawRect(leftX - 5, leftY + 12, leftX + 145, leftY + 13, 0x5555FF55); // Separator Line
+        leftY += 18;
+
+        for (int i = 0; i < itemsToShow; i++) {
+            int listIndex = scrollIndexLeft + i;
+            if (listIndex >= upgradeablePets.size()) break;
+            fr.drawStringWithShadow(upgradeablePets.get(listIndex), leftX, leftY, 0xFFFFFF);
+            leftY += 10;
+        }
+        if (upgradeablePets.size() > itemsToShow) {
+            fr.drawStringWithShadow("\u00A78(Scroll for more)", leftX, leftY + 5, 0xFFFFFF);
+        }
+    }
+
 }

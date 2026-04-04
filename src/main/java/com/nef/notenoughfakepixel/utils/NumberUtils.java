@@ -7,7 +7,7 @@ public class NumberUtils {
     public static int parseIntSafe(String s) {
         try {
             return Integer.parseInt(s.trim());
-        } catch (Exception ignored) {
+        } catch (NumberFormatException ignored) {
             return 0;
         }
     }
