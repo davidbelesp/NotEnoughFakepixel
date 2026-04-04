@@ -4,6 +4,7 @@ import com.nef.notenoughfakepixel.alerts.Alerts;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.env.registers.ModEventRegistrar;
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
+import com.nef.notenoughfakepixel.features.PetTracker; // ADDED THIS IMPORT
 import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import com.nef.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import com.nef.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
@@ -47,6 +48,7 @@ public class NotEnoughFakepixel {
     public void init(FMLInitializationEvent event) {
         instance = this;
         MinecraftForge.EVENT_BUS.register(this);
+        MinecraftForge.EVENT_BUS.register(new PetTracker()); // ADDED THIS REGISTRATION
         objLoader = new OBJLoader();
 
         //registerCosmetics();
