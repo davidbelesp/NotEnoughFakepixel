@@ -59,6 +59,10 @@ public class Configuration {
             ConfigRunnables.runDebugRunnable(runnableId);
         }
 
+        if (runnableId.startsWith("exec_")) {
+            ConfigRunnables.runExecutableRunnable(runnableId);
+        }
+
         if ("editAshfangPosition".equals(runnableId)) {
             editOverlay(activeConfigCategory, 100, 20, Config.feature.crimson.ashfangOverlayPos);
         }

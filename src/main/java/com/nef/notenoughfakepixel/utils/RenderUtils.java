@@ -1363,6 +1363,7 @@ public class RenderUtils {
     public static void drawPetSidebar(net.minecraft.client.gui.inventory.GuiChest chest, int totalPetScore,
                                       List<String> missingPets, List<String> upgradeablePets,
                                       int scrollIndexRight, int scrollIndexLeft) {
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.0f);
         FontRenderer fr = mc.fontRendererObj;
 
         int guiLeft = (chest.width - 176) / 2;
