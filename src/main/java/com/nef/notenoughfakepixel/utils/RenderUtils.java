@@ -1359,15 +1359,9 @@ public class RenderUtils {
         GlStateManager.disableBlend();
     }
 
-<<<<<<< Updated upstream
-    public static void drawPetSidebar(net.minecraft.client.gui.inventory.GuiChest chest, int totalPetScore,
-                                      java.util.List<String> missingPets, java.util.List<String> upgradeablePets,
-=======
-<<<<<<< Updated upstream
-=======
+
     public static void drawPetSidebar(net.minecraft.client.gui.inventory.GuiChest chest, int totalPetScore,
                                       List<String> missingPets, List<String> upgradeablePets,
->>>>>>> Stashed changes
                                       int scrollIndexRight, int scrollIndexLeft) {
         FontRenderer fr = mc.fontRendererObj;
 
@@ -1421,8 +1415,5 @@ public class RenderUtils {
         }
     }
 
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
+
 }
