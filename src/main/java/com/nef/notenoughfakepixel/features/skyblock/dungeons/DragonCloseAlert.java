@@ -15,8 +15,6 @@ import lombok.Getter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.boss.EntityDragon;
-import net.minecraft.entity.item.EntityArmorStand;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.Vec3;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -167,41 +165,28 @@ public class DragonCloseAlert {
         });
     }
 
+    private Color getColorFromName(String name) {
+        if (name == null || name.length() < 2) return null;
+        if (name.startsWith("\u00a7c")) return Color.RED;    // §c Power Dragon
+        if (name.startsWith("\u00a7a")) return Color.GREEN;  // §a Apex Dragon
+        if (name.startsWith("\u00a7b")) return Color.CYAN;   // §b Ice Dragon
+        if (name.startsWith("\u00a76")) return Color.ORANGE; // §6 Flame Dragon
+        if (name.startsWith("\u00a7d")) return Color.PINK;   // §d Soul Dragon
+        return null;
+    }
+
     private void drawDragonBox(RenderWorldLastEvent e) {
         if (!Config.feature.dungeons.dragOutline) return;
         mc.theWorld.getLoadedEntityList().forEach(entity -> {
-            if (entity instanceof EntityArmorStand) {
-                EntityArmorStand stand = (EntityArmorStand) entity;
-                ItemStack skull = stand.getCurrentArmor(3);
-                if (skull == null || skull.getItem() == null || !skull.getItem().getUnlocalizedName().contains("skull"))
-                    return;
+            if (!(entity instanceof EntityDragon)) return;
+            EntityDragon dragon = (EntityDragon) entity;
+            if (isDying(dragon)) return;
 
-                String texture = ItemUtils.getSkullTexture(skull);
-                if (texture == null || texture.isEmpty()) return;
+            String name = dragon.getDisplayName().getFormattedText();
+            Color color = getColorFromName(name);
+            if (color == null) return;
 
-                List<Skins> skins = ORBS.stream().map(Orb::getSkin).collect(Collectors.toList());
-                Skins skin = Skins.getSkinByValue(texture);
-                if (skin == null || !skins.contains(skin)) return;
-
-                Color color = ORBS.stream()
-                        .filter(orb -> orb.getSkin().equals(skin))
-                        .map(Orb::getColor)
-                        .findFirst()
-                        .orElse(Color.WHITE);
-
-                EntityLivingBase entityLiving = stand.worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                                stand.getEntityBoundingBox().expand(1.5, 3.0, 1.5),
-                                e1 -> e1 instanceof EntityDragon && !e1.isDead && e1 != mc.thePlayer)
-                        .stream()
-                        .findFirst()
-                        .orElse(null);
-
-                if (entityLiving instanceof EntityDragon) {
-                    EntityDragon dragon = (EntityDragon) entityLiving;
-                    if (isDying(dragon)) return;
-                    DRAGON_COLOR_MAP.put(dragon, color);
-                }
-            }
+            DRAGON_COLOR_MAP.put(dragon, color);
         });
     }
 
@@ -218,11 +203,7 @@ public class DragonCloseAlert {
 
         Color c = DRAGON_COLOR_MAP.get(dragon);
         if (c != null) {
-            if (Configuration.isPojav()) {
-                EntityHighlightUtils.renderEntityOutline(e, c);
-            } else {
-                OutlineUtils.outlineEntity(e, 4.0f, c, true);
-            }
+            EntityHighlightUtils.renderEntityOutline(e, c);
         }
     }
 

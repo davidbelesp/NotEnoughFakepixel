@@ -195,10 +195,6 @@ public class SlayerMobsDisplay {
             }
         }
 
-        if (Configuration.isPojav()) {
-            EntityHighlightUtils.renderEntityOutline(event, color);
-        } else {
-            OutlineUtils.outlineEntity(event, 6.0f, color, true);
-        }
+        EntityHighlightUtils.renderEntityOutline(event, color);
     }
 }

@@ -20,6 +20,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.awt.*;
+import java.util.List;
 
 public class RenderUtils {
 
@@ -74,12 +75,12 @@ public class RenderUtils {
     public static void drawItemStackWithText(ItemStack stack, int x, int y, String text) {
         if (stack == null) return;
 
-        RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+        RenderItem itemRender = mc.getRenderItem();
 
         RenderHelper.enableGUIStandardItemLighting();
         itemRender.zLevel = -145;
         itemRender.renderItemAndEffectIntoGUI(stack, x, y);
-        itemRender.renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRendererObj, stack, x, y, text);
+        itemRender.renderItemOverlayIntoGUI(mc.fontRendererObj, stack, x, y, text);
         itemRender.zLevel = 0;
         RenderHelper.disableStandardItemLighting();
     }
@@ -91,7 +92,7 @@ public class RenderUtils {
         double viewerY;
         double viewerZ;
 
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
@@ -121,7 +122,7 @@ public class RenderUtils {
             GlStateManager.disableDepth();
         }
 
-        Minecraft.getMinecraft().getTextureManager().bindTexture(beaconBeam);
+        mc.getTextureManager().bindTexture(beaconBeam);
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
         GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
         GL11.glDisable(GL11.GL_LIGHTING);
@@ -131,7 +132,7 @@ public class RenderUtils {
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
 
-        double time = Minecraft.getMinecraft().theWorld.getTotalWorldTime() + (double) partialTicks;
+        double time = mc.theWorld.getTotalWorldTime() + (double) partialTicks;
         double d1 = MathHelper.func_181162_h(-time * 0.2D - (double) MathHelper.floor_double(-time * 0.1D));
 
         float r = ((rgb >> 16) & 0xFF) / 255f;
@@ -222,7 +223,6 @@ public class RenderUtils {
             float partialTicks,
             Color color, boolean disableDepth
     ) {
-        Minecraft mc = Minecraft.getMinecraft();
         Entity player = mc.getRenderViewEntity();
 
         // Interpolated player position
@@ -480,7 +480,6 @@ public class RenderUtils {
      * @param partialTicks The render partial ticks used for smooth interpolation.
      */
     public static void drawTag(String str, double[] pos, Color color, float partialTicks) {
-        Minecraft mc = Minecraft.getMinecraft();
         FontRenderer font = mc.fontRendererObj;
         EntityPlayerSP player = mc.thePlayer;
         RenderManager renderManager = mc.getRenderManager();
@@ -563,7 +562,7 @@ public class RenderUtils {
         WorldRenderer wr = tess.getWorldRenderer();
 
         GlStateManager.disableTexture2D();
-        wr.begin(7, DefaultVertexFormats.POSITION_COLOR);
+        wr.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
         wr.pos(-width - 1, -1, 0.0D).color(0, 0, 0, 64).endVertex();
         wr.pos(-width - 1, 8, 0.0D).color(0, 0, 0, 64).endVertex();
         wr.pos(width + 1, 8, 0.0D).color(0, 0, 0, 64).endVertex();
@@ -595,8 +594,8 @@ public class RenderUtils {
     public static void draw3DLine(Vec3 pos1, Vec3 pos2, Color color, int lineWidth, boolean depth,
                                   float partialTicks, boolean fromHead, boolean isLever, BlockLever.EnumOrientation orientation) {
 
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
-        Vec3 interp = getInterpolatedPosition(viewer, partialTicks);
+        Entity viewer = mc.getRenderViewEntity();
+        Vec3 interp = getInterpolatedPos(viewer, partialTicks);
 
         Vec3 start = isLever ? getLeverCenter(pos1, orientation) : pos1;
         Vec3 end = fromHead ? getPlayerLookVec() : pos2;
@@ -610,21 +609,6 @@ public class RenderUtils {
         cleanupRenderState(depth);
         GlStateManager.translate(interp.xCoord, interp.yCoord, interp.zCoord);
         GlStateManager.popMatrix();
-    }
-
-    /**
-     * Calculates the interpolated position of an entity based on the current partial ticks.
-     * This allows for smooth rendering between ticks.
-     *
-     * @param entity       The entity to interpolate (e.g., the render view entity).
-     * @param partialTicks The current render partial ticks.
-     * @return The interpolated {@link Vec3} position.
-     */
-    private static Vec3 getInterpolatedPosition(Entity entity, float partialTicks) {
-        double x = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
-        double y = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
-        double z = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
-        return new Vec3(x, y, z);
     }
 
     /**
@@ -662,7 +646,6 @@ public class RenderUtils {
      * @return A normalized {@link Vec3} representing the player's look direction.
      */
     private static Vec3 getPlayerLookVec() {
-        Minecraft mc = Minecraft.getMinecraft();
         float yaw = -mc.thePlayer.rotationYaw;
         float pitch = -mc.thePlayer.rotationPitch;
         return new Vec3(0, 0, 1)
@@ -734,7 +717,7 @@ public class RenderUtils {
     }
 
     public static void highlightBlock(BlockPos pos, Color color, boolean disableDepth, boolean isButton, float partialTicks) {
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
@@ -769,7 +752,7 @@ public class RenderUtils {
 
     public static void drawLeverBoundingBox(BlockPos pos, EnumFacing facing, Color color, float partialTicks) {
         // Get the player's camera position
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
@@ -971,7 +954,7 @@ public class RenderUtils {
 
     public static void drawFilledBoundingBoxEntity(AxisAlignedBB aabb, float alpha, Color color, float partialTicks) {
         // Used for BlazeAttunements
-        Entity render = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity render = mc.getRenderViewEntity();
 
         double coordX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
         double coordY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
@@ -993,43 +976,34 @@ public class RenderUtils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
-        // Draw the six faces of the box
+        // Draw all six faces of the box in a single draw call
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        // Bottom
         worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        // Top
         worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        // North
         worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
-        tessellator.draw();
-
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        // South
         worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
-        tessellator.draw();
-
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        // West
         worldrenderer.pos(aabb.minX, aabb.minY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.minY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.maxY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.minX, aabb.maxY, aabb.minZ).endVertex();
-        tessellator.draw();
-
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
+        // East
         worldrenderer.pos(aabb.maxX, aabb.minY, aabb.minZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.minY, aabb.maxZ).endVertex();
         worldrenderer.pos(aabb.maxX, aabb.maxY, aabb.maxZ).endVertex();
@@ -1056,7 +1030,7 @@ public class RenderUtils {
         GlStateManager.disableLighting();
         GL11.glDisable(GL11.GL_LIGHTING);
 
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         double viewerX = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double viewerY = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double viewerZ = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
@@ -1080,11 +1054,11 @@ public class RenderUtils {
 
         drawNametag(str);
 
-        GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
-        GlStateManager.rotate(Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(-mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
         GlStateManager.translate(0, -0.25f, 0);
-        GlStateManager.rotate(-Minecraft.getMinecraft().getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
-        GlStateManager.rotate(Minecraft.getMinecraft().getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
+        GlStateManager.rotate(-mc.getRenderManager().playerViewX, 1.0F, 0.0F, 0.0F);
+        GlStateManager.rotate(mc.getRenderManager().playerViewY, 0.0F, 1.0F, 0.0F);
 
         if (showDistance) drawNametag(EnumChatFormatting.YELLOW.toString() + Math.round(dist) + "m");
 
@@ -1094,12 +1068,12 @@ public class RenderUtils {
     }
 
     public static void drawNametag(String str) {
-        FontRenderer fontrenderer = Minecraft.getMinecraft().fontRendererObj;
+        FontRenderer fontrenderer = mc.fontRendererObj;
         float f = 1.6F;
         float f1 = 0.016666668F * f;
         GlStateManager.pushMatrix();
         GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-        RenderManager renderManager = Minecraft.getMinecraft().getRenderManager();
+        RenderManager renderManager = mc.getRenderManager();
         GlStateManager.rotate(-renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
         GlStateManager.rotate(renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
         GlStateManager.scale(-f1, -f1, f1);
@@ -1108,24 +1082,22 @@ public class RenderUtils {
         GlStateManager.depthMask(false);
         GlStateManager.disableDepth();
         GlStateManager.enableBlend();
-        GlStateManager.disableLighting();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        int i = 0;
 
         int j = fontrenderer.getStringWidth(str) / 2;
         GlStateManager.disableTexture2D();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-        worldrenderer.pos(-j - 1, -1 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        worldrenderer.pos(-j - 1, 8 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        worldrenderer.pos(j + 1, 8 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-        worldrenderer.pos(j + 1, -1 + i, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        worldrenderer.pos(-j - 1, -1, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(-j - 1, 8, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(j + 1, 8, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+        worldrenderer.pos(j + 1, -1, 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
+        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, 0, 553648127);
         GlStateManager.depthMask(true);
-        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
+        fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, 0, -1);
         GlStateManager.enableDepth();
         GlStateManager.enableBlend();
         GL11.glEnable(GL11.GL_LIGHTING);
@@ -1135,7 +1107,7 @@ public class RenderUtils {
     }
 
     public static void drawOutlinedBoundingBox(AxisAlignedBB aabb, Color color, float width, float partialTicks) {
-        Entity render = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity render = mc.getRenderViewEntity();
         double realX = render.lastTickPosX + (render.posX - render.lastTickPosX) * partialTicks;
         double realY = render.lastTickPosY + (render.posY - render.lastTickPosY) * partialTicks;
         double realZ = render.lastTickPosZ + (render.posZ - render.lastTickPosZ) * partialTicks;
@@ -1163,7 +1135,7 @@ public class RenderUtils {
     }
 
     public static Vector3f getInterpolatedPlayerPosition(float partialTicks) {
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         Vector3f lastPos = new Vector3f(
                 (float) viewer.lastTickPosX,
                 (float) viewer.lastTickPosY,
@@ -1215,55 +1187,39 @@ public class RenderUtils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
 
+        // Top + Bottom (full color)
         GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f * alpha);
-
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
-        tessellator.draw();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         tessellator.draw();
 
-        GlStateManager.color(
-                c.getRed() / 255f * 0.8f,
-                c.getGreen() / 255f * 0.8f,
-                c.getBlue() / 255f * 0.8f,
-                c.getAlpha() / 255f * alpha
-        );
-
+        // West + East (80% brightness)
+        GlStateManager.color(c.getRed() / 255f * 0.8f, c.getGreen() / 255f * 0.8f, c.getBlue() / 255f * 0.8f, c.getAlpha() / 255f * alpha);
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
-        tessellator.draw();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
         tessellator.draw();
 
-        GlStateManager.color(
-                c.getRed() / 255f * 0.9f,
-                c.getGreen() / 255f * 0.9f,
-                c.getBlue() / 255f * 0.9f,
-                c.getAlpha() / 255f * alpha
-        );
-
+        // North + South (90% brightness)
+        GlStateManager.color(c.getRed() / 255f * 0.9f, c.getGreen() / 255f * 0.9f, c.getBlue() / 255f * 0.9f, c.getAlpha() / 255f * alpha);
         worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.minZ).endVertex();
-        tessellator.draw();
-        worldrenderer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         worldrenderer.pos(p_181561_0_.minX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.minY, p_181561_0_.maxZ).endVertex();
         worldrenderer.pos(p_181561_0_.maxX, p_181561_0_.maxY, p_181561_0_.maxZ).endVertex();
@@ -1276,9 +1232,9 @@ public class RenderUtils {
     }
 
     public static void renderBoundingBox(BlockPos pos, int rgb, float partialTicks, boolean ignoreDepth) {
-        double playerX = Minecraft.getMinecraft().thePlayer.prevPosX + (Minecraft.getMinecraft().thePlayer.posX - Minecraft.getMinecraft().thePlayer.prevPosX) * partialTicks;
-        double playerY = Minecraft.getMinecraft().thePlayer.prevPosY + (Minecraft.getMinecraft().thePlayer.posY - Minecraft.getMinecraft().thePlayer.prevPosY) * partialTicks;
-        double playerZ = Minecraft.getMinecraft().thePlayer.prevPosZ + (Minecraft.getMinecraft().thePlayer.posZ - Minecraft.getMinecraft().thePlayer.prevPosZ) * partialTicks;
+        double playerX = mc.thePlayer.prevPosX + (mc.thePlayer.posX - mc.thePlayer.prevPosX) * partialTicks;
+        double playerY = mc.thePlayer.prevPosY + (mc.thePlayer.posY - mc.thePlayer.prevPosY) * partialTicks;
+        double playerZ = mc.thePlayer.prevPosZ + (mc.thePlayer.posZ - mc.thePlayer.prevPosZ) * partialTicks;
 
         double x = pos.getX() - playerX;
         double y = pos.getY() - playerY;
@@ -1346,7 +1302,7 @@ public class RenderUtils {
     }
 
     public static void renderBlockHighlight(BlockPos pos, Color color, float partialTicks) {
-        Entity viewer = Minecraft.getMinecraft().getRenderViewEntity();
+        Entity viewer = mc.getRenderViewEntity();
         double px = viewer.lastTickPosX + (viewer.posX - viewer.lastTickPosX) * partialTicks;
         double py = viewer.lastTickPosY + (viewer.posY - viewer.lastTickPosY) * partialTicks;
         double pz = viewer.lastTickPosZ + (viewer.posZ - viewer.lastTickPosZ) * partialTicks;
@@ -1369,7 +1325,7 @@ public class RenderUtils {
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer wr = tessellator.getWorldRenderer();
 
-        wr.begin(3, DefaultVertexFormats.POSITION);
+        wr.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
         wr.pos(bb.minX, bb.minY, bb.minZ).endVertex();
         wr.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
         wr.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
@@ -1377,7 +1333,7 @@ public class RenderUtils {
         wr.pos(bb.minX, bb.minY, bb.minZ).endVertex();
         tessellator.draw();
 
-        wr.begin(3, DefaultVertexFormats.POSITION);
+        wr.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
         wr.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
         wr.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
         wr.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
@@ -1385,7 +1341,7 @@ public class RenderUtils {
         wr.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
         tessellator.draw();
 
-        wr.begin(1, DefaultVertexFormats.POSITION);
+        wr.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
         wr.pos(bb.minX, bb.minY, bb.minZ).endVertex();
         wr.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
         wr.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
@@ -1403,8 +1359,15 @@ public class RenderUtils {
         GlStateManager.disableBlend();
     }
 
+<<<<<<< Updated upstream
     public static void drawPetSidebar(net.minecraft.client.gui.inventory.GuiChest chest, int totalPetScore,
                                       java.util.List<String> missingPets, java.util.List<String> upgradeablePets,
+=======
+<<<<<<< Updated upstream
+=======
+    public static void drawPetSidebar(net.minecraft.client.gui.inventory.GuiChest chest, int totalPetScore,
+                                      List<String> missingPets, List<String> upgradeablePets,
+>>>>>>> Stashed changes
                                       int scrollIndexRight, int scrollIndexLeft) {
         FontRenderer fr = mc.fontRendererObj;
 
@@ -1458,4 +1421,8 @@ public class RenderUtils {
         }
     }
 
+<<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 }
