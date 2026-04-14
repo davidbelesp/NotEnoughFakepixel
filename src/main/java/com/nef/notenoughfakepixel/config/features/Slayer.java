@@ -5,6 +5,51 @@ import com.nef.notenoughfakepixel.config.gui.core.config.Position;
 import com.nef.notenoughfakepixel.config.gui.core.config.annotations.*;
 
 public class Slayer {
+ // slayer overlay
+    @Expose
+    @ConfigOption(name = "Slayer Overlay", desc = "Slayer Overlay Settings")
+    @ConfigEditorAccordion(id = 3)
+    @ConfigEditorBoolean
+    public boolean slayerAccordion = true;
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay", desc = "Enable/Disable slayers overlay")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean slayerOverlay = true;
+
+    @Expose
+    @ConfigOption(name = "Position", desc = "Edit slayer overlay position.")
+    @ConfigEditorButton(runnableId = "editSlayerOverlayPos", buttonText = "Edit")
+    @ConfigAccordionId(id = 3)
+    public String editSlayerOverlayPos = "";
+
+    @Expose
+    public Position slayerOverlayPos = new Position(0, 0, false, false);
+
+    @Expose
+    @ConfigOption(name = "Hide on Tab", desc = "Hide the slayer overlay when the tab list is open.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean slayerOverlayHideOnTab = true;
+
+    @Expose
+    @ConfigOption(name = "Hide on Chat", desc = "Hide the slayer overlay when the chat is open.")
+    @ConfigEditorBoolean
+    @ConfigAccordionId(id = 3)
+    public boolean slayerOverlayHideOnChat = true;
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay Scale", desc = "Scale of the slayer overlay text.")
+    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
+    @ConfigAccordionId(id = 3)
+    public float slayerOverlayScale = 1.0f;
+
+    @Expose
+    @ConfigOption(name = "Slayer Overlay Background Color", desc = "Background color of the slayer overlay.")
+    @ConfigEditorColour
+    @ConfigAccordionId(id = 3)
+    public String slayerOverlayBackgroundColor = "0:150:0:0:0";
 
     // Minibosses Subcategory
     @Expose
@@ -127,36 +172,4 @@ public class Slayer {
     @ConfigEditorBoolean
     public boolean slayerBlazeAttunements = true;
 
-    @Expose
-    @ConfigOption(name = "Slayer Overlay", desc = "Slayer Overlay Settings")
-    @ConfigEditorAccordion(id = 3)
-    @ConfigEditorBoolean
-    public boolean slayerAccordion = true;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay", desc = "Enable/Disable slayers overlay")
-    @ConfigEditorBoolean
-    @ConfigAccordionId(id = 3)
-    public boolean slayerOverlay = true;
-
-    @Expose
-    @ConfigOption(name = "Position", desc = "Edit slayer overlay position.")
-    @ConfigEditorButton(runnableId = "editSlayerOverlayPos", buttonText = "Edit")
-    @ConfigAccordionId(id = 3)
-    public String editSlayerOverlayPos = "";
-
-    @Expose
-    public Position slayerOverlayPos = new Position(0, 0, false, false);
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay Scale", desc = "Scale of the slayer overlay text.")
-    @ConfigEditorSlider(minValue = 0.5f, maxValue = 5.0f, minStep = 0.1f)
-    @ConfigAccordionId(id = 3)
-    public float slayerOverlayScale = 1.0f;
-
-    @Expose
-    @ConfigOption(name = "Slayer Overlay Background Color", desc = "Background color of the slayer overlay.")
-    @ConfigEditorColour
-    @ConfigAccordionId(id = 3)
-    public String slayerOverlayBackgroundColor = "0:150:0:0:0";
 }

@@ -8,6 +8,7 @@ import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.variables.Location;
 import com.nef.notenoughfakepixel.variables.Slayer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -25,7 +26,10 @@ public class SlayerOverlay extends Overlay {
         if (!SkyblockData.isSkyblock()) return false;
         if (!SkyblockData.isSlayerActive()) return false;
         if (!isValidLocation()) return false;
-        return Config.feature.slayer.slayerOverlay;
+        if (!Config.feature.slayer.slayerOverlay) return false;
+        if (Config.feature.slayer.slayerOverlayHideOnTab && Minecraft.getMinecraft().gameSettings.keyBindPlayerList.isKeyDown()) return false;
+        if (Config.feature.slayer.slayerOverlayHideOnChat && Minecraft.getMinecraft().currentScreen instanceof GuiChat) return false;
+        return true;
     }
 
     private boolean isValidLocation() {

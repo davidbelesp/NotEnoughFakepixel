@@ -1,10 +1,11 @@
 package com.nef.notenoughfakepixel;
 
 import com.nef.notenoughfakepixel.alerts.Alerts;
+import com.nef.notenoughfakepixel.commands.RenameCommand;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.env.registers.ModEventRegistrar;
 import com.nef.notenoughfakepixel.events.handlers.RepoHandler;
-import com.nef.notenoughfakepixel.features.PetTracker; // ADDED THIS IMPORT
+import com.nef.notenoughfakepixel.features.PetTracker;
 import com.nef.notenoughfakepixel.features.cosmetics.CosmeticsManager;
 import com.nef.notenoughfakepixel.features.cosmetics.impl.Bandana;
 import com.nef.notenoughfakepixel.features.cosmetics.loader.OBJLoader;
@@ -69,6 +70,8 @@ public class NotEnoughFakepixel {
         // Load this after register for instance
         SlotLocking.getInstance().loadConfig(new File(Config.configDirectory, "slotlocking.json"));
 
+        RenameCommand.load();
+
         // REPO
         NefRepo.init();
         Runtime.getRuntime().addShutdownHook(new Thread(this::shutdownHook, "Shutdown Hook"));
@@ -93,6 +96,7 @@ public class NotEnoughFakepixel {
             CrystalWaypoints.getInstance().saveIfDirty();
             SlotLocking.getInstance().saveConfig();
             CustomAliases.save();
+            RenameCommand.save();
         } catch (Throwable t) {
             t.printStackTrace();
         }
