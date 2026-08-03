@@ -142,6 +142,10 @@ public class QualityOfLife {
     public VisualTweaks visualTweaks = new VisualTweaks();
 
     @Expose
+    @Category(name = "Pingless Cactus", desc = "Client-side cactus breaking prediction for Cactus Knives.")
+    public PinglessCactusSettings pinglessCactus = new PinglessCactusSettings();
+
+    @Expose
     @Category(name = "Etherwarp Settings", desc = "Settings for etherwarp features.")
     public EtherwarpSettings etherwarpSettings = new EtherwarpSettings();
 
@@ -201,6 +205,14 @@ public class QualityOfLife {
         itemAnimation.doesScaleSwing = true;
         itemAnimation.ignoreHaste = true;
         itemAnimation.customSpeed = 0f;
+    }
+
+    public static class PinglessCactusSettings {
+
+        @Expose
+        @ConfigOption(name = "Pingless Cactus", desc = "Remove cactus client-side immediately when using a Cactus Knife.")
+        @ConfigEditorBoolean
+        public boolean enabled = true;
     }
 
     public static class VisualTweaks {

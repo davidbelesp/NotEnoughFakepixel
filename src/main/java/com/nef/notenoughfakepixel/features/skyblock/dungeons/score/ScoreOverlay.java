@@ -7,6 +7,7 @@ import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.ChatUtils;
 import com.nef.notenoughfakepixel.variables.DungeonFloor;
+import com.nef.notenoughfakepixel.variables.Mayor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
@@ -202,7 +203,7 @@ public class ScoreOverlay {
     }
 
     private String getBonusDisplay() {
-        int threshold = Config.feature.dungeons.general.dungeonsIsPaul ? 15 : 5;
+        int threshold = SkyblockData.isMayor(Mayor.PAUL) ? 15 : 5;
         EnumChatFormatting enumChatFormatting;
         int bonusScore = ScoreManager.getBonusScore();
         if (bonusScore >= threshold) enumChatFormatting = EnumChatFormatting.GREEN;

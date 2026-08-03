@@ -99,7 +99,7 @@ dependencies {
     shadowImpl("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
-    shadowModImpl("org.notenoughupdates.moulconfig:legacy:4.6.0")
+    shadowModImpl("org.notenoughupdates.moulconfig:legacy:4.7.2")
     compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")

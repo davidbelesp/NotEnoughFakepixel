@@ -4,6 +4,10 @@ import com.nef.notenoughfakepixel.variables.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class SkyblockData {
 
     // Profile data
@@ -28,6 +32,8 @@ public class SkyblockData {
     @Getter @Setter private static Location currentLocation = Location.NONE;
     @Getter @Setter private static Gamemode currentGamemode = Gamemode.LOBBY;
     @Getter @Setter private static Area currentArea = Area.NONE;
+    @Getter @Setter private static Mayor currentMayor = Mayor.NONE;
+    @Getter @Setter private static String lastHandItemId = "";
     // Time data
     @Getter @Setter private static int sbHour = 0;
     @Getter @Setter private static int sbMinute = 0;
@@ -40,6 +46,11 @@ public class SkyblockData {
     // Dungeon data
     @Getter @Setter private static DungeonFloor currentFloor = DungeonFloor.NONE;
     @Getter @Setter private static int clearedPercentage = -1;
+
+    // Garden Data
+    @Getter @Setter private static HashMap<Integer, Integer> activePests = new HashMap<>();
+    @Getter @Setter private static List<String> activeVisitors = new ArrayList<>();
+    @Getter @Setter private static List<String> cropMilestone = new ArrayList<>();
 
 
     private SkyblockData() {}
@@ -66,6 +77,10 @@ public class SkyblockData {
 
     public static boolean isSkyblock() {
         return currentGamemode.isSkyblock();
+    }
+
+    public static boolean isMayor(Mayor mayor) {
+        return currentMayor == mayor;
     }
 
     public static void resetSlayerData() {

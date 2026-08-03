@@ -8,6 +8,7 @@ import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
 import com.nef.notenoughfakepixel.utils.*;
 import com.nef.notenoughfakepixel.variables.MobDisplayTypes;
+import com.nef.notenoughfakepixel.variables.Mayor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.multiplayer.WorldClient;
@@ -60,6 +61,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onParticlePacketReceive(PacketReadEvent event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         if (!Config.feature.diana.burrowSettings.dianaShowWaypointsBurrows) return; // Check if the feature is enabled
         if (!SkyblockData.getCurrentLocation().isHub()) return; // Check if the player is in a hub
         //if (InventoryUtils.getSlot("Ancestral Spade") == -1) return;
@@ -102,6 +104,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         if (!SkyblockData.getCurrentLocation().isHub()) return;
         if (Config.feature.diana.burrowSettings.dianaShowWaypointsBurrows) drawWaypoints(event.partialTicks);
         if (Config.feature.diana.burrowSettings.dianaShowTracersWaypoints) drawTracers(event.partialTicks);
@@ -116,6 +119,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onWorldLoad(WorldEvent.Load event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         if (!SkyblockData.getCurrentLocation().isHub()) return; // Check if the player is in a hub
         if (!Config.feature.diana.dianaMinosInquisitorAlert) return;
         initializeLocations();
@@ -126,6 +130,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onRenderLiving(RenderLivingEvent.Pre<EntityLivingBase> event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         final Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.theWorld == null || mc.thePlayer == null) return;
         if (!SkyblockData.getCurrentLocation().isHub()) return;
@@ -231,6 +236,7 @@ public class Diana {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public void onRenderEntityModel(RenderEntityModelEvent event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         if (Minecraft.getMinecraft().thePlayer == null) return;
         if (Minecraft.getMinecraft().theWorld == null) return;
 
@@ -515,6 +521,7 @@ public class Diana {
     }*/
     @SubscribeEvent
     public void onSoundPacketReceive(PacketReadEvent event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         if (!SkyblockData.getCurrentLocation().isHub()) return; // Check if the player is in a hub
         Packet packet = event.packet;
         if (packet instanceof S29PacketSoundEffect) {
@@ -620,6 +627,7 @@ public class Diana {
 
     @SubscribeEvent
     public void onChatRecieve(ClientChatReceivedEvent event) {
+        if (!SkyblockData.isMayor(Mayor.DIANA)) return;
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         if (player == null) return;
         if (!SkyblockData.getCurrentLocation().isHub()) return;

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -16,8 +17,6 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL14;
 
-import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.nio.FloatBuffer;
 import java.util.LinkedList;
 import java.util.regex.Pattern;
@@ -156,7 +155,7 @@ public class Utils {
     }
 
     public static void copyToClipboard(String str) {
-        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new StringSelection(str), null);
+        GuiScreen.setClipboardString(str);
     }
 
     public static float map(float x, float inputStart, float inputEnd, float outputStart, float outputEnd) {

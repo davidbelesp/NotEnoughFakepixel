@@ -6,6 +6,7 @@ import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.events.GuiContainerBackgroundDrawnEvent;
 import com.nef.notenoughfakepixel.events.SlotClickEvent;
 import com.nef.notenoughfakepixel.features.skyblock.enchanting.EnchantingSolvers;
+import com.nef.notenoughfakepixel.features.skyblock.garden.VacuumPestsBag;
 import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
 import com.nef.notenoughfakepixel.utils.ReforgePair;
 import net.minecraft.client.Minecraft;
@@ -156,6 +157,8 @@ public class MixinGuiContainer extends GuiScreen {
             ordinal = 0), locals = LocalCapture.CAPTURE_FAILSOFT)
     private void drawSlot(Slot slotIn, CallbackInfo ci, int x, int y, ItemStack item, boolean flag, boolean flag1,
                           ItemStack itemstack1, String s) {
+        VacuumPestsBag.render(item, x, y);
+
         if (!Config.feature.qol.qolReforgeHelper) return;
 
         if (slotIn.inventory.getDisplayName().getUnformattedText().equals("Reforge Item") && slotIn.slotNumber == 13) {

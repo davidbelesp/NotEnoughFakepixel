@@ -10,10 +10,8 @@ import com.nef.notenoughfakepixel.utils.ScoreboardUtils;
 import com.nef.notenoughfakepixel.variables.Colors;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.ItemStack;
-
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
 
 public class ConfigRunnables {
 
@@ -31,8 +29,7 @@ public class ConfigRunnables {
             String data = RepoHandler.getJson("fairysouls");
             if (data != null) {
                 // copy to clipboard
-                Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clip.setContents(new java.awt.datatransfer.StringSelection(data), null);
+                GuiScreen.setClipboardString(data);
                 Logger.log("Copied API to clipboard! Length: " + data.length());
             }
         }
@@ -66,6 +63,8 @@ public class ConfigRunnables {
             Logger.log("\u00a72Location\u00a7f:");
             Logger.log(" - Current Location: \u00a7f" + SkyblockData.getCurrentLocation());
             Logger.log(" - Current Area: \u00a7f" + SkyblockData.getCurrentArea());
+            Logger.log(" - Current Mayor: \u00a7f" + SkyblockData.getCurrentMayor());
+            Logger.log(" - Last Hand Item ID: \u00a7f" + SkyblockData.getLastHandItemId());
             Logger.log("\u00a74Slayer\u00a7f:");
             Logger.log(" - Has Slayer Active: \u00a7f" + SkyblockData.isSlayerActive());
             Logger.log(" - Current Slayer: \u00a7f" + SkyblockData.getCurrentSlayer());

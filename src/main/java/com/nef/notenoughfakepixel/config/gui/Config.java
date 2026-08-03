@@ -9,6 +9,9 @@ import com.nef.notenoughfakepixel.Configuration;
 import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.env.registers.RegisterKeybind;
 import com.nef.notenoughfakepixel.features.skyblock.slotlocking.SlotLocking;
+import com.nef.notenoughfakepixel.config.gui.annotations.ConfigTitleDisplay;
+import com.nef.notenoughfakepixel.config.gui.editors.GuiOptionEditorTitleDisplay;
+import io.github.notenoughupdates.moulconfig.gui.GuiScreenElementWrapper;
 import io.github.notenoughupdates.moulconfig.gui.MoulConfigEditor;
 import io.github.notenoughupdates.moulconfig.processor.ConfigProcessorDriver;
 import io.github.notenoughupdates.moulconfig.processor.MoulConfigProcessor;
@@ -22,6 +25,10 @@ import org.lwjgl.input.Keyboard;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RegisterEvents
 public class Config {
@@ -38,20 +45,24 @@ public class Config {
     }
 
     private static void loadConfig() {
+        feature = null;
         if (configFile.exists()) {
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(Files.newInputStream(configFile.toPath()), StandardCharsets.UTF_8))) {
                 JsonObject config = new JsonParser().parse(reader).getAsJsonObject();
                 migrateDungeonsConfig(config);
                 migrateAccordionCategoryConfig(config);
                 feature = gson.fromJson(config, Configuration.class);
-            } catch (Exception ignored) {
+            } catch (Exception exception) {
+                System.err.println("[NotEnoughFakepixel] Failed to load config " + configFile.getAbsolutePath());
+                exception.printStackTrace();
+                backupCorruptedConfig();
             }
         }
         if (feature == null) {
             feature = new Configuration();
-            saveConfig();
         }
         feature.fishing.migrateLegacyOptions();
+        saveMainConfig();
     }
 
     private static void migrateDungeonsConfig(JsonObject config) {
@@ -289,7 +300,6 @@ public class Config {
                 promoteCategory(darkAuction, qol, "darkAuctionTimerSettings");
             }
 
-            // Migrate pet-related options out of qol / qol.shortcuts into the new top-level "pets" category.
             JsonObject pets = getObject(config, "pets");
             if (pets == null) {
                 pets = new JsonObject();
@@ -340,14 +350,75 @@ public class Config {
     }
 
     public static void saveConfig() {
+        if (configFile == null || feature == null) return;
+
+        saveMainConfig();
+
         try {
-            //noinspection ResultOfMethodCallIgnored
-            configFile.createNewFile();
-            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(configFile.toPath()), StandardCharsets.UTF_8))) {
-                writer.write(gson.toJson(feature));
-                SlotLocking.getInstance().saveConfig();
+            SlotLocking.getInstance().saveConfig();
+        } catch (Exception exception) {
+            System.err.println("[NotEnoughFakepixel] Failed to save slot-locking config");
+            exception.printStackTrace();
+        }
+    }
+
+    private static void saveMainConfig() {
+        if (configFile == null || feature == null) return;
+
+        File temporaryFile = new File(configFile.getParentFile(), configFile.getName() + ".tmp");
+        try {
+            File parent = configFile.getParentFile();
+            if (parent != null) {
+                Files.createDirectories(parent.toPath());
             }
-        } catch (IOException ignored) {
+
+            String json = gson.toJson(feature);
+            new JsonParser().parse(json).getAsJsonObject();
+
+            try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                    Files.newOutputStream(temporaryFile.toPath(),
+                            StandardOpenOption.CREATE,
+                            StandardOpenOption.TRUNCATE_EXISTING,
+                            StandardOpenOption.WRITE),
+                    StandardCharsets.UTF_8))) {
+                writer.write(json);
+                writer.flush();
+            }
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+                    Files.newInputStream(temporaryFile.toPath()), StandardCharsets.UTF_8))) {
+                gson.fromJson(reader, Configuration.class);
+            }
+
+            try {
+                Files.move(temporaryFile.toPath(), configFile.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING,
+                        StandardCopyOption.ATOMIC_MOVE);
+            } catch (java.nio.file.AtomicMoveNotSupportedException exception) {
+                Files.move(temporaryFile.toPath(), configFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (Exception exception) {
+            System.err.println("[NotEnoughFakepixel] Failed to save config " + configFile.getAbsolutePath());
+            exception.printStackTrace();
+            try {
+                Files.deleteIfExists(temporaryFile.toPath());
+            } catch (IOException cleanupException) {
+                cleanupException.printStackTrace();
+            }
+        }
+    }
+
+    private static void backupCorruptedConfig() {
+        if (configFile == null || !configFile.exists()) return;
+
+        String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss_SSS").format(new Date());
+        File backup = new File(configFile.getParentFile(), configFile.getName() + "." + timestamp + ".corrupted");
+        try {
+            Files.copy(configFile.toPath(), backup.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            System.err.println("[NotEnoughFakepixel] Backed up corrupted config to " + backup.getAbsolutePath());
+        } catch (Exception exception) {
+            System.err.println("[NotEnoughFakepixel] Failed to back up corrupted config");
+            exception.printStackTrace();
         }
     }
 
@@ -363,12 +434,14 @@ public class Config {
 
     public static GuiScreen createMoulConfigScreen(String searchQuery) {
         MoulConfigProcessor<Configuration> processor = MoulConfigProcessor.withDefaults(feature);
+        processor.registerConfigEditor(ConfigTitleDisplay.class,
+                (option, annotation) -> new GuiOptionEditorTitleDisplay(option, annotation));
         new ConfigProcessorDriver(processor).processConfig(feature);
         MoulConfigEditor<Configuration> editor = new MoulConfigEditor<>(processor);
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             editor.search(searchQuery);
         }
-        return new io.github.notenoughupdates.moulconfig.gui.GuiScreenElementWrapper(editor);
+        return new NefGuiScreenElementWrapper(editor);
     }
 
     @SubscribeEvent

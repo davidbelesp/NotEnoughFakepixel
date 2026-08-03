@@ -4,6 +4,7 @@ import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.features.skyblock.dungeons.DungeonManager;
 import com.nef.notenoughfakepixel.serverdata.SkyblockData;
+import com.nef.notenoughfakepixel.variables.Mayor;
 import com.nef.notenoughfakepixel.utils.SoundUtils;
 import com.nef.notenoughfakepixel.utils.TablistParser;
 import com.nef.notenoughfakepixel.utils.TitleUtils;
@@ -119,7 +120,7 @@ public class ScoreManager {
 
     public static int getBonusScore() {
         int crypts = TablistParser.crypts;
-        return (Config.feature.dungeons.general.dungeonsIsPaul ? 10 : 0) + Math.min(5, crypts);
+        return (SkyblockData.isMayor(Mayor.PAUL) ? 10 : 0) + Math.min(5, crypts);
     }
 
     public static int getSecretPercentage() {

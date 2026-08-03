@@ -13,11 +13,13 @@ public abstract class Overlay {
     public final Minecraft mc = Minecraft.getMinecraft();
 
     public void draw(float x, float y, float scale, String bgColorOption) {
+        draw(getLines(), x, y, scale, bgColorOption);
+    }
+
+    public void draw(List<String> lines, float x, float y, float scale, String bgColorOption) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x, y, 0);
         GlStateManager.scale(scale, scale, scale);
-
-        List<String> lines = getLines();
 
         // Parse background color
         String[] colorParts = bgColorOption.split(":");
@@ -34,7 +36,11 @@ public abstract class Overlay {
 
         // Draw text
         for (int i = 0; i < lines.size(); i++) {
-            mc.fontRendererObj.drawString(lines.get(i), 2, (i * LINE_HEIGHT) + 2, -1);
+            if (useTextShadow()) {
+                mc.fontRendererObj.drawStringWithShadow(lines.get(i), 2, (i * LINE_HEIGHT) + 2, -1);
+            } else {
+                mc.fontRendererObj.drawString(lines.get(i), 2, (i * LINE_HEIGHT) + 2, -1);
+            }
         }
 
         GlStateManager.popMatrix();
@@ -46,6 +52,10 @@ public abstract class Overlay {
             if (line.length() > longest) longest = line.length();
         }
         return Math.max(longest, MINIMUM_WIDTH);
+    }
+
+    protected boolean useTextShadow() {
+        return false;
     }
 
     public abstract boolean shouldShow();

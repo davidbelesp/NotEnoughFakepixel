@@ -5,6 +5,7 @@ import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.utils.Logger;
 import com.nef.notenoughfakepixel.variables.Colors;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.*;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -12,9 +13,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Iterator;
@@ -177,16 +175,9 @@ public class CopyNbtData {
     }
 
     private static void writeToClipboard(String text, String successMessage) {
-        try {
-            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-            StringSelection output = new StringSelection(text);
-            clipboard.setContents(output, output);
-
-            if (successMessage != null) {
-                Logger.log(successMessage);
-            }
-        } catch (IllegalStateException | HeadlessException exception) {
-            Logger.logError("Clipboard not available or system is headless!");
+        GuiScreen.setClipboardString(text);
+        if (successMessage != null) {
+            Logger.log(successMessage);
         }
     }
 }

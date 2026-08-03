@@ -18,6 +18,7 @@ import com.nef.notenoughfakepixel.features.skyblock.slayers.SlayerOverlay;
 import io.github.notenoughupdates.moulconfig.annotations.Category;
 import net.minecraft.client.Minecraft;
 import java.awt.*;
+import java.net.URI;
 
 public class Configuration extends io.github.notenoughupdates.moulconfig.Config {
 
@@ -25,6 +26,13 @@ public class Configuration extends io.github.notenoughupdates.moulconfig.Config 
         Minecraft.getMinecraft().displayGuiScreen(new GuiPositionEditor(position, width, height, () -> {
         }, () -> {
         }, () -> Config.screenToOpen = Config.createMoulConfigScreen(activeConfig)));
+    }
+
+    private void openUrl(String url) {
+        try {
+            Desktop.getDesktop().browse(new URI(url));
+        } catch (Exception ignored) {
+        }
     }
 
     public void executeRunnable(String runnableId) {
@@ -68,6 +76,30 @@ public class Configuration extends io.github.notenoughupdates.moulconfig.Config 
         if ("nefCapes".equals(runnableId)) {
             Minecraft.getMinecraft().displayGuiScreen(new CapeGui());
         }
+        if ("openNefDiscord".equals(runnableId)) {
+            openUrl("https://discord.gg/xjFy4GQmbp");
+        }
+        if ("openNefGithub".equals(runnableId)) {
+            openUrl("https://github.com/davidbelesp/NotEnoughFakepixel");
+        }
+        if ("openNefForge".equals(runnableId)) {
+            openUrl("https://github.com/MinecraftForge/MinecraftForge");
+        }
+        if ("openNefMixin".equals(runnableId)) {
+            openUrl("https://github.com/SpongePowered/Mixin/");
+        }
+        if ("openNefMoulConfig".equals(runnableId)) {
+            openUrl("https://github.com/NotEnoughUpdates/MoulConfig");
+        }
+        if ("openNefLombok".equals(runnableId)) {
+            openUrl("https://projectlombok.org/");
+        }
+        if ("openNefReflections".equals(runnableId)) {
+            openUrl("https://github.com/ronmamo/reflections");
+        }
+        if ("openNefArchitecturyLoom".equals(runnableId)) {
+            openUrl("https://moddev.nea.moe/");
+        }
         if ("editTerminalTrackerPosition".equals(runnableId)) {
             editOverlay(activeConfigCategory, 150, 60, Config.feature.dungeons.terminals.terminalTrackerPos);
         }
@@ -99,6 +131,15 @@ public class Configuration extends io.github.notenoughupdates.moulconfig.Config 
         }
         if ("editDarkAHTimerPos".equals(runnableId)) {
             editOverlay(activeConfigCategory, (int) Math.abs(38 * Config.feature.qol.darkAuctionTimerSettings.darkAHTimerScale), (int) Math.abs(9 * Config.feature.qol.darkAuctionTimerSettings.darkAHTimerScale), Config.feature.qol.darkAuctionTimerSettings.darkAhTimerPos);
+        }
+        if ("editGardenPestsOverlayPosition".equals(runnableId)) {
+            editOverlay(activeConfigCategory, 100, 20, Config.feature.garden.pestsOverlay.pos);
+        }
+        if ("editGardenVisitorsOverlayPosition".equals(runnableId)) {
+            editOverlay(activeConfigCategory, 150, 70, Config.feature.garden.visitorsOverlay.pos);
+        }
+        if ("editGardenCropMilestoneOverlayPosition".equals(runnableId)) {
+            editOverlay(activeConfigCategory, 170, 45, Config.feature.garden.cropMilestoneOverlay.pos);
         }
         if ("editSlayerOverlayPos".equals(runnableId)) {
             int width = (int)Math.abs((SlayerOverlay.MINIMUM_WIDTH + (15*8)) * Config.feature.slayer.slayerOverlaySettings.slayerOverlayScale);
@@ -140,9 +181,24 @@ public class Configuration extends io.github.notenoughupdates.moulconfig.Config 
             case 25: executeRunnable("nefAlias"); break;
             case 26: executeRunnable("resetItemValues"); break;
             case 27: executeRunnable("editDarkAHTimerPos"); break;
+            case 28: executeRunnable("editGardenPestsOverlayPosition"); break;
+            case 29: executeRunnable("editGardenVisitorsOverlayPosition"); break;
+            case 30: executeRunnable("editGardenCropMilestoneOverlayPosition"); break;
+            case 32: executeRunnable("openNefDiscord"); break;
+            case 33: executeRunnable("openNefGithub"); break;
+            case 34: executeRunnable("openNefForge"); break;
+            case 35: executeRunnable("openNefMixin"); break;
+            case 36: executeRunnable("openNefMoulConfig"); break;
+            case 37: executeRunnable("openNefLombok"); break;
+            case 38: executeRunnable("openNefReflections"); break;
+            case 39: executeRunnable("openNefArchitecturyLoom"); break;
             default: break;
         }
     }
+
+    @Expose
+    @Category(name = "About", desc = "")
+    public About about = new About();
 
     @Expose
     @Category(name = "Quality of Life", desc = "Quality of Life settings.")
@@ -175,6 +231,10 @@ public class Configuration extends io.github.notenoughupdates.moulconfig.Config 
     @Expose
     @Category(name = "Mining", desc = "Mining settings.")
     public Mining mining = new Mining();
+
+    @Expose
+    @Category(name = "Garden", desc = "Garden settings.")
+    public Garden garden = new Garden();
 
     @Expose
     @Category(name = "Fishing", desc = "Fishing settings.")
