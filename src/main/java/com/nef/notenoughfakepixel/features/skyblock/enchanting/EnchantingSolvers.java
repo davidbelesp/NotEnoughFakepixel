@@ -34,14 +34,16 @@ public class EnchantingSolvers {
     public static SolverTypes currentSolverType = SolverTypes.NONE;
     static List<UltrasequencerSlot> ultrasequencerSlots = new ArrayList<>();
     static List<Integer> chronomatronOrder = new ArrayList<Integer>();
-    private int previousIndex = 0;
-    private boolean noteFinished = true;
     private boolean resolved = false;
     static boolean resolving = false;
     private final Color green = new Color(0, 255, 0);
-    static int slotToClickUltrasequencer = 1;
-    private boolean clicked = false;
-    static int roundUltraSequencerSolver = 1;
+    private boolean chronomatronRemembering = false;
+    private boolean chronomatronNoteActive = false;
+    private Set<Integer> chronomatronActiveSlots = new HashSet<>();
+    private int chronomatronStableFrames = 0;
+    private boolean ultrasequencerRemembering = false;
+    private Map<Integer, Integer> ultrasequencerCandidate = new HashMap<>();
+    private int ultrasequencerCandidateStableFrames = 0;
 
     static class UltrasequencerSlot {
         public Slot slot;
@@ -80,9 +82,16 @@ public class EnchantingSolvers {
             currentSolverType = SolverTypes.NONE;
         }
         resolving = false;
-        clicked = false;
-        slotToClickUltrasequencer = 1;
-        roundUltraSequencerSolver = 1;
+        chronomatronOrder.clear();
+        ultrasequencerSlots.clear();
+        chronomatronRemembering = false;
+        chronomatronNoteActive = false;
+        chronomatronActiveSlots.clear();
+        chronomatronStableFrames = 0;
+        ultrasequencerRemembering = false;
+        ultrasequencerCandidate.clear();
+        ultrasequencerCandidateStableFrames = 0;
+        resolved = false;
     }
 
     @SubscribeEvent
@@ -97,40 +106,54 @@ public class EnchantingSolvers {
             String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
             if (!title.startsWith("Ultrasequencer (")) return;
             ContainerChest containerChest = (ContainerChest) container;
-            // Check if its in remember state
             IInventory lower = ((ContainerChest) container).getLowerChestInventory();
             ItemStack timerStack = lower.getStackInSlot(lower.getSizeInventory() - 5);
             if (timerStack == null) return;
             boolean isClock = timerStack.getItem() == Items.clock;
 
-            // if not clock, then remember the items
             if (!isClock) {
-                if (roundUltraSequencerSolver == ultrasequencerSlots.size()) return;
-                if (resolving) ultrasequencerSlots.clear();
-                resolving = false;
-                for (Slot slot : containerChest.inventorySlots) {
-                    // select only the items in the chest
-                    if (slot.inventory == Minecraft.getMinecraft().thePlayer.inventory) continue;
-                    ItemStack item = slot.getStack();
-                    if (item == null) continue;
+                if (!ultrasequencerRemembering) {
+                    ultrasequencerSlots.clear();
+                    ultrasequencerCandidate.clear();
+                    ultrasequencerCandidateStableFrames = 0;
+                    ultrasequencerRemembering = true;
+                }
 
-                    if (item.getItem() == Items.dye) {
-
-                        int stackSize = item.stackSize;
-                        ultrasequencerSlots.add(new UltrasequencerSlot(slot, stackSize));
+                Map<Integer, Integer> observedRound = new HashMap<>();
+                for (int slotIndex = 0; slotIndex < lower.getSizeInventory(); slotIndex++) {
+                    ItemStack item = lower.getStackInSlot(slotIndex);
+                    if (item != null && item.getItem() == Items.dye) {
+                        observedRound.put(slotIndex, item.stackSize);
                     }
                 }
-                slotToClickUltrasequencer = 1;
+
+                if (!observedRound.equals(ultrasequencerCandidate)) {
+                    ultrasequencerCandidate = observedRound;
+                    ultrasequencerCandidateStableFrames = 1;
+                    ultrasequencerSlots.clear();
+                } else {
+                    ultrasequencerCandidateStableFrames++;
+                }
+
+                if (!observedRound.isEmpty() && ultrasequencerCandidateStableFrames >= 2) {
+                    ultrasequencerSlots.clear();
+                    for (Map.Entry<Integer, Integer> entry : observedRound.entrySet()) {
+                        ultrasequencerSlots.add(new UltrasequencerSlot(
+                                containerChest.inventorySlots.get(entry.getKey()), entry.getValue()));
+                    }
+                }
+                resolving = false;
             } else {
+                ultrasequencerRemembering = false;
                 resolving = true;
-                // if its clock, draw the items in the list
+                int nextQuantity = getNextUltrasequencerQuantity(containerChest);
                 for (UltrasequencerSlot slot : ultrasequencerSlots) {
                     ItemStack itemInSlot = containerChest.inventorySlots.get(slot.slot.slotNumber).getStack();
-                    if (itemInSlot == null) continue;
-                    if (itemInSlot.getItem() == Items.dye) continue;
-                    Color color = new Color(255, 0, 0);
-                    if (slot.quantity == slotToClickUltrasequencer) color = new Color(0, 255, 0);
-                    RenderUtils.drawOnSlot(containerChest.inventorySlots.size(), slot.slot.xDisplayPosition, slot.slot.yDisplayPosition, color.getRGB(), slot.quantity);
+                    if (itemInSlot == null || itemInSlot.getItem() == Items.dye) continue;
+                    int color = slot.quantity == nextQuantity
+                            ? 0xFF00FF00
+                            : 0xFFFF0000;
+                    RenderUtils.drawOnSlot(containerChest.inventorySlots.size(), slot.slot.xDisplayPosition, slot.slot.yDisplayPosition, color, slot.quantity);
                 }
             }
         } else if (Config.feature.experimentation.experimentationChronomatronSolver && currentSolverType == SolverTypes.CHRONOMATRON) {
@@ -142,74 +165,71 @@ public class EnchantingSolvers {
             String title = ((ContainerChest) container).getLowerChestInventory().getDisplayName().getUnformattedText();
             if (!title.startsWith("Chronomatron (")) return;
             ContainerChest containerChest = (ContainerChest) container;
-            // Check if its in remember state
             IInventory lower = ((ContainerChest) container).getLowerChestInventory();
             ItemStack timerStack = lower.getStackInSlot(lower.getSizeInventory() - 5);
             if (timerStack == null) return;
             boolean isClock = timerStack.getItem() == Items.clock;
-            // if is not clock, then remember the items
+
             if (!isClock) {
-                if (resolving) chronomatronOrder.clear();
+                if (!chronomatronRemembering) {
+                    chronomatronOrder.clear();
+                    chronomatronRemembering = true;
+                    chronomatronNoteActive = false;
+                    chronomatronActiveSlots.clear();
+                    chronomatronStableFrames = 0;
+                    resolved = false;
+                }
                 resolving = false;
-                // getting item in slot 4
+
                 ItemStack itemInSlot = containerChest.inventorySlots.get(4).getStack();
-                // checking its stack quantity
                 if (itemInSlot == null) return;
                 int round = itemInSlot.stackSize;
                 if (chronomatronOrder.size() >= round) return;
 
-                List<Slot> slots = containerChest.inventorySlots;
-                if (slots == null) return;
-                Slot tempSlot = slots.get(previousIndex);
-                if (tempSlot == null) return;
-                ItemStack slotStack = tempSlot.getStack();
-                if (slotStack == null) return;
-                Item lastItem = slotStack.getItem();
-                if (Block.getBlockFromItem(lastItem) == Blocks.stained_glass) {
-                    noteFinished = true;
-                }
-                if (!noteFinished) return;
-
-                List<Integer> slotRanges = new ArrayList<>();
-
-                for (int i = 9; i <= 18; i++) {
-                    slotRanges.add(i);
-                }
-
-                if (TablistParser.currentOpenChestName.contains("Transcendent") ||
-                        TablistParser.currentOpenChestName.contains("Metaphysical")) {
-                    for (int i = 28; i <= 37; i++) {
-                        slotRanges.add(i);
+                Set<Integer> activeSlots = new HashSet<>();
+                for (int index = 0; index < lower.getSizeInventory(); index++) {
+                    ItemStack item = lower.getStackInSlot(index);
+                    if (item != null && Block.getBlockFromItem(item.getItem()) == Blocks.stained_hardened_clay) {
+                        activeSlots.add(index);
                     }
                 }
 
-                for (int index : slotRanges) {
-                    Slot slot = containerChest.inventorySlots.get(index);
-                    ItemStack item = slot.getStack();
+                if (activeSlots.isEmpty()) {
+                    chronomatronNoteActive = false;
+                    chronomatronActiveSlots.clear();
+                    chronomatronStableFrames = 0;
+                    return;
+                }
 
-                    if (item == null) continue;
+                if (!activeSlots.equals(chronomatronActiveSlots)) {
+                    chronomatronActiveSlots = activeSlots;
+                    chronomatronStableFrames = 1;
+                    return;
+                }
+                chronomatronStableFrames++;
+                if (chronomatronNoteActive || chronomatronStableFrames < 2) return;
 
-                    if (Block.getBlockFromItem(item.getItem()) != Blocks.stained_hardened_clay) {
-                        continue;
-                    }
-
-                    previousIndex = slot.getSlotIndex();
-                    chronomatronOrder.add(previousIndex);
-                    noteFinished = false;
-                    break;
+                int representative = findChronomatronRepresentative(activeSlots, title, lower.getSizeInventory());
+                if (representative >= 0) {
+                    chronomatronOrder.add(representative);
+                    chronomatronNoteActive = true;
                 }
 
             } else {
+                chronomatronRemembering = false;
+                chronomatronNoteActive = false;
+                chronomatronActiveSlots.clear();
+                chronomatronStableFrames = 0;
                 resolving = true;
                 if (!chronomatronOrder.isEmpty()) {
                     int resultIndex = chronomatronOrder.get(0);
-                    if (containerChest.inventorySlots.get(resultIndex).getStack() == null) return;
-                    Item resultItem = containerChest.inventorySlots.get(resultIndex).getStack().getItem();
+                    ItemStack resultStack = containerChest.inventorySlots.get(resultIndex).getStack();
+                    if (resultStack == null) return;
+                    Item resultItem = resultStack.getItem();
                     if (Block.getBlockFromItem(resultItem) == Blocks.stained_glass) {
                         if (resolved) {
                             chronomatronOrder.remove(0);
                             resolved = false;
-                            clicked = false;
                             return;
                         }
                         Slot slot1 = containerChest.inventorySlots.get(resultIndex);
@@ -225,8 +245,6 @@ public class EnchantingSolvers {
                     }
 
                 }
-                previousIndex = 0;
-                noteFinished = true;
             }
         } else if (currentSolverType == SolverTypes.NONE) {
             if (chronomatronOrder.isEmpty() && ultrasequencerSlots.isEmpty()) return;
@@ -239,13 +257,39 @@ public class EnchantingSolvers {
             possibleMatches.clear();
             lastSlotClicked = -1;
 
-            previousIndex = 0;
-            noteFinished = true;
             resolved = false;
             resolving = false;
-            clicked = false;
-            slotToClickUltrasequencer = 1;
+            chronomatronRemembering = false;
+            chronomatronNoteActive = false;
+            chronomatronActiveSlots.clear();
+            chronomatronStableFrames = 0;
+            ultrasequencerRemembering = false;
         }
+    }
+
+    private static int findChronomatronRepresentative(Set<Integer> activeSlots, String title, int inventorySize) {
+        for (int index = 9; index <= 18; index++) {
+            if (activeSlots.contains(index)) return index;
+        }
+        if (title.contains("Transcendent") || title.contains("Metaphysical")) {
+            for (int index = 28; index <= 37; index++) {
+                if (activeSlots.contains(index)) return index;
+            }
+        }
+        for (int index = 0; index < inventorySize; index++) {
+            if (activeSlots.contains(index)) return index;
+        }
+        return -1;
+    }
+
+    static int getNextUltrasequencerQuantity(ContainerChest containerChest) {
+        int nextQuantity = Integer.MAX_VALUE;
+        for (UltrasequencerSlot slot : ultrasequencerSlots) {
+            ItemStack itemInSlot = containerChest.inventorySlots.get(slot.slot.slotNumber).getStack();
+            if (itemInSlot == null || itemInSlot.getItem() == Items.dye) continue;
+            nextQuantity = Math.min(nextQuantity, slot.quantity);
+        }
+        return nextQuantity == Integer.MAX_VALUE ? -1 : nextQuantity;
     }
 
     @SubscribeEvent

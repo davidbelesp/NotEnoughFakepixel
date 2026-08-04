@@ -5,8 +5,7 @@ import com.nef.notenoughfakepixel.env.registers.RegisterEvents;
 import com.nef.notenoughfakepixel.utils.TablistParser;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiChest;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.ContainerChest;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.lwjgl.input.Mouse;
@@ -40,17 +39,17 @@ public class PreventMissclicks {
             }
             if (Config.feature.experimentation.experimentationPreventMissclicks) event.setCanceled(true);
         } else if (Config.feature.experimentation.experimentationUltraSequencerSolver && EnchantingSolvers.currentSolverType == EnchantingSolvers.SolverTypes.ULTRASEQUENCER && EnchantingSolvers.resolving) {
+            if (EnchantingSolvers.ultrasequencerSlots.isEmpty()) return;
+
+            int hoveredSlotNumber = chestGui.getSlotUnderMouse().slotNumber;
+            int nextQuantity = EnchantingSolvers.getNextUltrasequencerQuantity((ContainerChest) chestGui.inventorySlots);
+            if (nextQuantity < 0) return;
             for (EnchantingSolvers.UltrasequencerSlot slot : EnchantingSolvers.ultrasequencerSlots) {
-                //System.out.println(EnchantingSolvers.slotToClickUltrasequencer + ", " + slot.quantity);
-                ItemStack itemInSlot = chestGui.inventorySlots.getInventory().get(slotIndex);
-                if (slot.slot == chestGui.getSlotUnderMouse() && EnchantingSolvers.slotToClickUltrasequencer == slot.quantity) {
-                    if (EnchantingSolvers.ultrasequencerSlots.size() == EnchantingSolvers.slotToClickUltrasequencer)
-                        EnchantingSolvers.roundUltraSequencerSolver++;
-                    EnchantingSolvers.slotToClickUltrasequencer++;
+                if (slot.slot.slotNumber != hoveredSlotNumber) continue;
+                if (nextQuantity == slot.quantity) {
                     return;
                 }
-                if (itemInSlot == null) continue;
-                if (itemInSlot.getItem() == Items.dye) continue;
+                break;
             }
             if (Config.feature.experimentation.experimentationPreventMissclicks)
                 event.setCanceled(true); // cancel click if not found

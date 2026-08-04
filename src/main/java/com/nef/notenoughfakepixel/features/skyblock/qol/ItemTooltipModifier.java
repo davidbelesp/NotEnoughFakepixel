@@ -59,7 +59,7 @@ public class ItemTooltipModifier {
 
 
         // Admin Item Tag
-        if (Config.feature.qol.itemTooltipSettings.qolShowAdminTag) {
+        if (Config.feature.qol.itemTooltipSettings.qolShowAdminTag && !SkyblockData.isSandbox()) {
             ItemUtils.AdminStatus adminStatus = ItemUtils.isAdminItem(hoveredItem);
             if (adminStatus.isAdmin()) {
                 String adminName = ItemUtils.getAdminName(hoveredItem);

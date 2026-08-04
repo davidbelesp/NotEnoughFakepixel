@@ -33,6 +33,7 @@ public class SkyblockData {
     @Getter @Setter private static Gamemode currentGamemode = Gamemode.LOBBY;
     @Getter @Setter private static Area currentArea = Area.NONE;
     @Getter @Setter private static Mayor currentMayor = Mayor.NONE;
+    @Getter @Setter private static boolean isSandbox = false;
     @Getter @Setter private static String lastHandItemId = "";
     // Time data
     @Getter @Setter private static int sbHour = 0;

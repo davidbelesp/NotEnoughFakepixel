@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -139,6 +140,7 @@ public class TablistParser {
         final Minecraft mc = Minecraft.getMinecraft();
         if (mc == null || mc.thePlayer == null) return;
         if (!SkyblockData.getCurrentGamemode().isSkyblock()) {
+            SkyblockData.setSandbox(false);
             SkyblockData.setActivePests(new HashMap<>());
             SkyblockData.setActiveVisitors(new ArrayList<>());
             SkyblockData.setCropMilestone(new ArrayList<>());
@@ -248,6 +250,7 @@ public class TablistParser {
                         String s = line.substring(line.indexOf("Server: ") + 8).trim();
                         final int dashDigits = StringUtils.indexOfDashDigits(s);
                         if (dashDigits >= 0) s = s.substring(0, dashDigits + 1);
+                        SkyblockData.setSandbox(s.toLowerCase(Locale.ROOT).contains("_sandbox"));
                         SkyblockData.setCurrentLocation(Location.getLocation(s));
                     }
 
@@ -473,6 +476,7 @@ public class TablistParser {
     @SubscribeEvent
     public void onWorldUnload(WorldEvent.Unload event) {
         SkyblockData.setCurrentLocation(Location.NONE);
+        SkyblockData.setSandbox(false);
         SkyblockData.setCurrentMayor(Mayor.NONE);
         SkyblockData.setActivePests(new HashMap<>());
         SkyblockData.setActiveVisitors(new ArrayList<>());
