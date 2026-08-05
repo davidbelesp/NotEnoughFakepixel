@@ -386,38 +386,43 @@ public class TablistParser {
         double gridSpacing = Math.max(2.0D, Config.feature.garden.pestPlotGrill.gridSpacing);
 
         GlStateManager.pushMatrix();
-        GlStateManager.disableTexture2D();
-        GlStateManager.disableCull();
-        GlStateManager.disableLighting();
-        GlStateManager.enableBlend();
-        GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
-        // Keep depth testing enabled so walls occlude the grill.
-        GlStateManager.enableDepth();
-        GlStateManager.depthMask(true);
-        GL11.glLineWidth(Math.max(1.0F, Config.feature.garden.pestPlotGrill.lineWidth));
+        try {
+            GlStateManager.disableTexture2D();
+            GlStateManager.disableCull();
+            GlStateManager.disableLighting();
+            GlStateManager.enableBlend();
+            GlStateManager.tryBlendFuncSeparate(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+            GlStateManager.enableDepth();
+            GlStateManager.depthMask(true);
+            GL11.glLineWidth(Math.max(1.0F, Config.feature.garden.pestPlotGrill.lineWidth));
 
-        WorldRenderer renderer = Tessellator.getInstance().getWorldRenderer();
-        renderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-        for (Integer plotNumber : SkyblockData.getActivePests().keySet()) {
-            if (plotNumber == null || plotNumber < 1 || plotNumber > GARDEN_PLOTS.length) continue;
-            AxisAlignedBB plot = GARDEN_PLOTS[plotNumber - 1];
+            WorldRenderer renderer = Tessellator.getInstance().getWorldRenderer();
+            renderer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+            for (Integer plotNumber : SkyblockData.getActivePests().keySet()) {
+                if (plotNumber == null || plotNumber < 1 || plotNumber > GARDEN_PLOTS.length) continue;
+                AxisAlignedBB plot = GARDEN_PLOTS[plotNumber - 1];
 
-            addXPlaneGrill(renderer, plot, plot.minZ - PLOT_FACE_OFFSET, gridSpacing,
-                    playerX, playerY, playerZ, red, green, blue, alpha);
-            addXPlaneGrill(renderer, plot, plot.maxZ + PLOT_FACE_OFFSET, gridSpacing,
-                    playerX, playerY, playerZ, red, green, blue, alpha);
-            addZPlaneGrill(renderer, plot, plot.minX - PLOT_FACE_OFFSET, gridSpacing,
-                    playerX, playerY, playerZ, red, green, blue, alpha);
-            addZPlaneGrill(renderer, plot, plot.maxX + PLOT_FACE_OFFSET, gridSpacing,
-                    playerX, playerY, playerZ, red, green, blue, alpha);
+                addXPlaneGrill(renderer, plot, plot.minZ - PLOT_FACE_OFFSET, gridSpacing,
+                        playerX, playerY, playerZ, red, green, blue, alpha);
+                addXPlaneGrill(renderer, plot, plot.maxZ + PLOT_FACE_OFFSET, gridSpacing,
+                        playerX, playerY, playerZ, red, green, blue, alpha);
+                addZPlaneGrill(renderer, plot, plot.minX - PLOT_FACE_OFFSET, gridSpacing,
+                        playerX, playerY, playerZ, red, green, blue, alpha);
+                addZPlaneGrill(renderer, plot, plot.maxX + PLOT_FACE_OFFSET, gridSpacing,
+                        playerX, playerY, playerZ, red, green, blue, alpha);
+            }
+            Tessellator.getInstance().draw();
+        } finally {
+            GL11.glLineWidth(1.0F);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.depthMask(true);
+            GlStateManager.enableAlpha();
+            GlStateManager.disableBlend();
+            GlStateManager.enableLighting();
+            GlStateManager.enableCull();
+            GlStateManager.enableTexture2D();
+            GlStateManager.popMatrix();
         }
-        Tessellator.getInstance().draw();
-
-        GlStateManager.disableBlend();
-        GlStateManager.enableLighting();
-        GlStateManager.enableCull();
-        GlStateManager.enableTexture2D();
-        GlStateManager.popMatrix();
     }
 
     private static void addXPlaneGrill(WorldRenderer renderer, AxisAlignedBB plot, double z,

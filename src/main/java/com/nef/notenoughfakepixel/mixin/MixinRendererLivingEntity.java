@@ -1,5 +1,6 @@
 package com.nef.notenoughfakepixel.mixin;
 
+import com.nef.notenoughfakepixel.Configuration;
 import com.nef.notenoughfakepixel.config.gui.Config;
 import com.nef.notenoughfakepixel.events.RenderEntityModelEvent;
 import com.nef.notenoughfakepixel.features.skyblock.diana.Diana;
@@ -64,6 +65,10 @@ public abstract class MixinRendererLivingEntity<T extends EntityLivingBase> {
 
     @Inject(method = "setBrightness", at = @At(value = "HEAD"), cancellable = true)
     private void setBrightness(T entity, float partialTicks, boolean combineTextures, CallbackInfoReturnable<Boolean> cir) {
+        // Pojav translates the legacy fixed function multitexture pipeline to
+        // GLES The custom GL_COMBINE setup below can corrupt the lightmap
+        if (Configuration.isPojav()) return;
+
         if (shouldApplyBrightnessBoost(entity)) {
             GlStateManager.setActiveTexture(OpenGlHelper.defaultTexUnit);
             GlStateManager.enableTexture2D();
